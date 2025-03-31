@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 public class CardItem : MonoBehaviour
 {
@@ -23,6 +25,7 @@ public class CardItem : MonoBehaviour
     /// </summary>  
     public float zPos = 0;
 
+    public ECardAttackType attackType;
 
     public void RefreshData(Vector3 root, float rot, float size, float zPos)
     {
@@ -36,23 +39,32 @@ public class CardItem : MonoBehaviour
     {
         SetPos();
     }
+    /// <summary>  
+    /// 当前卡牌是否被选中  
+    /// </summary>  
+    public bool isSelect;
+
     public void SetPos()
     {
+        //选中卡牌半径增加  
+        float radius = isSelect ? size + 0.2f : size;
+        //选中卡牌层级提高，使卡牌展示位于所有手牌之上  
+        float selectZ = isSelect ? this.zPos - 0.1f : this.zPos;
+        //选中卡牌旋转归零  
+        float rotZ = isSelect ? 0 : GetAngleInDegrees(root, transform.position);
         //设置卡牌位置  
-        float x = root.x + Mathf.Cos(rot) * size;
-        float y = root.y + Mathf.Sin(rot) * size;
-        transform.position = Vector3.Lerp(transform.position, new Vector3(x, y, root.z + this.zPos), Time.deltaTime * animSpeed);
-        //设置卡牌角度  
-        float rotZ = GetAngleInDegrees(root, transform.position);
-        Vector3 localEulerAngles = transform.localEulerAngles;
+        float x = root.x + Mathf.Cos(rot) * radius;
+        float y = isSelect ? -2.85f : root.y + Mathf.Sin(rot) * radius;
+        transform.position = Vector3.Lerp(transform.position, new Vector3(x, y, root.z + selectZ), Time.deltaTime * animSpeed);
         Quaternion rotationQuaternion = Quaternion.Euler(new Vector3(0, 0, rotZ));
         transform.rotation = Quaternion.RotateTowards(transform.rotation, rotationQuaternion, Time.deltaTime * animSpeed * 30);
     }
+
     /// <summary>  
     /// 获取两个向量之间的弧度值0-2π  
     /// </summary>    /// <param name="positionA">点A坐标</param>  
     /// <param name="positionB">点B坐标</param>  
-    /// <returns></returns>    
+    /// <returns></returns>
     public static float GetAngleInDegrees(Vector3 positionA, Vector3 positionB)
     {
         // 计算从A指向B的向量  
