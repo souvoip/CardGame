@@ -66,7 +66,7 @@ public class ArrowEffectManager : MonoBehaviour
         {
             float t = i / (float)(ArrowItemList.Count - 1); // 参数 t 在 0 到 1 之间  
             Vector3 position = CalculateBezierPoint(t, startPoint, controlPoint1, controlPoint2, endPoint);
-            ArrowItemList[i].gameObject.SetActive(i != ArrowItemList.Count - 2);
+            //ArrowItemList[i].gameObject.SetActive(i != ArrowItemList.Count - 2);
             ArrowItemList[i].transform.position = position;
             ArrowItemList[i].transform.localScale = Vector3.one * (t / 2f) + Vector3.one * 0.3f;
             if (i > 0)

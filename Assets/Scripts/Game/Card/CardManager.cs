@@ -301,6 +301,7 @@ public class CardManager : MonoBehaviour
         {
             return;
         }
+        if (temporaryCard.activeSelf) { return; }
 
         oldmousePosition = Input.mousePosition;
         // 从鼠标位置创建一条射线
@@ -313,7 +314,6 @@ public class CardManager : MonoBehaviour
             if (hit.collider.gameObject != null)
             {
                 NowSelectItem = hit.collider.gameObject.GetComponent<CardItem>();
-
                 return;
             }
         }
