@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 
-public class CardManager : MonoBehaviour
+public class CardManager2 : MonoBehaviour
 {
     /// <summary>
     /// 卡牌起始位置
@@ -32,7 +33,7 @@ public class CardManager : MonoBehaviour
     /// <summary>
     /// 手牌列表
     /// </summary>
-    private List<CardItem> cardList;
+    private List<CardItem2> cardList;
 
     /// <summary>
     /// 偶数手牌位置列表
@@ -48,12 +49,12 @@ public class CardManager : MonoBehaviour
     /// </summary>
     private int CardMaxCount = 8;
 
-    private CardItem nowSelectItem;
+    private CardItem2 nowSelectItem;
 
     /// <summary>
     /// 当前鼠标指向的卡牌
     /// </summary>
-    public CardItem NowSelectItem
+    public CardItem2 NowSelectItem
     {
         get => nowSelectItem;
         set
@@ -71,7 +72,7 @@ public class CardManager : MonoBehaviour
     /// <summary>
     /// 当前点击选中的卡牌
     /// </summary>
-    private CardItem nowTaskItem;
+    private CardItem2 nowTaskItem;
 
     public ArrowEffectManager lineEffect;
 
@@ -123,7 +124,7 @@ public class CardManager : MonoBehaviour
     {
         TaskItemDetection();
         RefereshCard();
-        SelectItemDetection();
+        //SelectItemDetection();
         CardUseEffect();
     }
 
@@ -134,7 +135,7 @@ public class CardManager : MonoBehaviour
     {
         if (cardList == null)
         {
-            cardList = new List<CardItem>();
+            cardList = new List<CardItem2>();
         }
 
         if (cardList.Count >= CardMaxCount)
@@ -144,7 +145,8 @@ public class CardManager : MonoBehaviour
         }
 
         GameObject item = Instantiate(cardItem, this.transform);
-        CardItem text = item.GetComponent<CardItem>();
+        CardItem2 text = item.GetComponent<CardItem2>();
+        text.Init(OnMouseMoveIn, OnMouseMoveOut, OnMouseCardDown);
         text.RefreshData(rootPos, 0, 0, 0);
         cardList.Add(text);
     }
@@ -165,7 +167,6 @@ public class CardManager : MonoBehaviour
 
         List<float> rotPos;
         int strtCount = 0;
-        float interval;
         if (cardList.Count % 2 == 0)
         {
             rotPos = rotPos_EvenNumber;
@@ -206,7 +207,7 @@ public class CardManager : MonoBehaviour
             return;
         }
 
-        CardItem item = cardList[cardList.Count - 1];
+        CardItem2 item = cardList[cardList.Count - 1];
         cardList.Remove(item);
         Destroy(item.gameObject);
     }
@@ -215,7 +216,7 @@ public class CardManager : MonoBehaviour
     /// 销毁卡牌
     /// </summary>
     /// <param name="item"></param>
-    public void RemoveCard(CardItem item)
+    public void RemoveCard(CardItem2 item)
     {
         if (cardList == null)
         {
@@ -241,17 +242,17 @@ public class CardManager : MonoBehaviour
         }
         // 测试 ==============
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (nowTaskItem != null)
-            {
-                nowTaskItem.gameObject.SetActive(true);
-                nowTaskItem = null;
-            }
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    if (nowTaskItem != null)
+        //    {
+        //        nowTaskItem.gameObject.SetActive(true);
+        //        nowTaskItem = null;
+        //    }
 
-            temporaryCardStartPos = temporaryCard.transform.position;
-            SelectCard();
-        }
+        //    temporaryCardStartPos = temporaryCard.transform.position;
+        //    SelectCard();
+        //}
 
         if (Input.GetMouseButton(0))
         {
@@ -260,6 +261,11 @@ public class CardManager : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
+            if(nowCardState == ECardState.Selecting)
+            {
+                nowCardState = ECardState.Selected;
+                return;
+            }
             if (nowTaskItem != null)
             {
                 if (IsDestoryCard())
@@ -269,10 +275,23 @@ public class CardManager : MonoBehaviour
                 else
                 {
                     nowTaskItem.gameObject.SetActive(true);
+                    NowSelectItem = null;
                     nowTaskItem = null;
                 }
 
                 nowSelectPlayer = null;
+                nowCardState = ECardState.None;
+            }
+        }
+        if (Input.GetMouseButtonUp(1))
+        {
+            if (nowTaskItem != null)
+            {
+                nowTaskItem.gameObject.SetActive(true);
+                NowSelectItem = null;
+                nowTaskItem = null;
+                nowSelectPlayer = null;
+                nowCardState = ECardState.None;
             }
         }
     }
@@ -297,37 +316,37 @@ public class CardManager : MonoBehaviour
     /// <summary>
     /// 选中卡牌检测
     /// </summary>
-    public void SelectItemDetection()
-    {
-        if (oldmousePosition == Input.mousePosition)
-        {
-            return;
-        }
-        if (temporaryCard.activeSelf) { return; }
-        oldmousePosition = Input.mousePosition;
-        // 从鼠标位置创建一条射线
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        LayerMask layerMask = LayerMask.GetMask("Card");
-        // 检测射线是否与物体相交
-        if (Physics.Raycast(ray, out hit, 1000, layerMask))
-        {
-            if (hit.collider.gameObject != null)
-            {
-                NowSelectItem = hit.collider.gameObject.GetComponent<CardItem>();
+    //public void SelectItemDetection()
+    //{
+    //    if (oldmousePosition == Input.mousePosition)
+    //    {
+    //        return;
+    //    }
+    //    if (temporaryCard.activeSelf) { return; }
+    //    oldmousePosition = Input.mousePosition;
+    //    // 从鼠标位置创建一条射线
+    //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+    //    RaycastHit hit;
+    //    LayerMask layerMask = LayerMask.GetMask("Card");
+    //    // 检测射线是否与物体相交
+    //    if (Physics.Raycast(ray, out hit, 1000, layerMask))
+    //    {
+    //        if (hit.collider.gameObject != null)
+    //        {
+    //            NowSelectItem = hit.collider.gameObject.GetComponent<CardItem>();
 
-                return;
-            }
-        }
+    //            return;
+    //        }
+    //    }
 
-        NowSelectItem = null;
-    }
+    //    NowSelectItem = null;
+    //}
 
     /// <summary>
     /// 刷新当前选中的卡牌
     /// </summary>
     /// <param name="selectItem"></param>
-    public void RefreshSelectItem(CardItem selectItem)
+    public void RefreshSelectItem(CardItem2 selectItem)
     {
         if (cardList == null)
         {
@@ -368,21 +387,23 @@ public class CardManager : MonoBehaviour
     /// <summary>
     /// 选中卡牌
     /// </summary>
-    public void SelectCard()
+    public void SelectCard(CardItem2 item)
     {
-        // 从鼠标位置创建一条射线
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        LayerMask layerMask = LayerMask.GetMask("Card");
-        // 检测射线是否与物体相交
-        if (Physics.Raycast(ray, out hit, 1000, layerMask))
-        {
-            if (hit.collider.gameObject != null)
-            {
-                nowTaskItem = hit.collider.gameObject.GetComponent<CardItem>();
-                nowTaskItem.gameObject.SetActive(false);
-            }
-        }
+        nowTaskItem = item;
+        nowTaskItem.gameObject.SetActive(false);
+        //// 从鼠标位置创建一条射线
+        //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //RaycastHit hit;
+        //LayerMask layerMask = LayerMask.GetMask("Card");
+        //// 检测射线是否与物体相交
+        //if (Physics.Raycast(ray, out hit, 1000, layerMask))
+        //{
+        //    if (hit.collider.gameObject != null)
+        //    {
+        //        nowTaskItem = hit.collider.gameObject.GetComponent<CardItem>();
+        //        nowTaskItem.gameObject.SetActive(false);
+        //    }
+        //}
     }
 
     /// <summary>
@@ -474,12 +495,37 @@ public class CardManager : MonoBehaviour
         //攻击引导箭头显示隐藏控制
         lineEffect.gameObject.SetActive(isWaitAttack);
     }
-}
+
+    private void OnMouseMoveIn(CardItem2 item)
+    {
+        if (nowCardState != ECardState.None) { return; }
+        NowSelectItem = item;
+    }
+    private void OnMouseMoveOut()
+    {
+        NowSelectItem = null;
+    }
 
 
-public enum ECardAttackType
-{
-    Skill,
-    Single,
-    Power
+    private void OnMouseCardDown(CardItem2 item)
+    {
+        if (nowTaskItem != null)
+        {
+            nowTaskItem.gameObject.SetActive(true);
+            nowTaskItem = null;
+        }
+
+        temporaryCardStartPos = temporaryCard.transform.position;
+        SelectCard(item);
+        nowCardState = ECardState.Selecting;
+    }
+
+    private ECardState nowCardState = ECardState.None;
+
+    private enum ECardState
+    {
+        None,
+        Selecting,
+        Selected,
+    }
 }

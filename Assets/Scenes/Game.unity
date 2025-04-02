@@ -253,6 +253,18 @@ PrefabInstance:
       value: 260
       objectReference: {fileID: 0}
     - target: {fileID: 4039770504273919567, guid: 055409eccfb6b3447af49902f1c33918, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.012499999
+      objectReference: {fileID: 0}
+    - target: {fileID: 4039770504273919567, guid: 055409eccfb6b3447af49902f1c33918, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.012499999
+      objectReference: {fileID: 0}
+    - target: {fileID: 4039770504273919567, guid: 055409eccfb6b3447af49902f1c33918, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.012499999
+      objectReference: {fileID: 0}
+    - target: {fileID: 4039770504273919567, guid: 055409eccfb6b3447af49902f1c33918, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -680,6 +692,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2065309960}
   - component: {fileID: 2065309959}
+  - component: {fileID: 2065309961}
   m_Layer: 0
   m_Name: CardManager
   m_TagString: Untagged
@@ -694,7 +707,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2065309958}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 920cda46d84f2c24683fdb205ad096fa, type: 3}
   m_Name: 
@@ -720,6 +733,23 @@ Transform:
   - {fileID: 1063060255}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2065309961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2065309958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1544a29152ede0f409c98de01cacd597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rootPos: {x: 0, y: -33.5, z: 20}
+  cardItem: {fileID: 6617842043450249779, guid: 19b337535fe93c540af0ca8275a8b668, type: 3}
+  size: 30
+  temporaryCard: {fileID: 416813910}
+  lineEffect: {fileID: 1063060254}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
