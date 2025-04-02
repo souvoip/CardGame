@@ -79,7 +79,7 @@ public class CardManager2 : MonoBehaviour
     /// <summary>
     /// 当前选中敌人
     /// </summary>
-    private GameObject nowSelectPlayer;
+    private EnemyRole nowSelectPlayer;
 
     private Vector3 temporaryCardStartPos;
 
@@ -254,10 +254,10 @@ public class CardManager2 : MonoBehaviour
         //    SelectCard();
         //}
 
-        if (Input.GetMouseButton(0))
-        {
-            SelectEnemy();
-        }
+        //if (Input.GetMouseButton(0))
+        //{
+        //    SelectEnemy();
+        //}
 
         if (Input.GetMouseButtonUp(0))
         {
@@ -431,7 +431,7 @@ public class CardManager2 : MonoBehaviour
     /// <summary>
     /// 选中对象
     /// </summary>
-    public void SelectEnemy()
+    public void SelectEnemy(EnemyRole enemy)
     {
         if (nowTaskItem == null)
         {
@@ -446,7 +446,7 @@ public class CardManager2 : MonoBehaviour
             case ECardAttackType.Power:
                 break;
             case ECardAttackType.Single:
-                nowSelectPlayer = GetSelectPlayer("Enemy");
+                nowSelectPlayer = enemy;
                 break;
             case ECardAttackType.Skill:
                 break;
