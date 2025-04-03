@@ -261,19 +261,21 @@ public class CardManager2 : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
-            if(nowCardState == ECardState.Selecting)
-            {
-                nowCardState = ECardState.Selected;
-                return;
-            }
             if (nowTaskItem != null)
             {
                 if (IsDestoryCard())
                 {
                     RemoveCard(nowTaskItem);
+                    // 攻击测试
+                    if (nowTaskItem.useType == EUseType.Directivity)
+                    {
+                        nowSelectPlayer?.ChangeHealth(-10);
+                    }
+                    // =====
                 }
                 else
                 {
+                    if (nowTaskItem.useType == EUseType.Directivity) { return; }
                     nowTaskItem.gameObject.SetActive(true);
                     NowSelectItem = null;
                     nowTaskItem = null;
@@ -440,15 +442,13 @@ public class CardManager2 : MonoBehaviour
         }
 
 
-        ECardAttackType etype = nowTaskItem.attackType;
+        EUseType etype = nowTaskItem.useType;
         switch (etype)
         {
-            case ECardAttackType.Power:
+            case EUseType.NonDirectivity:
                 break;
-            case ECardAttackType.Single:
+            case EUseType.Directivity:
                 nowSelectPlayer = enemy;
-                break;
-            case ECardAttackType.Skill:
                 break;
         }
     }
@@ -476,7 +476,7 @@ public class CardManager2 : MonoBehaviour
         worldPosition.z = 5f;
         Vector3 centPos = new Vector3(0, -2.9f, 4);
         bool isWaitAttack = false;
-        if (nowTaskItem.attackType == ECardAttackType.Single)
+        if (nowTaskItem.useType == EUseType.Directivity)
         {
             if (worldPosition.y > -2.4f)
             {
@@ -528,4 +528,23 @@ public class CardManager2 : MonoBehaviour
         Selecting,
         Selected,
     }
+}
+
+public enum ECardType
+{
+    Skill,
+    Single,
+    Power
+}
+
+public enum EUseType
+{
+    /// <summary>
+    /// 指向性
+    /// </summary>
+    Directivity,
+    /// <summary>
+    /// 非指向性
+    /// </summary>
+    NonDirectivity
 }

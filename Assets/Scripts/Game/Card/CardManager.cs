@@ -419,15 +419,15 @@ public class CardManager : MonoBehaviour
         }
 
 
-        ECardAttackType etype = nowTaskItem.attackType;
+        ECardType etype = nowTaskItem.attackType;
         switch (etype)
         {
-            case ECardAttackType.Power:
+            case ECardType.Power:
                 break;
-            case ECardAttackType.Single:
+            case ECardType.Single:
                 nowSelectPlayer = GetSelectPlayer("Enemy");
                 break;
-            case ECardAttackType.Skill:
+            case ECardType.Skill:
                 break;
         }
     }
@@ -455,7 +455,7 @@ public class CardManager : MonoBehaviour
         worldPosition.z = 5f;
         Vector3 centPos = new Vector3(0, -2.9f, 4);
         bool isWaitAttack = false;
-        if (nowTaskItem.attackType == ECardAttackType.Single)
+        if (nowTaskItem.attackType == ECardType.Single)
         {
             if (worldPosition.y > -2.4f)
             {
@@ -476,10 +476,3 @@ public class CardManager : MonoBehaviour
     }
 }
 
-
-public enum ECardAttackType
-{
-    Skill,
-    Single,
-    Power
-}

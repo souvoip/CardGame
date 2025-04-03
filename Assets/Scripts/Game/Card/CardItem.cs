@@ -25,7 +25,7 @@ public class CardItem : MonoBehaviour
     /// </summary>  
     public float zPos = 0;
 
-    public ECardAttackType attackType;
+    public ECardType attackType;
 
     public void RefreshData(Vector3 root, float rot, float size, float zPos)
     {

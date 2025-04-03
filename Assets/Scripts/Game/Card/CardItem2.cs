@@ -29,7 +29,9 @@ public class CardItem2 : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler
     /// </summary>  
     public bool isSelect;
 
-    public ECardAttackType attackType;
+    public ECardType attackType;
+
+    public EUseType useType;
 
     private UnityAction<CardItem2> onMouseMoveIn;
 
