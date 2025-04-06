@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class CardManager : MonoBehaviour
@@ -78,7 +79,7 @@ public class CardManager : MonoBehaviour
     /// <summary>
     /// 当前选中敌人
     /// </summary>
-    private GameObject nowSelectPlayer;
+    private EnemyRole nowSelectPlayer;
 
     private Vector3 temporaryCardStartPos;
 
@@ -123,7 +124,7 @@ public class CardManager : MonoBehaviour
     {
         TaskItemDetection();
         RefereshCard();
-        SelectItemDetection();
+        //SelectItemDetection();
         CardUseEffect();
     }
 
@@ -145,6 +146,7 @@ public class CardManager : MonoBehaviour
 
         GameObject item = Instantiate(cardItem, this.transform);
         CardItem text = item.GetComponent<CardItem>();
+        text.Init(OnMouseMoveIn, OnMouseMoveOut, OnMouseCardDown);
         text.RefreshData(rootPos, 0, 0, 0);
         cardList.Add(text);
     }
@@ -165,7 +167,6 @@ public class CardManager : MonoBehaviour
 
         List<float> rotPos;
         int strtCount = 0;
-        float interval;
         if (cardList.Count % 2 == 0)
         {
             rotPos = rotPos_EvenNumber;
@@ -179,7 +180,7 @@ public class CardManager : MonoBehaviour
         for (int i = 0; i < cardList.Count; i++)
         {
             float shifting = 0;
-            float indexNowNumber = 0.0042f;
+            float indexNowNumber = 0.0065f;
             float Difference = TaskIndex - i;
             float absDifference = Difference > 0 ? 4 - Difference : 4 + Difference;
             if (absDifference < 0)
@@ -241,23 +242,6 @@ public class CardManager : MonoBehaviour
         }
         // 测试 ==============
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (nowTaskItem != null)
-            {
-                nowTaskItem.gameObject.SetActive(true);
-                nowTaskItem = null;
-            }
-
-            temporaryCardStartPos = temporaryCard.transform.position;
-            SelectCard();
-        }
-
-        if (Input.GetMouseButton(0))
-        {
-            SelectEnemy();
-        }
-
         if (Input.GetMouseButtonUp(0))
         {
             if (nowTaskItem != null)
@@ -265,14 +249,34 @@ public class CardManager : MonoBehaviour
                 if (IsDestoryCard())
                 {
                     RemoveCard(nowTaskItem);
+                    // 攻击测试
+                    if (nowTaskItem.useType == EUseType.Directivity)
+                    {
+                        nowSelectPlayer?.ChangeHealth(-10);
+                    }
+                    // =====
                 }
                 else
                 {
+                    if (nowTaskItem.useType == EUseType.Directivity) { return; }
                     nowTaskItem.gameObject.SetActive(true);
+                    NowSelectItem = null;
                     nowTaskItem = null;
                 }
 
                 nowSelectPlayer = null;
+                nowCardState = ECardState.None;
+            }
+        }
+        if (Input.GetMouseButtonUp(1))
+        {
+            if (nowTaskItem != null)
+            {
+                nowTaskItem.gameObject.SetActive(true);
+                NowSelectItem = null;
+                nowTaskItem = null;
+                nowSelectPlayer = null;
+                nowCardState = ECardState.None;
             }
         }
     }
@@ -293,35 +297,6 @@ public class CardManager : MonoBehaviour
         return absDis > 2.6f;
     }
 
-
-    /// <summary>
-    /// 选中卡牌检测
-    /// </summary>
-    public void SelectItemDetection()
-    {
-        if (oldmousePosition == Input.mousePosition)
-        {
-            return;
-        }
-        if (temporaryCard.activeSelf) { return; }
-        oldmousePosition = Input.mousePosition;
-        // 从鼠标位置创建一条射线
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        LayerMask layerMask = LayerMask.GetMask("Card");
-        // 检测射线是否与物体相交
-        if (Physics.Raycast(ray, out hit, 1000, layerMask))
-        {
-            if (hit.collider.gameObject != null)
-            {
-                NowSelectItem = hit.collider.gameObject.GetComponent<CardItem>();
-
-                return;
-            }
-        }
-
-        NowSelectItem = null;
-    }
 
     /// <summary>
     /// 刷新当前选中的卡牌
@@ -368,49 +343,16 @@ public class CardManager : MonoBehaviour
     /// <summary>
     /// 选中卡牌
     /// </summary>
-    public void SelectCard()
+    public void SelectCard(CardItem item)
     {
-        // 从鼠标位置创建一条射线
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        LayerMask layerMask = LayerMask.GetMask("Card");
-        // 检测射线是否与物体相交
-        if (Physics.Raycast(ray, out hit, 1000, layerMask))
-        {
-            if (hit.collider.gameObject != null)
-            {
-                nowTaskItem = hit.collider.gameObject.GetComponent<CardItem>();
-                nowTaskItem.gameObject.SetActive(false);
-            }
-        }
-    }
-
-    /// <summary>
-    /// 获取当前选中的对象
-    /// </summary>
-    /// <param name="layerName"></param>
-    /// <returns></returns>
-    public GameObject GetSelectPlayer(string layerName)
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        LayerMask layerMask = LayerMask.GetMask(layerName);
-        // 检测射线是否与物体相交
-        if (Physics.Raycast(ray, out hit, 1000, layerMask))
-        {
-            if (hit.collider.gameObject != null)
-            {
-                return hit.collider.gameObject;
-            }
-        }
-
-        return null;
+        nowTaskItem = item;
+        nowTaskItem.gameObject.SetActive(false);
     }
 
     /// <summary>
     /// 选中对象
     /// </summary>
-    public void SelectEnemy()
+    public void SelectEnemy(EnemyRole enemy)
     {
         if (nowTaskItem == null)
         {
@@ -418,16 +360,13 @@ public class CardManager : MonoBehaviour
             return;
         }
 
-
-        ECardType etype = nowTaskItem.attackType;
+        EUseType etype = nowTaskItem.useType;
         switch (etype)
         {
-            case ECardType.Power:
+            case EUseType.NonDirectivity:
                 break;
-            case ECardType.Single:
-                nowSelectPlayer = GetSelectPlayer("Enemy");
-                break;
-            case ECardType.Skill:
+            case EUseType.Directivity:
+                nowSelectPlayer = enemy;
                 break;
         }
     }
@@ -455,7 +394,7 @@ public class CardManager : MonoBehaviour
         worldPosition.z = 5f;
         Vector3 centPos = new Vector3(0, -2.9f, 4);
         bool isWaitAttack = false;
-        if (nowTaskItem.attackType == ECardType.Single)
+        if (nowTaskItem.useType == EUseType.Directivity)
         {
             if (worldPosition.y > -2.4f)
             {
@@ -474,5 +413,72 @@ public class CardManager : MonoBehaviour
         //攻击引导箭头显示隐藏控制
         lineEffect.gameObject.SetActive(isWaitAttack);
     }
+
+    private void OnMouseMoveIn(CardItem item)
+    {
+        if (nowCardState != ECardState.None) { return; }
+        NowSelectItem = item;
+    }
+    private void OnMouseMoveOut()
+    {
+        NowSelectItem = null;
+    }
+
+    private void OnMouseCardDown(CardItem item)
+    {
+        if (nowTaskItem != null)
+        {
+            nowTaskItem.gameObject.SetActive(true);
+            nowTaskItem = null;
+        }
+
+        temporaryCardStartPos = temporaryCard.transform.position;
+        SelectCard(item);
+        nowCardState = ECardState.Selecting;
+    }
+
+    private ECardState nowCardState = ECardState.None;
+
+    private enum ECardState
+    {
+        None,
+        Selecting,
+        Selected,
+    }
 }
 
+public enum ECardType
+{
+    /// <summary>
+    /// 攻击
+    /// </summary>
+    Atk,
+    /// <summary>
+    /// 技能
+    /// </summary>
+    Skill,
+    /// <summary>
+    /// 能力
+    /// </summary>
+    Ability,
+    /// <summary>
+    /// 状态
+    /// </summary>
+    State,
+    /// <summary>
+    /// 其他
+    /// </summary>
+    Other
+}
+
+public enum EUseType
+{
+    /// <summary>
+    /// 指向性
+    /// </summary>
+    Directivity,
+    /// <summary>
+    /// 非指向性
+    /// </summary>
+    NonDirectivity
+}

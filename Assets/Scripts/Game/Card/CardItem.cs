@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public class CardItem : MonoBehaviour
+public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler, IPointerDownHandler
 {
     /// <summary>  
     /// 卡牌扇形展开中心点  
@@ -24,8 +24,20 @@ public class CardItem : MonoBehaviour
     /// 高度值（决定卡牌层级）  
     /// </summary>  
     public float zPos = 0;
+    /// <summary>  
+    /// 当前卡牌是否被选中  
+    /// </summary>  
+    public bool isSelect;
 
     public ECardType attackType;
+
+    public EUseType useType;
+
+    private UnityAction<CardItem> onMouseMoveIn;
+
+    private UnityAction onMouseMoveOut;
+
+    private UnityAction<CardItem> onMouseDown;
 
     public void RefreshData(Vector3 root, float rot, float size, float zPos)
     {
@@ -39,10 +51,13 @@ public class CardItem : MonoBehaviour
     {
         SetPos();
     }
-    /// <summary>  
-    /// 当前卡牌是否被选中  
-    /// </summary>  
-    public bool isSelect;
+        
+    public void Init(UnityAction<CardItem> onMouseMoveIn, UnityAction onMouseMoveOut, UnityAction<CardItem> onMouseDown)
+    {
+        this.onMouseMoveIn = onMouseMoveIn;
+        this.onMouseMoveOut = onMouseMoveOut;
+        this.onMouseDown = onMouseDown;
+    }
 
     public void SetPos()
     {
@@ -52,10 +67,13 @@ public class CardItem : MonoBehaviour
         float selectZ = isSelect ? this.zPos - 0.1f : this.zPos;
         //选中卡牌旋转归零  
         float rotZ = isSelect ? 0 : GetAngleInDegrees(root, transform.position);
+        // 选中卡牌大小提高成1.25倍
+        float scale = isSelect ? 1.25f : 1f;
         //设置卡牌位置  
         float x = root.x + Mathf.Cos(rot) * radius;
-        float y = isSelect ? -2.85f : root.y + Mathf.Sin(rot) * radius;
+        float y = isSelect ? -3.4f : root.y + Mathf.Sin(rot) * radius;
         transform.position = Vector3.Lerp(transform.position, new Vector3(x, y, root.z + selectZ), Time.deltaTime * animSpeed);
+        transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(scale, scale, scale), Time.deltaTime * animSpeed);
         Quaternion rotationQuaternion = Quaternion.Euler(new Vector3(0, 0, rotZ));
         transform.rotation = Quaternion.RotateTowards(transform.rotation, rotationQuaternion, Time.deltaTime * animSpeed * 30);
     }
@@ -84,6 +102,21 @@ public class CardItem : MonoBehaviour
         // 将弧度值转换为角度值  
         float angleInDegrees = angleInRadians * Mathf.Rad2Deg;
         return angleInDegrees;
+    }
+
+    public void OnPointerMove(PointerEventData eventData)
+    {
+        onMouseMoveIn?.Invoke(this);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        onMouseMoveOut?.Invoke();
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        onMouseDown?.Invoke(this);
     }
 }
 

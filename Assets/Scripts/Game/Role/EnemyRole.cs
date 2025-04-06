@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class EnemyRole : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler,IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField]
-    private CardManager2 _cardManager;
+    private CardManager _cardManager;
 
     [SerializeField]
     private StateBar hpBar;
