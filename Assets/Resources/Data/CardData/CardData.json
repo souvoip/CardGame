@@ -1,0 +1,24 @@
+[
+	{
+		"ID":1,
+		"Name":"斩击",
+		"Desc":"造成5点伤害",
+		"ImagePath":"001",
+		"Type":0,
+		"UseType":0,
+		"Rare":1,
+		"Fee":1,
+		"BaseDamage":5
+	},
+	{
+		"ID":2,
+		"Name":"重击",
+		"Desc":"造成8点伤害，（给予敌人Debuff效果 - 未做）",
+		"ImagePath":"002",
+		"Type":0,
+		"UseType":0,
+		"Rare":1,
+		"Fee":2,
+		"BaseDamage":8
+	}
+]

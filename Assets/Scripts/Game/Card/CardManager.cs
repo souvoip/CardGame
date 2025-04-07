@@ -146,7 +146,8 @@ public class CardManager : MonoBehaviour
 
         GameObject item = Instantiate(cardItem, this.transform);
         CardItem text = item.GetComponent<CardItem>();
-        text.Init(OnMouseMoveIn, OnMouseMoveOut, OnMouseCardDown);
+        text.Init(CardDataManager.GetAtkCard(Random.Range(1, 3)), OnMouseMoveIn, OnMouseMoveOut, OnMouseCardDown);
+        text.UpdateData();
         text.RefreshData(rootPos, 0, 0, 0);
         cardList.Add(text);
     }
