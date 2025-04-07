@@ -5,30 +5,44 @@ using UnityEngine;
 public abstract class CardBase
 {
     /// <summary>
-    /// ¿¨Æ¬ID
+    /// å¡ç‰‡ID
     /// </summary>
     public int ID;
     /// <summary>
-    /// ¿¨Æ¬Ãû×Ö
+    /// å¡ç‰‡åå­—
     /// </summary>
     public string Name;
     /// <summary>
-    /// ¿¨Æ¬ÃèÊö
+    /// å¡ç‰‡æè¿°
     /// </summary>
     public string Desc;
     /// <summary>
-    /// ¿¨Æ¬ÀàĞÍ
+    /// å¡ç‰‡å›¾ç‰‡
+    /// </summary>
+    public string ImagePath;
+    /// <summary>
+    /// å¡ç‰‡ç±»å‹
     /// </summary>
     public ECardType Type;
     /// <summary>
-    /// ¿¨Æ¬Ï¡ÓĞ¶È
+    /// å¡ç‰‡ä½¿ç”¨ç±»å‹
+    /// </summary>
+    public EUseType UseType;
+    /// <summary>
+    /// å¡ç‰‡ç¨€æœ‰åº¦
     /// </summary>
     public int Rare;
 
 
     public virtual void LoadData(JSONObject data)
     {
-
+        ID = (int)data.GetField("ID").i;
+        Name = data.GetField("Name").str;
+        Desc = data.GetField("Desc").str;
+        ImagePath = data.GetField("ImagePath").str;
+        Type = (ECardType)data.GetField("Type").i;
+        UseType = (EUseType)data.GetField("UseType").i;
+        Rare = (int)data.GetField("Rare").i;
     }
 }
 

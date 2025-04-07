@@ -13,7 +13,7 @@ OcclusionCullingSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 10
+  serializedVersion: 9
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -44,6 +44,7 @@ RenderSettings:
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 12
+  m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -153,8 +154,6 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -467,7 +466,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6617842043450249779, guid: 19b337535fe93c540af0ca8275a8b668, type: 3}
       propertyPath: m_Name
-      value: CardItem2
+      value: CardItem
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2990765961277265278, guid: 19b337535fe93c540af0ca8275a8b668, type: 3}
@@ -514,8 +513,6 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -676,22 +673,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 920cda46d84f2c24683fdb205ad096fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rootPos: {x: 0, y: -33.5, z: 20}
-  cardItem: {fileID: 264052004279664167, guid: 055409eccfb6b3447af49902f1c33918, type: 3}
-  size: 30
-  minPos: 1.415
-  maxPos: 1.73
-  cardList: []
-  rotPos_EvenNumber: []
-  rotPos_OddNumber: []
-  CardMaxCount: 8
-  nowSelectItem: {fileID: 0}
-  temporaryCard: {fileID: 0}
-  nowTaskItem: {fileID: 0}
-  lineEffect: {fileID: 1063060254}
-  nowSelectPlayer: {fileID: 0}
-  temporaryCardStartPos: {x: 0, y: 0, z: 0}
-  oldmousePosition: {x: 0, y: 0, z: 0}
 --- !u!4 &2065309960
 Transform:
   m_ObjectHideFlags: 0

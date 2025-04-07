@@ -1,32 +1,49 @@
+using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler, IPointerDownHandler
 {
+    #region component
+    [SerializeField]
+    private Image backgroundImg;
+    [SerializeField]
+    private Image cardImg;
+    [SerializeField]
+    private TMP_Text typeTxt;
+    [SerializeField]
+    private TMP_Text descTxt;
+    #endregion
+
+    private CardBase cardData;
+
     /// <summary>  
     /// 卡牌扇形展开中心点  
     /// </summary>  
-    public Vector3 root;
+    private Vector3 root;
     /// <summary>  
     /// 展开角度  
     /// </summary>  
-    public float rot;
+    private float rot;
     /// <summary>  
     /// 展开半径  
-    /// </summary>  
-    public float size;
+    /// </summary> 
+    private float size;
     /// <summary>  
     /// 动画速度  
     /// </summary>  
-    public float animSpeed = 10;
+    [SerializeField]
+    private float animSpeed = 10;
     /// <summary>  
     /// 高度值（决定卡牌层级）  
-    /// </summary>  
-    public float zPos = 0;
+    /// </summary> 
+    private float zPos = 0;
     /// <summary>  
     /// 当前卡牌是否被选中  
-    /// </summary>  
+    /// </summary> 
     public bool isSelect;
 
     public ECardType attackType;
