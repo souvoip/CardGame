@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class EnemyRole : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler,IPointerDownHandler, IPointerUpHandler
+public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler,IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField]
     private CardManager _cardManager;
@@ -15,10 +15,9 @@ public class EnemyRole : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     private float hp = 100f;
 
-    private void Awake()
+    protected override void Init()
     {
         hpBar.SetMaxHealth(maxHp);
-        //hpBar.SetHealth(50f);
     }
 
     public void OnPointerClick(PointerEventData eventData)

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler, IPointerDownHandler
 {
-    private static string baseCardImgPath = "Image/Card/";
+    public static string baseCardImgPath = "Image/Card/";
 
     #region component
     [SerializeField]
@@ -25,6 +25,7 @@ public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler,
     #endregion
 
     private CardBase cardData;
+    public CardBase CardData { get => cardData; }
 
     /// <summary>  
     /// 卡牌扇形展开中心点  
@@ -107,7 +108,7 @@ public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler,
         nameTxt.text = cardData.Name;
         feeTxt.text = cardData.Fee.ToString();
         cardImg.sprite = Resources.Load<Sprite>(baseCardImgPath + cardData.ImagePath);
-        typeTxt.text = GameTools.GetCardTypeeString(cardData.CardType);
+        typeTxt.text = cardData.GetCardTypeeString();
         descTxt.text = cardData.Desc;
     }
 

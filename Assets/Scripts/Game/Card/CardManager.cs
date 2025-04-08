@@ -9,32 +9,26 @@ public class CardManager : MonoBehaviour
     /// 卡牌起始位置
     /// </summary>
     public Vector3 rootPos = new Vector3(0, -33.5f, 20);
-
     /// <summary>
     /// 卡牌对象
     /// </summary>
     public GameObject cardItem;
-
     /// <summary>
     /// 扇形半径
     /// </summary>
     public float size = 30f;
-
     /// <summary>
     /// 卡牌出现最大位置
     /// </summary>
     private float minPos = 1.415f;
-
     /// <summary>
     /// 卡牌出现最小位置
     /// </summary>
     private float maxPos = 1.73f;
-
     /// <summary>
     /// 手牌列表
     /// </summary>
     private List<CardItem> cardList;
-
     /// <summary>
     /// 偶数手牌位置列表
     /// </summary>
@@ -43,7 +37,6 @@ public class CardManager : MonoBehaviour
     /// 奇数手牌位置列表
     /// </summary>
     private List<float> rotPos_OddNumber;
-
     /// <summary>
     /// 最大手牌数量
     /// </summary>
@@ -253,7 +246,7 @@ public class CardManager : MonoBehaviour
                     // 攻击测试
                     if (nowTaskItem.useType == EUseType.Directivity)
                     {
-                        nowSelectPlayer?.ChangeHealth(-10);
+                        nowSelectPlayer?.ChangeHealth(-(nowTaskItem.CardData as AtkCard).BaseDamage);
                     }
                     // =====
                 }
@@ -386,6 +379,7 @@ public class CardManager : MonoBehaviour
         }
 
         temporaryCard.gameObject.SetActive(true);
+        temporaryCard.GetComponent<TempCardItem>().UpdateData(nowTaskItem.CardData);
         // 获取鼠标位置
         Vector3 mousePosition = Input.mousePosition;
         // 设置z坐标为摄像机近裁剪平面的位置
