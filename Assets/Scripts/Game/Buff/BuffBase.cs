@@ -4,7 +4,7 @@ using UnityEngine;
 public abstract class BuffBase : ScriptableObject
 {
     [Header("基础配置")]
-    public string buffID;          // 唯一标识
+    public int buffID;          // 唯一标识
     public string displayName;     // 显示名称
     public string iconPath;        // 图标
     public Color tintColor = Color.white; // 图标颜色
@@ -34,7 +34,6 @@ public abstract class BuffBase : ScriptableObject
         // 自动注册回合事件
         if (duration != 0)
         {
-
             AddEvents();
         }
     }

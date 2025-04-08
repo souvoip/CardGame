@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -35,6 +36,11 @@ public class CharacterBase : MonoBehaviour
         Init();
     }
 
+    public void AddBuff(BuffBase buff, int stracks)
+    {
+        buffControl.ApplyBuff(buff, stracks);
+    }
+
     public Damage CalculateAtkDamage(Damage damage)
     {
         foreach (var i in ChangeAtkDamageEvent.Keys)
@@ -45,7 +51,7 @@ public class CharacterBase : MonoBehaviour
         return damage;
     }
 
-    protected Damage CalculateHitDamage(Damage damage)
+    public Damage CalculateHitDamage(Damage damage)
     {
         foreach (var i in ChangeHitDamageEvent.Keys)
         {
@@ -54,4 +60,6 @@ public class CharacterBase : MonoBehaviour
         }
         return damage;
     }
+
+    public virtual void GetHit(Damage damage) { }
 }

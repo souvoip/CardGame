@@ -6,18 +6,28 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "VulnerableBuff", menuName = "Data/Buff/VulnerableBuff")]
 public class Buff_Vulnerable : BuffBase
 {
-
     public float changeRate = 1.5f; // 50% more damage taken
 
     public override void OnTurnEnd()
     {
         AddStacks(-1);
         base.OnTurnEnd();
-        Debug.Log("Vulnerable End");
     }
 
-    //public override float DamageRateChange(float baseRate)
-    //{
-    //    return baseRate * changeRate;
-    //}
+    public override void AddEvents()
+    {
+        base.AddEvents();
+        target.ChangeHitDamageEvent.Add(buffID, ChangeHitDamage);
+    }
+
+    public override void RemoveEvents()
+    {
+        base.RemoveEvents();
+        target.ChangeHitDamageEvent.Remove(buffID);
+    }
+
+    private void ChangeHitDamage(Damage damage)
+    {
+        damage.DamageRate *= changeRate;
+    }
 }

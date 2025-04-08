@@ -14,6 +14,12 @@ public class Damage
         DamageRate = damageRate;
     }
 
+    public Damage(JSONObject json)
+    {
+        DamageValue = (int)json.GetField("DamageValue").i;
+        DamageRate = json.GetField("DamageRate").f;
+    }
+
     public int GetDamage()
     {
         return Mathf.CeilToInt(DamageValue * DamageRate);

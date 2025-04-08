@@ -37,6 +37,8 @@ public abstract class CardBase
     /// </summary>
     public int Fee;
 
+    public List<BuffItem> Buffs;
+
     public virtual void LoadData(JSONObject data)
     {
         ID = (int)data.GetField("ID").i;
@@ -47,7 +49,21 @@ public abstract class CardBase
         UseType = (EUseType)data.GetField("UseType").i;
         Rare = (ECardRare)data.GetField("Rare").i;
         Fee = (int)data.GetField("Fee").i;
+        Buffs = new List<BuffItem>();
+        for (int i = 0; i < data.GetField("Buffs").Count; i++)
+        {
+            Buffs.Add(new BuffItem(data.GetField("Buffs")[i]));
+        }
     }
+    /// <summary>
+    /// 非指向性
+    /// </summary>
+    public virtual void UseCard() { }
+    /// <summary>
+    /// 指向性
+    /// </summary>
+    /// <param name="target"></param>
+    public virtual void UseCard(CharacterBase target) { }
 }
 
 public enum ECardRare

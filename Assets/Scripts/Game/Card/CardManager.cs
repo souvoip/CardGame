@@ -72,7 +72,7 @@ public class CardManager : MonoBehaviour
     /// <summary>
     /// 当前选中敌人
     /// </summary>
-    private EnemyRole nowSelectPlayer;
+    private EnemyRole nowSelectEnemy;
 
     private Vector3 temporaryCardStartPos;
 
@@ -246,7 +246,7 @@ public class CardManager : MonoBehaviour
                     // 攻击测试
                     if (nowTaskItem.useType == EUseType.Directivity)
                     {
-                        nowSelectPlayer?.ChangeHealth(-(nowTaskItem.CardData as AtkCard).BaseDamage);
+                        nowTaskItem.CardData.UseCard(nowSelectEnemy);
                     }
                     // =====
                 }
@@ -258,7 +258,7 @@ public class CardManager : MonoBehaviour
                     nowTaskItem = null;
                 }
 
-                nowSelectPlayer = null;
+                nowSelectEnemy = null;
                 nowCardState = ECardState.None;
             }
         }
@@ -269,7 +269,7 @@ public class CardManager : MonoBehaviour
                 nowTaskItem.gameObject.SetActive(true);
                 NowSelectItem = null;
                 nowTaskItem = null;
-                nowSelectPlayer = null;
+                nowSelectEnemy = null;
                 nowCardState = ECardState.None;
             }
         }
@@ -281,7 +281,7 @@ public class CardManager : MonoBehaviour
     /// <returns></returns>
     public bool IsDestoryCard()
     {
-        if (nowSelectPlayer != null)
+        if (nowSelectEnemy != null)
         {
             return true;
         }
@@ -350,7 +350,7 @@ public class CardManager : MonoBehaviour
     {
         if (nowTaskItem == null)
         {
-            nowSelectPlayer = null;
+            nowSelectEnemy = null;
             return;
         }
 
@@ -360,7 +360,7 @@ public class CardManager : MonoBehaviour
             case EUseType.NonDirectivity:
                 break;
             case EUseType.Directivity:
-                nowSelectPlayer = enemy;
+                nowSelectEnemy = enemy;
                 break;
         }
     }
@@ -404,7 +404,7 @@ public class CardManager : MonoBehaviour
         //设置塞贝尔曲线起始点
         lineEffect.SetStartPos(isWaitAttack ? centPos : worldPosition);
         //设置攻击引导箭头颜色
-        lineEffect.SetColor(nowSelectPlayer != null);
+        lineEffect.SetColor(nowSelectEnemy != null);
         //攻击引导箭头显示隐藏控制
         lineEffect.gameObject.SetActive(isWaitAttack);
     }

@@ -11,4 +11,10 @@ public static class BuffDataManager
         foreach (var b in bs) { buffs.Add(b);}
         Debug.Log("Load Buffs: " + bs.Length);
     }
+
+    public static BuffBase GetBuff(int id)
+    {
+        foreach (var b in buffs) { if (b.buffID == id) return b; }
+        return null;
+    }
 }

@@ -46,7 +46,9 @@ public static class CardDataManager
         atkCard.UseType = EUseType.Directivity;
         atkCard.Rare = ECardRare.Common;
         atkCard.Fee = 1;
-        atkCard.BaseDamage = 5;
+        atkCard.BaseDamage = new Damage(5, 1);
+        atkCard.Buffs = new List<BuffItem>();
+        atkCard.Buffs.Add(new BuffItem(1, 1, EBuffTarget.Enemy, EAddBuffTime.AfterAttack));
         return atkCard;
     }
 
@@ -72,8 +74,38 @@ public static class CardDataManager
         atkCardJson.AddField("UseType", (int)atkCard.UseType);
         atkCardJson.AddField("Rare", (int)atkCard.Rare);
         atkCardJson.AddField("Fee", atkCard.Fee);
-        atkCardJson.AddField("BaseDamage", atkCard.BaseDamage);
+        atkCardJson.AddField("BaseDamage", atkCard.BaseDamage.ToJSONObject());
+        atkCardJson.AddField("Buffs", atkCard.Buffs.ToJSONObject());
         return atkCardJson;
+    }
+
+    public static JSONObject ToJSONObject(this Damage damage) 
+    {
+        JSONObject djson = JSONObject.Create();
+        djson.AddField("DamageValue", damage.DamageValue);
+        djson.AddField("DamageRate", damage.DamageRate);
+        return djson;
+    }
+
+    public static JSONObject ToJSONObject(this List<BuffItem> buffItems)
+    {
+        JSONObject bjson = JSONObject.Create(JSONObject.Type.ARRAY);
+        foreach (var item in buffItems)
+        {
+            bjson.Add(item.ToJSONObject());
+        }
+        return bjson;
+
+    }
+
+    public static JSONObject ToJSONObject(this BuffItem buffItem)
+    {
+        JSONObject bjson = JSONObject.Create();
+        bjson.AddField("BuffID", buffItem.BuffID);
+        bjson.AddField("Stacks", buffItem.Stacks);
+        bjson.AddField("Target", (int)buffItem.Target);
+        bjson.AddField("AddBuffTime", (int)buffItem.AddBuffTime);
+        return bjson;
     }
     #endregion
 }

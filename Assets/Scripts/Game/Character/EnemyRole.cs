@@ -42,7 +42,13 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
     {
     }
 
-    public void ChangeHealth(float health)
+    public override void GetHit(Damage damage)
+    {
+        Debug.Log(damage.GetDamage());
+        ChangeHealth(-damage.GetDamage());
+    }
+
+    private void ChangeHealth(float health)
     {
         hp += health;
         hpBar.SetHealth(hp);

@@ -8,17 +8,32 @@
 		"UseType":0,
 		"Rare":1,
 		"Fee":1,
-		"BaseDamage":5
+		"BaseDamage":{
+			"DamageValue":5,
+			"DamageRate":1
+		},
+		"Buffs":[]
 	},
 	{
 		"ID":2,
 		"Name":"重击",
-		"Desc":"造成8点伤害，（给予敌人Debuff效果 - 未做）",
+		"Desc":"造成8点伤害，给予2层debuff",
 		"ImagePath":"002",
 		"Type":0,
 		"UseType":0,
 		"Rare":1,
 		"Fee":2,
-		"BaseDamage":8
+		"BaseDamage":{
+			"DamageValue":8,
+			"DamageRate":1
+		},
+		"Buffs":[
+			{
+				"BuffID":1,
+				"Stacks":2,
+				"Target":1,
+				"AddBuffTime":2
+			}
+		]
 	}
 ]
