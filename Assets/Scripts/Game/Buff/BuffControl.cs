@@ -1,11 +1,18 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BuffControl : MonoBehaviour
 {
+    public GameObject buffIconPrefab;
+
+    public Transform buffIconContainer;
+
     public List<BuffBase> activeBuffs = new List<BuffBase>();
 
     private CharacterBase character;
+
+    private List<BuffIcon> buffIcons = new List<BuffIcon>();
 
     private void Awake()
     {
@@ -24,11 +31,11 @@ public class BuffControl : MonoBehaviour
         }
         else
         {
-            buff.Initialize(character);
+            buff.Initialize(character, stracks);
             activeBuffs.Add(buff);
         }
 
-        UpdateBuffUI();
+        UpdateBuffUI(buff.buffID);
     }
 
     // 回合结束处理
@@ -41,9 +48,59 @@ public class BuffControl : MonoBehaviour
         }
     }
 
-    // UI更新
+    // UI更新(更新所有Buff)
     private void UpdateBuffUI()
     {
-        //BuffUIManager.Instance.UpdateBuffs(activeBuffs);
+        // 使用副本遍历避免集合修改异常
+        var currentActiveBuffs = activeBuffs.ToList();
+        var activeBuffIds = new HashSet<int>();
+
+        foreach (var buff in currentActiveBuffs)
+        {
+            activeBuffIds.Add(buff.buffID); // 收集所有活跃ID
+            var bi = buffIcons.Find(b => b.BuffId == buff.buffID);
+            if (bi != null)
+            {
+                bi.UpdateStacks(buff.currentStacks);
+            }
+            else
+            {
+                BuffIcon newIcon = Instantiate(buffIconPrefab, buffIconContainer).GetComponent<BuffIcon>();
+                newIcon.UpdateIcon(buff.buffID, buff.iconPath, buff.currentStacks);
+                buffIcons.Add(newIcon);
+            }
+        }
+        // 移除不存在于activeBuffIds中的图标
+        for (int i = buffIcons.Count - 1; i >= 0; i--)
+        {
+            if (!activeBuffIds.Contains(buffIcons[i].BuffId))
+            {
+                Destroy(buffIcons[i].gameObject);
+                buffIcons.RemoveAt(i);
+            }
+        }
+    }
+
+    /// <summary>
+    /// UI更新(更新指定Buff)
+    /// </summary>
+    /// <param name="buffId"></param>
+    private void UpdateBuffUI(int buffId)
+    {
+        var buff = activeBuffs.Find(b => b.buffID == buffId);
+        if (buff != null)
+        {
+            var bi = buffIcons.Find(b => b.BuffId == buffId);
+            if (bi != null)
+            {
+                bi.UpdateStacks(buff.currentStacks);
+            }
+            else
+            {
+                BuffIcon newIcon = Instantiate(buffIconPrefab, buffIconContainer).GetComponent<BuffIcon>();
+                newIcon.UpdateIcon(buff.buffID, buff.iconPath, buff.currentStacks);
+                buffIcons.Add(newIcon);
+            }
+        }
     }
 }

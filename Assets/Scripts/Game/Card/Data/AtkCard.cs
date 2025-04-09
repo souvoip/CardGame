@@ -24,140 +24,37 @@ public class AtkCard : CardBase
 
     public override void UseCard(CharacterBase target)
     {
-        // ‘Ï≥……À∫¶«∞
-        for (int i = 0; i < Buffs.Count; i++)
-        {
-            if (Buffs[i].AddBuffTime == EAddBuffTime.BeforeAttack)
-            {
-                if (Buffs[i].Target == EBuffTarget.Self)
-                {
-                    BattleManager.Instance.Player.AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
-                }
-                else if (Buffs[i].Target == EBuffTarget.Enemy)
-                {
-                    target.AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
-                }
-                else if (Buffs[i].Target == EBuffTarget.AllEnemy)
-                {
-                    for (int j = 0; j < BattleManager.Instance.EnemyRoles.Count; j++)
-                    {
-                        BattleManager.Instance.EnemyRoles[j].AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
-                    }
-                }
-                else if (Buffs[i].Target == EBuffTarget.All)
-                {
-                    BattleManager.Instance.Player.AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
-                    for (int j = 0; j < BattleManager.Instance.EnemyRoles.Count; j++)
-                    {
-                        BattleManager.Instance.EnemyRoles[j].AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
-                    }
-                }
-            }
-        }
+        // ÈÄ†Êàê‰º§ÂÆ≥Ââç
+        AddBuffs(EAddBuffTime.BeforeAttack, target);
 
-        // ‘Ï≥……À∫¶
-        var damage = BaseDamage;
+        // ÈÄ†Êàê‰º§ÂÆ≥
+        var damage = new Damage(BaseDamage);
         damage = BattleManager.Instance.Player.CalculateAtkDamage(damage);
         Debug.Log("P = " + damage.DamageRate);
         damage = target.CalculateHitDamage(damage);
         Debug.Log("E = " + damage.DamageRate);
         target.GetHit(damage);
 
-        // ‘Ï≥……À∫¶∫Û
-        for (int i = 0; i < Buffs.Count; i++)
-        {
-            if (Buffs[i].AddBuffTime == EAddBuffTime.AfterAttack)
-            {
-                if (Buffs[i].Target == EBuffTarget.Self)
-                {
-                    BattleManager.Instance.Player.AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
-                }
-                else if (Buffs[i].Target == EBuffTarget.Enemy)
-                {
-                    target.AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
-                }
-                else if (Buffs[i].Target == EBuffTarget.AllEnemy)
-                {
-                    for (int j = 0; j < BattleManager.Instance.EnemyRoles.Count; j++)
-                    {
-                        BattleManager.Instance.EnemyRoles[j].AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
-                    }
-                }
-                else if (Buffs[i].Target == EBuffTarget.All)
-                {
-                    BattleManager.Instance.Player.AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
-                    for (int j = 0; j < BattleManager.Instance.EnemyRoles.Count; j++)
-                    {
-                        BattleManager.Instance.EnemyRoles[j].AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
-                    }
-                }
-            }
-        }
+        // ÈÄ†Êàê‰º§ÂÆ≥Âêé
+        AddBuffs(EAddBuffTime.AfterAttack, target);
     }
 
     public override void UseCard()
     {
-        // ‘Ï≥……À∫¶«∞
-        for (int i = 0; i < Buffs.Count; i++)
-        {
-            if (Buffs[i].AddBuffTime == EAddBuffTime.BeforeAttack)
-            {
-                if (Buffs[i].Target == EBuffTarget.Self)
-                {
-                    BattleManager.Instance.Player.AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
-                }
-                else if (Buffs[i].Target == EBuffTarget.AllEnemy)
-                {
-                    for (int j = 0; j < BattleManager.Instance.EnemyRoles.Count; j++)
-                    {
-                        BattleManager.Instance.EnemyRoles[j].AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
-                    }
-                }
-                else if (Buffs[i].Target == EBuffTarget.All)
-                {
-                    BattleManager.Instance.Player.AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
-                    for (int j = 0; j < BattleManager.Instance.EnemyRoles.Count; j++)
-                    {
-                        BattleManager.Instance.EnemyRoles[j].AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
-                    }
-                }
-            }
-        }
+        // ÈÄ†Êàê‰º§ÂÆ≥Ââç
+        AddBuffs(EAddBuffTime.BeforeAttack);
 
-        // ∂‘À˘”–µ–»À‘Ï≥……À∫¶
-        var damage = BaseDamage;
+        // ÂØπÊâÄÊúâÊïå‰∫∫ÈÄ†Êàê‰º§ÂÆ≥
+        var damage = new Damage(BaseDamage);
         damage = BattleManager.Instance.Player.CalculateAtkDamage(damage);
         for (int i = 0; i < BattleManager.Instance.EnemyRoles.Count; i++)
         {
-            damage = BattleManager.Instance.EnemyRoles[i].CalculateAtkDamage(damage);
-            BattleManager.Instance.EnemyRoles[i].GetHit(damage);
+            var tempDamage = new Damage(damage);
+            tempDamage = BattleManager.Instance.EnemyRoles[i].CalculateAtkDamage(tempDamage);
+            BattleManager.Instance.EnemyRoles[i].GetHit(tempDamage);
         }
 
-        // ‘Ï≥……À∫¶∫Û
-        for (int i = 0; i < Buffs.Count; i++)
-        {
-            if (Buffs[i].AddBuffTime == EAddBuffTime.AfterAttack)
-            {
-                if (Buffs[i].Target == EBuffTarget.Self)
-                {
-                    BattleManager.Instance.Player.AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
-                }
-                else if (Buffs[i].Target == EBuffTarget.AllEnemy)
-                {
-                    for (int j = 0; j < BattleManager.Instance.EnemyRoles.Count; j++)
-                    {
-                        BattleManager.Instance.EnemyRoles[j].AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
-                    }
-                }
-                else if (Buffs[i].Target == EBuffTarget.All)
-                {
-                    BattleManager.Instance.Player.AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
-                    for (int j = 0; j < BattleManager.Instance.EnemyRoles.Count; j++)
-                    {
-                        BattleManager.Instance.EnemyRoles[j].AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
-                    }
-                }
-            }
-        }
+        // ÈÄ†Êàê‰º§ÂÆ≥Âêé
+        AddBuffs(EAddBuffTime.AfterAttack);
     }
 }

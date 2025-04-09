@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public abstract class CardBase
 {
@@ -64,6 +65,40 @@ public abstract class CardBase
     /// </summary>
     /// <param name="target"></param>
     public virtual void UseCard(CharacterBase target) { }
+
+    protected void AddBuffs(EAddBuffTime addTime, CharacterBase characterTarget = null)
+    {
+        for (int i = 0; i < Buffs.Count; i++)
+        {
+            if (Buffs[i].AddBuffTime == addTime)
+            {
+                if (Buffs[i].Target == EBuffTarget.Self)
+                {
+                    BattleManager.Instance.Player.AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
+                }
+                else if (Buffs[i].Target == EBuffTarget.Enemy)
+                {
+                    if(characterTarget == null) { return; }
+                    characterTarget.AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
+                }
+                else if (Buffs[i].Target == EBuffTarget.AllEnemy)
+                {
+                    for (int j = 0; j < BattleManager.Instance.EnemyRoles.Count; j++)
+                    {
+                        BattleManager.Instance.EnemyRoles[j].AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
+                    }
+                }
+                else if (Buffs[i].Target == EBuffTarget.All)
+                {
+                    BattleManager.Instance.Player.AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
+                    for (int j = 0; j < BattleManager.Instance.EnemyRoles.Count; j++)
+                    {
+                        BattleManager.Instance.EnemyRoles[j].AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
+                    }
+                }
+            }
+        }
+    }
 }
 
 public enum ECardRare

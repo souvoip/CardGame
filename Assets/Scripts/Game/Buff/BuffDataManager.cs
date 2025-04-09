@@ -14,7 +14,7 @@ public static class BuffDataManager
 
     public static BuffBase GetBuff(int id)
     {
-        foreach (var b in buffs) { if (b.buffID == id) return b; }
+        foreach (var b in buffs) { if (b.buffID == id) return GameObject.Instantiate(b); }
         return null;
     }
 }

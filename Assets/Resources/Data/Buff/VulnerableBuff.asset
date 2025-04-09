@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buffID: 1
   displayName: "\u6613\u4F24"
-  iconPath: 
+  iconPath: 001
   tintColor: {r: 1, g: 1, b: 1, a: 1}
   minStacks: 0
   maxStacks: 99
   isDebuff: 1
   duration: -1
-  currentStacks: 0
-  remainingTurns: 0
+  currentStacks: 4
+  remainingTurns: -1
   changeRate: 1.5

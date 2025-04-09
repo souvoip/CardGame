@@ -20,6 +20,12 @@ public class Damage
         DamageRate = json.GetField("DamageRate").f;
     }
 
+    public Damage(Damage damage)
+    {
+        DamageValue = damage.DamageValue;
+        DamageRate = damage.DamageRate;
+    }
+
     public int GetDamage()
     {
         return Mathf.CeilToInt(DamageValue * DamageRate);
