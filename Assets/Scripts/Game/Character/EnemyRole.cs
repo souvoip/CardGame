@@ -44,7 +44,7 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
 
     public override void GetHit(Damage damage)
     {
-        Debug.Log(damage.GetDamage());
+        Debug.Log("受到 ：" + damage.GetDamage() + " 伤害");
         ChangeHealth(-damage.GetDamage());
     }
 

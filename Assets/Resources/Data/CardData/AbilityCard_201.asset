@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d983dbb0d2581f54687995a954f88b8b, type: 3}
+  m_Name: AbilityCard_201
+  m_EditorClassIdentifier: 
+  ID: 201
+  Name: "\u529B\u91CF\u589E\u5F3A"
+  Desc: "\u83B7\u5F971\u529B\u91CF"
+  ImagePath: 201
+  CardType: 2
+  UseType: 1
+  Rare: 2
+  Fee: 1
+  Buffs:
+  - BuffID: 2
+    Stacks: 1
+    Target: 0
+    AddBuffTime: 0
+  Extract: []
+  UserOverRegion: 5
+  TurnOverRegion: 3

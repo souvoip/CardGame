@@ -4,30 +4,24 @@ using UnityEngine;
 
 public static class CardDataManager
 {
-    private static string cardDataPath = "Data/CardData/CardData";
+    private static string cardDataPath = "Data/CardData";
 
-    private static JSONObject cardData;
-
-    public static List<AtkCard> atkCards = new List<AtkCard>();
+    public static List<CardBase> Cards = new List<CardBase>();
 
     public static void Init()
     {
-        TextAsset cardDataText = Resources.Load<TextAsset>(cardDataPath);
-        cardData = JSONObject.Create(cardDataText.text);
-        for (int i = 0; i < cardData.Count; i++)
+        var cds = Resources.LoadAll<CardBase>(cardDataPath);
+        for (int i = 0; i < cds.Length; i++)
         {
-            if((ECardType)cardData[i].GetField("Type").i == ECardType.Atk)
-            {
-                atkCards.Add(new AtkCard(cardData[i]));
-            }
+            Cards.Add(cds[i]);
         }
     }
 
-    public static AtkCard GetAtkCard(int id)
+    public static CardBase GetCard(int id)
     {
-        foreach (var item in atkCards)
+        foreach (var item in Cards)
         {
-            if (item.ID == id) { return item; }
+            if (item.ID == id) { return GameObject.Instantiate(item); }
         }
         return null;
     }
@@ -39,8 +33,8 @@ public static class CardDataManager
     {
         AtkCard atkCard = new AtkCard();
         atkCard.ID = 1;
-        atkCard.Name = "Õ¶»÷";
-        atkCard.Desc = "Ôì³É5µãÉËº¦";
+        atkCard.Name = "æ–©å‡»";
+        atkCard.Desc = "é€ æˆ5ç‚¹ä¼¤å®³";
         atkCard.ImagePath = "001";
         atkCard.CardType = ECardType.Atk;
         atkCard.UseType = EUseType.Directivity;

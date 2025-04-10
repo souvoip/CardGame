@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-
+[Serializable]
 public class Damage
 {
     public int DamageValue;
@@ -12,12 +14,6 @@ public class Damage
     {
         DamageValue = damageValue;
         DamageRate = damageRate;
-    }
-
-    public Damage(JSONObject json)
-    {
-        DamageValue = (int)json.GetField("DamageValue").i;
-        DamageRate = json.GetField("DamageRate").f;
     }
 
     public Damage(Damage damage)

@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public class BuffItem
 {
     public int BuffID;
@@ -27,7 +29,7 @@ public class BuffItem
 }
 
 /// <summary>
-/// buff¶ÔÏó
+/// buffå¯¹è±¡
 /// </summary>
 public enum EBuffTarget
 {
@@ -38,21 +40,21 @@ public enum EBuffTarget
 }
 
 /// <summary>
-/// Ìí¼ÓbuffµÄÊ±¼ä
+/// æ·»åŠ buffçš„æ—¶é—´
 /// </summary>
 public enum EAddBuffTime
 {
     None,
     /// <summary>
-    /// ¹¥»÷Ôì³ÉÉËº¦Ç°
+    /// æ”»å‡»é€ æˆä¼¤å®³å‰
     /// </summary>
     BeforeAttack,
     /// <summary>
-    /// ¹¥»÷Ôì³ÉÉËº¦ºó
+    /// æ”»å‡»é€ æˆä¼¤å®³å
     /// </summary>
     AfterAttack,
     /// <summary>
-    /// ÊÜµ½ÉËº¦Ê±
+    /// å—åˆ°ä¼¤å®³æ—¶
     /// </summary>
     DuringAttack,
 }

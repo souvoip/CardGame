@@ -1,21 +1,27 @@
+using UnityEngine;
 
+[CreateAssetMenu(fileName = "StrengthBuff", menuName = "Data/Buff/StrengthBuff")]
 public class Buff_Strength : BuffBase
 {
-    public override void Initialize(CharacterBase owner, int initStacks = 1)
+    public override void OnTurnEnd()
     {
-        base.Initialize(owner, initStacks);
-        //owner.Strength += currentStacks;
+        base.OnTurnEnd();
     }
 
-    public override void AddStacks(int amount)
+    public override void AddEvents()
     {
-        base.AddStacks(amount);
-        //target.Strength += amount;
+        base.AddEvents();
+        target.ChangeAtkDamageEvent.Add(buffID, ChangeAtkDamage);
     }
 
-    public override void RemoveBuff()
+    public override void RemoveEvents()
     {
-        //target.Strength -= currentStacks;
-        base.RemoveBuff();
+        base.RemoveEvents();
+        target.ChangeHitDamageEvent.Remove(buffID);
+    }
+
+    private void ChangeAtkDamage(Damage damage)
+    {
+        damage.DamageValue += currentStacks;
     }
 }

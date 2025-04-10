@@ -9,6 +9,16 @@ public class TurnManager : MonoBehaviour
     public static event Action OnEnemyTurnStart;
     public static event Action OnEnemyTurnEnd;
 
+    public static TurnManager Instance;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+    }
+
     public void PlayerTurnStart()
     {
         OnPlayerTurnStart?.Invoke();

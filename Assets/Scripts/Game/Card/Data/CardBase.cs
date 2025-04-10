@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
-public abstract class CardBase
+public abstract class CardBase : ScriptableObject
 {
     /// <summary>
     /// 卡片ID
@@ -40,31 +40,46 @@ public abstract class CardBase
 
     public List<BuffItem> Buffs;
 
-    public virtual void LoadData(JSONObject data)
-    {
-        ID = (int)data.GetField("ID").i;
-        Name = data.GetField("Name").str;
-        Desc = data.GetField("Desc").str;
-        ImagePath = data.GetField("ImagePath").str;
-        CardType = (ECardType)data.GetField("Type").i;
-        UseType = (EUseType)data.GetField("UseType").i;
-        Rare = (ECardRare)data.GetField("Rare").i;
-        Fee = (int)data.GetField("Fee").i;
-        Buffs = new List<BuffItem>();
-        for (int i = 0; i < data.GetField("Buffs").Count; i++)
-        {
-            Buffs.Add(new BuffItem(data.GetField("Buffs")[i]));
-        }
-    }
+    public List<CardExtract> Extract;
+
+    public ECardFeatures Features;
+
     /// <summary>
     /// 非指向性
     /// </summary>
-    public virtual void UseCard() { }
+    public virtual void UseCard()
+    {
+        UseOver();
+    }
     /// <summary>
     /// 指向性
     /// </summary>
     /// <param name="target"></param>
-    public virtual void UseCard(CharacterBase target) { }
+    public virtual void UseCard(CharacterBase target)
+    {
+        UseOver();
+    }
+
+    /// <summary>
+    /// 抽区触发
+    /// </summary>
+    public virtual void Draw()
+    {
+
+    }
+
+    /// <summary>
+    /// 回合结束触发
+    /// </summary>
+    public virtual void TurnOver() { }
+
+    protected virtual void UseOver()
+    {
+        // TODO：触发抽取或移除卡牌相关功能
+
+        // TODO：使用结束，将卡牌移动到弃牌堆或者其它地方
+
+    }
 
     protected void AddBuffs(EAddBuffTime addTime, CharacterBase characterTarget = null)
     {
@@ -78,7 +93,7 @@ public abstract class CardBase
                 }
                 else if (Buffs[i].Target == EBuffTarget.Enemy)
                 {
-                    if(characterTarget == null) { return; }
+                    if (characterTarget == null) { return; }
                     characterTarget.AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
                 }
                 else if (Buffs[i].Target == EBuffTarget.AllEnemy)
@@ -115,4 +130,45 @@ public enum ECardRare
     /// 史诗
     /// </summary>
     Epic = 3,
+}
+
+public enum ECardRegion
+{
+    /// <summary>
+    /// 抽卡区
+    /// </summary>
+    Draw = 1,
+    /// <summary>
+    /// 手牌区
+    /// </summary>
+    Hand = 2,
+    /// <summary>
+    /// 弃牌区
+    /// </summary>
+    Discard = 3,
+    /// <summary>
+    /// 消耗区
+    /// </summary>
+    Cost = 4,
+    /// <summary>
+    /// 移除区
+    /// </summary>
+    Remove = 5,
+}
+
+[System.Flags]
+public enum ECardFeatures
+{
+    /// <summary>
+    /// 消耗
+    /// </summary>
+    Cost = 1 << 0,
+    /// <summary>
+    /// 固有
+    /// </summary>
+    Permanent = 1 << 1,
+    /// <summary>
+    /// 虚无
+    /// </summary>
+    Void = 1 << 2,
 }

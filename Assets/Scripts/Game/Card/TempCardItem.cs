@@ -22,7 +22,15 @@ public class TempCardItem : MonoBehaviour
     public void UpdateData(CardBase cardData)
     {
         nameTxt.text = cardData.Name;
-        feeTxt.text = cardData.Fee.ToString();
+        if (cardData.Fee > 0)
+        {
+            feeTxt.transform.parent.gameObject.SetActive(true);
+            feeTxt.text = cardData.Fee.ToString();
+        }
+        else
+        {
+            feeTxt.transform.parent.gameObject.SetActive(false);
+        }
         cardImg.sprite = Resources.Load<Sprite>(CardItem.baseCardImgPath + cardData.ImagePath);
         typeTxt.text = cardData.GetCardTypeeString();
         descTxt.text = cardData.Desc;

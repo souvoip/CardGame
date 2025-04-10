@@ -19,6 +19,21 @@ public static class Utility
         }
     }
 
+    /// <summary>
+    /// 随机打乱列表元素
+    /// </summary>
+    /// <param name="array"></param>
+    public static void ShuffleList<T>(this List<T> list)
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            T temp = list[i];
+            int randomIndex = Random.Range(i, list.Count);
+            list[i] = list[randomIndex];
+            list[randomIndex] = temp;
+        }
+    }
+
     public static string GetCardTypeeString(this CardBase card)
     {
         switch (card.CardType)

@@ -44,6 +44,18 @@ public class CardManager : MonoBehaviour
 
     private CardItem nowSelectItem;
 
+    private List<CardBase> playerAllCards;
+
+    private List<CardBase> drawRegionCards;
+
+    private List<CardBase> handRegionCards;
+
+    private List<CardBase> discardRegionCards;
+
+    private List<CardBase> costRegionCards;
+
+    private List<CardBase> removeRegionCards;
+
     /// <summary>
     /// 当前鼠标指向的卡牌
     /// </summary>
@@ -80,6 +92,23 @@ public class CardManager : MonoBehaviour
     void Start()
     {
         InitCard();
+
+        #region Test
+        playerAllCards = new List<CardBase>();
+        for (int i = 0; i < 5; i++)
+        {
+            playerAllCards.Add(CardDataManager.GetCard(1));
+            playerAllCards.Add(CardDataManager.GetCard(101));
+        }
+        playerAllCards.Add(CardDataManager.GetCard(2));
+        playerAllCards.Add(CardDataManager.GetCard(102));
+        playerAllCards.Add(CardDataManager.GetCard(201));
+        playerAllCards.Add(CardDataManager.GetCard(301));
+        InitBattleCardData();
+        TurnManager.OnPlayerTurnStart += TurnStart;
+
+        TurnManager.Instance.PlayerTurnStart();
+        #endregion
     }
 
     /// <summary>
@@ -122,9 +151,44 @@ public class CardManager : MonoBehaviour
     }
 
     /// <summary>
+    /// 战斗开始，初始化卡牌
+    /// </summary>
+    private void InitBattleCardData()
+    {
+        drawRegionCards = new List<CardBase>();
+        for (int i = 0; i < playerAllCards.Count; i++)
+        {
+            drawRegionCards.Add(Instantiate(playerAllCards[i]));
+        }
+        drawRegionCards.ShuffleList();
+        handRegionCards = new List<CardBase>();
+        discardRegionCards = new List<CardBase>();
+        costRegionCards = new List<CardBase>();
+        removeRegionCards = new List<CardBase>();
+    }
+
+    private void TurnStart()
+    {
+        // 抽卡 TODO: 需要完善
+        for (int i = 0; i < 5; i++)
+        {
+            if (drawRegionCards.Count > 0)
+            {
+                CardBase card = drawRegionCards[0];
+                drawRegionCards.RemoveAt(0);
+                handRegionCards.Add(card);
+            }
+        }
+        for (int i = 0; i < handRegionCards.Count; i++)
+        {
+            AddCard(handRegionCards[i]);
+        }
+    }
+
+    /// <summary>
     /// 添加卡牌
     /// </summary>
-    public void AddCard()
+    public void AddCard(CardBase card)
     {
         if (cardList == null)
         {
@@ -139,7 +203,7 @@ public class CardManager : MonoBehaviour
 
         GameObject item = Instantiate(cardItem, this.transform);
         CardItem text = item.GetComponent<CardItem>();
-        text.Init(CardDataManager.GetAtkCard(Random.Range(1, 3)), OnMouseMoveIn, OnMouseMoveOut, OnMouseCardDown);
+        text.Init(card, OnMouseMoveIn, OnMouseMoveOut, OnMouseCardDown);
         text.UpdateData();
         text.RefreshData(rootPos, 0, 0, 0);
         cardList.Add(text);
@@ -216,13 +280,9 @@ public class CardManager : MonoBehaviour
         {
             return;
         }
-
         cardList.Remove(item);
         Destroy(item.gameObject);
     }
-
-    private Vector3 oldmousePosition;
-
 
     /// <summary>
     /// 玩家操作检测
@@ -232,7 +292,7 @@ public class CardManager : MonoBehaviour
         // 测试 ==============
         if (Input.GetKeyDown(KeyCode.A))
         {
-            AddCard();
+            //AddCard();
         }
         // 测试 ==============
 
@@ -248,14 +308,19 @@ public class CardManager : MonoBehaviour
                     {
                         nowTaskItem.CardData.UseCard(nowSelectEnemy);
                     }
+                    else
+                    {
+                        nowTaskItem.CardData.UseCard();
+                    }
                     // =====
                 }
                 else
                 {
-                    if (nowTaskItem.useType == EUseType.Directivity) { return; }
-                    nowTaskItem.gameObject.SetActive(true);
-                    NowSelectItem = null;
-                    nowTaskItem = null;
+                    return;
+                    //if (nowTaskItem.useType == EUseType.Directivity) { return; }
+                    //nowTaskItem.gameObject.SetActive(true);
+                    //NowSelectItem = null;
+                    //nowTaskItem = null;
                 }
 
                 nowSelectEnemy = null;
@@ -281,6 +346,10 @@ public class CardManager : MonoBehaviour
     /// <returns></returns>
     public bool IsDestoryCard()
     {
+        // 卡牌能否使用
+        if (nowTaskItem.useType == EUseType.CannotUse) { return false; }
+        // TODO：计算费用是否足够
+
         if (nowSelectEnemy != null)
         {
             return true;
@@ -475,5 +544,9 @@ public enum EUseType
     /// <summary>
     /// 非指向性
     /// </summary>
-    NonDirectivity
+    NonDirectivity,
+    /// <summary>
+    /// 无法使用
+    /// </summary>
+    CannotUse
 }

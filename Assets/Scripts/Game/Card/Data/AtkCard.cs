@@ -2,24 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "AtkCard", menuName = "Data/Card/AtkCard")]
 public class AtkCard : CardBase
 {
     public Damage BaseDamage;
 
-    public AtkCard(JSONObject data)
-    {
-        LoadData(data);
-    }
-
     public AtkCard()
     {
         CardType = ECardType.Atk;
-    }
-
-    public override void LoadData(JSONObject data)
-    {
-        base.LoadData(data);
-        BaseDamage = new Damage(data.GetField("BaseDamage"));
     }
 
     public override void UseCard(CharacterBase target)
@@ -30,13 +20,13 @@ public class AtkCard : CardBase
         // 造成伤害
         var damage = new Damage(BaseDamage);
         damage = BattleManager.Instance.Player.CalculateAtkDamage(damage);
-        Debug.Log("P = " + damage.DamageRate);
         damage = target.CalculateHitDamage(damage);
-        Debug.Log("E = " + damage.DamageRate);
         target.GetHit(damage);
 
         // 造成伤害后
         AddBuffs(EAddBuffTime.AfterAttack, target);
+
+        base.UseCard(target);
     }
 
     public override void UseCard()
@@ -56,5 +46,7 @@ public class AtkCard : CardBase
 
         // 造成伤害后
         AddBuffs(EAddBuffTime.AfterAttack);
+
+        base.UseCard();
     }
 }

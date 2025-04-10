@@ -55,7 +55,7 @@ public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler,
 
     public ECardType attackType;
 
-    public EUseType useType;
+    public EUseType useType => cardData.UseType;
 
     private UnityAction<CardItem> onMouseMoveIn;
 
@@ -106,7 +106,15 @@ public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler,
     public void UpdateData()
     {
         nameTxt.text = cardData.Name;
-        feeTxt.text = cardData.Fee.ToString();
+        if(cardData.Fee > 0)
+        {
+            feeTxt.transform.parent.gameObject.SetActive(true);
+            feeTxt.text = cardData.Fee.ToString();
+        }
+        else
+        {
+            feeTxt.transform.parent.gameObject.SetActive(false);
+        }
         cardImg.sprite = Resources.Load<Sprite>(baseCardImgPath + cardData.ImagePath);
         typeTxt.text = cardData.GetCardTypeeString();
         descTxt.text = cardData.Desc;
