@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EventNames
+public static class EventNames
 {
+    /// <summary>
+    /// 卡牌抽取： 传入参数 CardExtract
+    /// </summary>
+    public static string EXTRACT_CARD = "EXTRACT_CARD";
+
 }

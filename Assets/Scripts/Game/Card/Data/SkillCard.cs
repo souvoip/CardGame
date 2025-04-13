@@ -23,6 +23,8 @@ public class SkillCard : CardBase
         // TODO：添加护盾
 
         AddBuffs(EAddBuffTime.AfterAttack);
+
+        base.UseCard();
     }
 
     public override void UseCard(CharacterBase target)
@@ -32,5 +34,7 @@ public class SkillCard : CardBase
         // TODO：添加护盾
 
         AddBuffs(EAddBuffTime.AfterAttack, target);
+
+        base.UseCard(target);
     }
 }

@@ -10,6 +10,12 @@ public class BattleManager : MonoBehaviour
 
     public List<EnemyRole> EnemyRoles;
 
+    public CardManager CardManager;
+
+    public TurnManager TurnManager;
+
+    
+
     private void Awake()
     {
         if (Instance == null) { Instance = this; }
@@ -20,5 +26,8 @@ public class BattleManager : MonoBehaviour
         EnemyRoles = enemyRoles;
     }
 
-
+    public void TestBattle()
+    {
+        TurnManager.Instance.PlayerTurnStart();
+    }
 }

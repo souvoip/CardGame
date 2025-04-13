@@ -76,9 +76,10 @@ public abstract class CardBase : ScriptableObject
     protected virtual void UseOver()
     {
         // TODO：触发抽取或移除卡牌相关功能
-
-        // TODO：使用结束，将卡牌移动到弃牌堆或者其它地方
-
+        for (int i = 0; i < Extract.Count; i++)
+        {
+            EventCenter<CardExtract>.GetInstance().EventTrigger(EventNames.EXTRACT_CARD, Extract[i]);
+        }
     }
 
     protected void AddBuffs(EAddBuffTime addTime, CharacterBase characterTarget = null)
@@ -171,4 +172,8 @@ public enum ECardFeatures
     /// 虚无
     /// </summary>
     Void = 1 << 2,
+    /// <summary>
+    /// 保留
+    /// </summary>
+    Hold = 1 << 3,
 }

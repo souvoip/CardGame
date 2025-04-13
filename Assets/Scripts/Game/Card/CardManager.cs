@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
 
@@ -56,6 +58,13 @@ public class CardManager : MonoBehaviour
 
     private List<CardBase> removeRegionCards;
 
+    [SerializeField]
+    private TMP_Text drawCountTxt;
+    [SerializeField]
+    private TMP_Text discardCountTxt;
+    [SerializeField]
+    private TMP_Text costCountTxt;
+
     /// <summary>
     /// 当前鼠标指向的卡牌
     /// </summary>
@@ -93,6 +102,8 @@ public class CardManager : MonoBehaviour
     {
         InitCard();
 
+        AddEvents();
+
         #region Test
         playerAllCards = new List<CardBase>();
         for (int i = 0; i < 5; i++)
@@ -105,10 +116,14 @@ public class CardManager : MonoBehaviour
         playerAllCards.Add(CardDataManager.GetCard(201));
         playerAllCards.Add(CardDataManager.GetCard(301));
         InitBattleCardData();
-        TurnManager.OnPlayerTurnStart += TurnStart;
 
-        TurnManager.Instance.PlayerTurnStart();
+        BattleManager.Instance.TestBattle();
         #endregion
+    }
+
+    private void OnDestroy()
+    {
+        RemoveEvents();
     }
 
     /// <summary>
@@ -148,6 +163,10 @@ public class CardManager : MonoBehaviour
         RefereshCard();
         //SelectItemDetection();
         CardUseEffect();
+
+        drawCountTxt.text = drawRegionCards.Count.ToString();
+        discardCountTxt.text = discardRegionCards.Count.ToString();
+        costCountTxt.text = costRegionCards.Count.ToString();
     }
 
     /// <summary>
@@ -167,21 +186,78 @@ public class CardManager : MonoBehaviour
         removeRegionCards = new List<CardBase>();
     }
 
+    private void AddEvents()
+    {
+        EventCenter<CardExtract>.GetInstance().AddEventListener(EventNames.EXTRACT_CARD, OnExtractCard);
+        TurnManager.OnPlayerTurnEnd += PlayerTurnEnd;
+        TurnManager.OnPlayerTurnStart += TurnStart;
+    }
+
+    private void RemoveEvents()
+    {
+        EventCenter<CardExtract>.GetInstance().RemoveEventListener(EventNames.EXTRACT_CARD, OnExtractCard);
+        TurnManager.OnPlayerTurnEnd -= PlayerTurnEnd;
+        TurnManager.OnPlayerTurnEnd -= TurnStart;
+    }
+
     private void TurnStart()
     {
-        // 抽卡 TODO: 需要完善
+        // 抽卡 TODO: 需要完善,抽取固有卡牌
         for (int i = 0; i < 5; i++)
         {
-            if (drawRegionCards.Count > 0)
-            {
-                CardBase card = drawRegionCards[0];
-                drawRegionCards.RemoveAt(0);
-                handRegionCards.Add(card);
-            }
+            DrawCards(EExtractMode.Order, EExtractCardType.Other | EExtractCardType.Atkack | EExtractCardType.Skill | EExtractCardType.Ability | EExtractCardType.State);
         }
-        for (int i = 0; i < handRegionCards.Count; i++)
+    }
+
+
+    private void PlayerTurnEnd()
+    {
+        // 丢弃卡牌
+        for(int i = cardList.Count - 1; i >= 0; i--)
         {
-            AddCard(handRegionCards[i]);
+            if ((cardList[i].CardData.Features & ECardFeatures.Hold) == ECardFeatures.Hold)
+            {
+                break;
+            }
+            if ((cardList[i].CardData.Features & ECardFeatures.Void) == ECardFeatures.Void)
+            {
+                costRegionCards.Add(cardList[i].CardData);
+            }
+            else
+            {
+                discardRegionCards.Add(cardList[i].CardData);
+            }
+            handRegionCards.Remove(cardList[i].CardData);
+            RemoveCard(cardList[i]);
+        }
+    }
+
+    /// <summary>
+    /// 抽卡
+    /// </summary>
+    /// <param name="mode"></param>
+    /// <param name="cardType"></param>
+    private void DrawCards(EExtractMode mode, EExtractCardType cardType)
+    {
+        if (drawRegionCards.Count == 0)
+        {
+            if (!ShuffleCards()) { return; }
+        }
+        CardBase cardTemp;
+        switch (mode)
+        {
+            case EExtractMode.Order:
+                cardTemp = drawRegionCards[0];
+                drawRegionCards.RemoveAt(0);
+                handRegionCards.Add(cardTemp);
+                AddCard(cardTemp);
+                break;
+            case EExtractMode.Random:
+                cardTemp = drawRegionCards[UnityEngine.Random.Range(0, drawRegionCards.Count)];
+                drawRegionCards.Remove(cardTemp);
+                handRegionCards.Add(cardTemp);
+                AddCard(cardTemp);
+                break;
         }
     }
 
@@ -302,7 +378,6 @@ public class CardManager : MonoBehaviour
             {
                 if (IsDestoryCard())
                 {
-                    RemoveCard(nowTaskItem);
                     // 攻击测试
                     if (nowTaskItem.useType == EUseType.Directivity)
                     {
@@ -313,6 +388,8 @@ public class CardManager : MonoBehaviour
                         nowTaskItem.CardData.UseCard();
                     }
                     // =====
+                    UseCardOver(nowTaskItem);
+                    RemoveCard(nowTaskItem);
                 }
                 else
                 {
@@ -501,6 +578,53 @@ public class CardManager : MonoBehaviour
         nowCardState = ECardState.Selecting;
     }
 
+
+    private void OnExtractCard(CardExtract ce)
+    {
+        for (int i = 0; i < ce.Count; i++)
+        {
+            if (ce.origin == ECardRegion.Draw)
+            {
+                if (ce.target == ECardRegion.Hand)
+                {
+                    DrawCards(ce.mode, ce.cardType);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// 洗牌
+    /// </summary>
+    /// <returns></returns>
+    private bool ShuffleCards()
+    {
+        if (drawRegionCards.Count == 0)
+        {
+            if (discardRegionCards.Count == 0) { return false; }
+            // TODO: 将弃牌堆中对卡牌移动到抽牌堆
+            drawRegionCards = discardRegionCards;
+            discardRegionCards = new List<CardBase>();
+            drawRegionCards.ShuffleList();
+        }
+        return true;
+    }
+
+    private void UseCardOver(CardItem cardItem)
+    {
+        handRegionCards.Remove(cardItem.CardData);
+        if((cardItem.CardData.Features & ECardFeatures.Cost) == ECardFeatures.Cost)
+        {
+            // 移动到消耗堆
+            costRegionCards.Add(cardItem.CardData);
+        }
+        else
+        {
+            // 移动到弃牌堆
+            discardRegionCards.Add(cardItem.CardData);
+        }
+    }
+
     private ECardState nowCardState = ECardState.None;
 
     private enum ECardState
@@ -530,9 +654,9 @@ public enum ECardType
     /// </summary>
     State,
     /// <summary>
-    /// 其他
+    /// 诅咒
     /// </summary>
-    Other
+    Curse
 }
 
 public enum EUseType
