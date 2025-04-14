@@ -35,10 +35,34 @@ public class BattleDownUI : MonoBehaviour
         switch (region)
         {
             case ECardRegion.Draw:
+                if(BattleManager.Instance.CardManager.DrawRegionCards.Count > 0)
+                {
+                    UIManager.Instance.cardView.Show(BattleManager.Instance.CardManager.DrawRegionCards);
+                }
+                else
+                {
+                    Debug.Log("DrawRegionCards is empty");
+                }
                 break;
             case ECardRegion.Discard:
+                if (BattleManager.Instance.CardManager.DiscardRegionCards.Count > 0)
+                {
+                    UIManager.Instance.cardView.Show(BattleManager.Instance.CardManager.DiscardRegionCards);
+                }
+                else
+                {
+                    Debug.Log("DiscardRegionCards is empty");
+                }
                 break;
             case ECardRegion.Cost:
+                if (BattleManager.Instance.CardManager.CostRegionCards.Count > 0)
+                {
+                    UIManager.Instance.cardView.Show(BattleManager.Instance.CardManager.CostRegionCards);
+                }
+                else
+                {
+                    Debug.Log("CostRegionCards is empty");
+                }
                 break;
         }
     }

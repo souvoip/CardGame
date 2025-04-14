@@ -50,11 +50,17 @@ public class CardManager : MonoBehaviour
 
     private List<CardBase> drawRegionCards;
 
+    public List<CardBase> DrawRegionCards { get => drawRegionCards; }
+
     private List<CardBase> handRegionCards;
 
     private List<CardBase> discardRegionCards;
 
+    public List<CardBase> DiscardRegionCards { get => discardRegionCards; }
+
     private List<CardBase> costRegionCards;
+
+    public List<CardBase> CostRegionCards { get => costRegionCards; }
 
     private List<CardBase> removeRegionCards;
 
