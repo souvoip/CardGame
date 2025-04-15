@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +15,8 @@ public class BattleDownUI : MonoBehaviour
     private Button discardCardBtn;
     [SerializeField]
     private Button costCardBtn;
+    [SerializeField]
+    private TMP_Text apTxt;
 
     private void Awake()
     {
@@ -20,6 +24,18 @@ public class BattleDownUI : MonoBehaviour
         drawCardBtn.onClick.AddListener(() => ViewCard(ECardRegion.Draw));
         discardCardBtn.onClick.AddListener(() => ViewCard(ECardRegion.Discard));
         costCardBtn.onClick.AddListener(() => ViewCard(ECardRegion.Cost));
+
+        EventCenter<int, int>.GetInstance().AddEventListener(EventNames.CHANGE_AP, ChangeAp);
+    }
+
+    private void OnDestroy()
+    {
+        EventCenter<int, int>.GetInstance().RemoveEventListener(EventNames.CHANGE_AP, ChangeAp);
+    }
+
+    private void ChangeAp(int currentAp, int maxAp)
+    {
+        apTxt.text = currentAp + "/" + maxAp;
     }
 
     private void TurnOver()

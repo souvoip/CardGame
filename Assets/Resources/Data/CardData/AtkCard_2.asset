@@ -25,6 +25,9 @@ MonoBehaviour:
     Stacks: 2
     Target: 1
     AddBuffTime: 2
+  Extract: []
+  Features: 0
   BaseDamage:
     DamageValue: 8
     DamageRate: 1
+  HitCount: 1

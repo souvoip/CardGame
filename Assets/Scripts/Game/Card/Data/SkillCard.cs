@@ -20,7 +20,8 @@ public class SkillCard : CardBase
     {
         AddBuffs(EAddBuffTime.BeforeAttack);
 
-        // TODO：添加护盾
+        // TODO：添加护盾(未计算buff加成)
+        BattleManager.Instance.Player.ChangeAttribute(ERoleAttribute.Aesist, BaseBlock.GetBlockValue());
 
         AddBuffs(EAddBuffTime.AfterAttack);
 
@@ -31,7 +32,8 @@ public class SkillCard : CardBase
     {
         AddBuffs(EAddBuffTime.BeforeAttack, target);
 
-        // TODO：添加护盾
+        // TODO：添加护盾(未计算buff加成)
+        BattleManager.Instance.Player.ChangeAttribute(ERoleAttribute.Aesist, BaseBlock.GetBlockValue());
 
         AddBuffs(EAddBuffTime.AfterAttack, target);
 

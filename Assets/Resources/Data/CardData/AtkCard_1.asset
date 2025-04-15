@@ -21,6 +21,9 @@ MonoBehaviour:
   Rare: 1
   Fee: 1
   Buffs: []
+  Extract: []
+  Features: 0
   BaseDamage:
     DamageValue: 5
     DamageRate: 1
+  HitCount: 1

@@ -239,7 +239,7 @@ public class CardManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 抽卡
+    /// 抽卡 TODO : 需要完善，抽取固有卡牌以及指定类型卡牌
     /// </summary>
     /// <param name="mode"></param>
     /// <param name="cardType"></param>
@@ -371,20 +371,12 @@ public class CardManager : MonoBehaviour
     /// </summary>
     public void TaskItemDetection()
     {
-        // 测试 ==============
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            //AddCard();
-        }
-        // 测试 ==============
-
         if (Input.GetMouseButtonUp(0))
         {
             if (nowTaskItem != null)
             {
                 if (IsDestoryCard())
                 {
-                    // 攻击测试
                     if (nowTaskItem.useType == EUseType.Directivity)
                     {
                         nowTaskItem.CardData.UseCard(nowSelectEnemy);
@@ -393,7 +385,6 @@ public class CardManager : MonoBehaviour
                     {
                         nowTaskItem.CardData.UseCard();
                     }
-                    // =====
                     UseCardOver(nowTaskItem);
                     RemoveCard(nowTaskItem);
                 }
@@ -430,8 +421,7 @@ public class CardManager : MonoBehaviour
     public bool IsDestoryCard()
     {
         // 卡牌能否使用
-        if (nowTaskItem.useType == EUseType.CannotUse) { return false; }
-        // TODO：计算费用是否足够
+        if (!nowTaskItem.CardData.IsCanUse()) { return false; }
 
         if (nowSelectEnemy != null)
         {

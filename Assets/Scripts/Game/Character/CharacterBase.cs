@@ -60,5 +60,18 @@ public class CharacterBase : MonoBehaviour
         return damage;
     }
 
-    public virtual void GetHit(Damage damage) { }
+    public Block CalculateBlock(Block block) 
+    {
+        return block;
+    }
+
+    public virtual void ChangeAttribute(ERoleAttribute attribute, int value) { }
+}
+
+public enum ERoleAttribute
+{
+    HP,
+    MP,
+    AP,
+    Aesist
 }

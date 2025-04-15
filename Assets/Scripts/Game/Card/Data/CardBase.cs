@@ -61,7 +61,7 @@ public abstract class CardBase : ScriptableObject
     }
 
     /// <summary>
-    /// 抽区触发
+    /// 抽到后触发
     /// </summary>
     public virtual void Draw()
     {
@@ -73,13 +73,22 @@ public abstract class CardBase : ScriptableObject
     /// </summary>
     public virtual void TurnOver() { }
 
+    public bool IsCanUse()
+    {
+        if(UseType == EUseType.CannotUse) { return false; }
+        if(BattleManager.Instance.Player.RoleData.AP < Fee) { return false; }
+        return true;
+    }
+
     protected virtual void UseOver()
     {
-        // TODO：触发抽取或移除卡牌相关功能
+        // 触发抽取或移除卡牌相关功能
         for (int i = 0; i < Extract.Count; i++)
         {
             EventCenter<CardExtract>.GetInstance().EventTrigger(EventNames.EXTRACT_CARD, Extract[i]);
         }
+        // 消耗费用
+        BattleManager.Instance.Player.ChangeAttribute(ERoleAttribute.AP, -Fee);
     }
 
     protected void AddBuffs(EAddBuffTime addTime, CharacterBase characterTarget = null)

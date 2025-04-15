@@ -777,7 +777,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -452}
   m_SizeDelta: {x: 512, y: 169}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &488966986
@@ -1919,6 +1919,7 @@ MonoBehaviour:
   drawCardBtn: {fileID: 1387561119}
   discardCardBtn: {fileID: 1671330361}
   costCardBtn: {fileID: 1867335372}
+  apTxt: {fileID: 1531934878}
 --- !u!1 &927992747
 GameObject:
   m_ObjectHideFlags: 0
@@ -2654,9 +2655,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 980057a182ceff74382fbcd38a5eaaba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 0}
+  Player: {fileID: 5272286620943440559}
   EnemyRoles:
   - {fileID: 392700482}
+  - {fileID: 1435865043}
   CardManager: {fileID: 2065309961}
   TurnManager: {fileID: 1110058031}
 --- !u!4 &1093846972
@@ -3412,6 +3414,17 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1435865043 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5449320335113061292, guid: 7f05f481e76de1c4192ea7ba7776a94f, type: 3}
+  m_PrefabInstance: {fileID: 1062765649}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 309d6736fc49bc54b839c323715c033f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1452654126
 GameObject:
   m_ObjectHideFlags: 0
@@ -4566,7 +4579,7 @@ Transform:
   m_GameObject: {fileID: 5272286620943440557}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.54, y: 0.48, z: 0}
+  m_LocalPosition: {x: -6.54, y: 1.13, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4582,8 +4595,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3713025294090238071}
-  - component: {fileID: 5272286620943440559}
   - component: {fileID: 5272286620943440558}
+  - component: {fileID: 5272286620943440559}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -4615,9 +4628,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5272286620943440557}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08138575d9c9ded4ab07aa4919da56b6, type: 3}
+  m_Script: {fileID: 11500000, guid: bd2f07d4a19b07942ba9e6a336fead18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hpBar: {fileID: 1078466632}
+  aesist: {fileID: 1991214814}
 --- !u!114 &5509955841264644350
 MonoBehaviour:
   m_ObjectHideFlags: 0

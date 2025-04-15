@@ -2,23 +2,23 @@ public class RoleData
 {
     #region Base
     /// <summary>
-    /// 名字
+    /// 鍚嶅瓧
     /// </summary>
     public string Name;
     /// <summary>
-    /// 性别
+    /// 鎬у埆
     /// </summary>
     public string Sex;
     /// <summary>
-    /// 年龄
+    /// 骞撮緞
     /// </summary>
     public int Age;
     /// <summary>
-    /// 等级
+    /// 绛夌骇
     /// </summary>
     public int Level;
     /// <summary>
-    /// 经验
+    /// 缁忛獙
     /// </summary>
     public int Exp;
     #endregion
@@ -33,15 +33,12 @@ public class RoleData
 
     public int MP;
 
-    public int MaxAct;
-
-    public int Act;
     /// <summary>
-    /// 抵抗
+    /// 鎶垫姉
     /// </summary>
     public int Aesist;
     /// <summary>
-    /// 护盾
+    /// 鎶ょ浘
     /// </summary>
     public int Shield;
     #endregion

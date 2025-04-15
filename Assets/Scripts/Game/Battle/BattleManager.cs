@@ -6,7 +6,7 @@ public class BattleManager : MonoBehaviour
 {
     public static BattleManager Instance { get; private set; }
 
-    public CharacterBase Player;
+    public PlayerRole Player;
 
     public List<EnemyRole> EnemyRoles;
 

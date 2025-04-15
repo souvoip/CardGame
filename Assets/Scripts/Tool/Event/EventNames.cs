@@ -5,8 +5,11 @@ using UnityEngine;
 public static class EventNames
 {
     /// <summary>
-    /// ¿¨ÅÆ³éÈ¡£º ´«Èë²ÎÊı CardExtract
+    /// å¡ç‰ŒæŠ½å–ï¼š ä¼ å…¥å‚æ•° CardExtract
     /// </summary>
     public static string EXTRACT_CARD = "EXTRACT_CARD";
-
+    /// <summary>
+    /// 
+    /// </summary>
+    public static string CHANGE_AP = "CHANGE_AP";
 }

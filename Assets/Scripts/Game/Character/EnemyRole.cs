@@ -3,25 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler,IPointerDownHandler, IPointerUpHandler
+public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandler,IPointerDownHandler, IPointerUpHandler
 {
-    [SerializeField]
-    private CardManager _cardManager;
-
     [SerializeField]
     private StateBar hpBar;
 
-    private float maxHp = 100f;
-
-    private float hp = 100f;
+    /// <summary>
+    /// 敌人数据 (需要完善)
+    /// </summary>
+    private EnemyRoleData roleData = new EnemyRoleData() {MaxHP = 100, HP = 100 };
 
     protected override void Init()
     {
-        hpBar.SetMaxHealth(maxHp);
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
+        hpBar.SetMaxHealth(roleData.MaxHP);
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -30,27 +24,32 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        _cardManager.SelectEnemy(this);
+        BattleManager.Instance.CardManager.SelectEnemy(this);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        _cardManager.SelectEnemy(null);
+        BattleManager.Instance.CardManager.SelectEnemy(null);
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
     }
 
-    public override void GetHit(Damage damage)
+    public override void ChangeAttribute(ERoleAttribute attribute, int value)
     {
-        Debug.Log("受到 ：" + damage.GetDamage() + " 伤害");
-        ChangeHealth(-damage.GetDamage());
+        switch (attribute)
+        {
+            case ERoleAttribute.HP:
+                Debug.Log("受到 ：" + value + " 伤害");
+                ChangeHealth(value);
+                break;
+        }
     }
 
-    private void ChangeHealth(float health)
+    private void ChangeHealth(int health)
     {
-        hp += health;
-        hpBar.SetHealth(hp);
+        roleData.HP += health;
+        hpBar.SetHealth(roleData.HP);
     }
 }
