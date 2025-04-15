@@ -49,13 +49,23 @@ public abstract class BuffBase : ScriptableObject
     public virtual void AddStacks(int amount)
     {
         currentStacks = Mathf.Clamp(currentStacks + amount, minStacks, maxStacks);
-        if (currentStacks == 0) { RemoveBuff(); }
+        if (currentStacks == 0)
+        {
+            RemoveBuff();
+        }
+        else
+        {
+            target.UpdateBuffIcon(buffID);
+        }
     }
 
     // 移除Buff
     public virtual void RemoveBuff()
     {
         RemoveEvents();
+        // 移除 buff icon
+        target.RemoveBuff(buffID);
+
     }
 
     // 获取描述文本（用于UI显示）

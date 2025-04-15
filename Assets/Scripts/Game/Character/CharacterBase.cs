@@ -41,6 +41,16 @@ public class CharacterBase : MonoBehaviour
         buffControl.ApplyBuff(buff, stracks);
     }
 
+    public void UpdateBuffIcon(int buffId)
+    {
+        buffControl.UpdateBuffUI(buffId);
+    }
+
+    public void RemoveBuff(int buffId)
+    {
+        buffControl.RemoveBuff(buffId);
+    }
+
     public Damage CalculateAtkDamage(Damage damage)
     {
         foreach (var i in ChangeAtkDamageEvent.Keys)

@@ -17,6 +17,7 @@ public class BuffControl : MonoBehaviour
     private void Awake()
     {
         character = GetComponent<CharacterBase>();
+        TurnManager.OnEnemyTurnEnd += OnTurnEnd;
     }
 
     // 应用新Buff
@@ -38,18 +39,25 @@ public class BuffControl : MonoBehaviour
         UpdateBuffUI(buff.buffID);
     }
 
-    // 回合结束处理
-    public void OnTurnEnd()
+    public void RemoveBuff(int buffId)
     {
-        foreach (var buff in activeBuffs.ToArray())
+        // 查找并移除指定Buff
+        var buff = activeBuffs.Find(b => b.buffID == buffId);
+        if (buff != null)
         {
-            if (buff.duration > 0)
-                buff.OnTurnEnd();
+            activeBuffs.Remove(buff);
+            UpdateBuffUI();
         }
     }
 
+    // 回合结束处理
+    public void OnTurnEnd()
+    {
+        UpdateBuffUI();
+    }
+
     // UI更新(更新所有Buff)
-    private void UpdateBuffUI()
+    public void UpdateBuffUI()
     {
         // 使用副本遍历避免集合修改异常
         var currentActiveBuffs = activeBuffs.ToList();
@@ -85,7 +93,7 @@ public class BuffControl : MonoBehaviour
     /// UI更新(更新指定Buff)
     /// </summary>
     /// <param name="buffId"></param>
-    private void UpdateBuffUI(int buffId)
+    public void UpdateBuffUI(int buffId)
     {
         var buff = activeBuffs.Find(b => b.buffID == buffId);
         if (buff != null)

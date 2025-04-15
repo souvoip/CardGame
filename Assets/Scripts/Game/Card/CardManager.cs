@@ -219,7 +219,7 @@ public class CardManager : MonoBehaviour
     private void PlayerTurnEnd()
     {
         // 丢弃卡牌
-        for(int i = cardList.Count - 1; i >= 0; i--)
+        for (int i = cardList.Count - 1; i >= 0; i--)
         {
             if ((cardList[i].CardData.Features & ECardFeatures.Hold) == ECardFeatures.Hold)
             {
@@ -403,14 +403,7 @@ public class CardManager : MonoBehaviour
         }
         if (Input.GetMouseButtonUp(1))
         {
-            if (nowTaskItem != null)
-            {
-                nowTaskItem.gameObject.SetActive(true);
-                NowSelectItem = null;
-                nowTaskItem = null;
-                nowSelectEnemy = null;
-                nowCardState = ECardState.None;
-            }
+            CancelSelect();
         }
     }
 
@@ -531,6 +524,16 @@ public class CardManager : MonoBehaviour
         worldPosition.z = 5f;
         Vector3 centPos = new Vector3(0, -2.9f, 4);
         bool isWaitAttack = false;
+        // 判断当前卡牌能否使用，不能使用则取消选中
+        if (worldPosition.y > -2.4f)
+        {
+            if (!nowTaskItem.CardData.IsCanUse())
+            {
+                CancelSelect();
+                return;
+            }
+        }
+
         if (nowTaskItem.useType == EUseType.Directivity)
         {
             if (worldPosition.y > -2.4f)
@@ -609,7 +612,7 @@ public class CardManager : MonoBehaviour
     private void UseCardOver(CardItem cardItem)
     {
         handRegionCards.Remove(cardItem.CardData);
-        if((cardItem.CardData.Features & ECardFeatures.Cost) == ECardFeatures.Cost)
+        if ((cardItem.CardData.Features & ECardFeatures.Cost) == ECardFeatures.Cost)
         {
             // 移动到消耗堆
             costRegionCards.Add(cardItem.CardData);
@@ -618,6 +621,18 @@ public class CardManager : MonoBehaviour
         {
             // 移动到弃牌堆
             discardRegionCards.Add(cardItem.CardData);
+        }
+    }
+
+    private void CancelSelect()
+    {
+        if (nowTaskItem != null)
+        {
+            nowTaskItem.gameObject.SetActive(true);
+            NowSelectItem = null;
+            nowTaskItem = null;
+            nowSelectEnemy = null;
+            nowCardState = ECardState.None;
         }
     }
 
