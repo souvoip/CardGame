@@ -1,4 +1,6 @@
-public class RoleData
+using UnityEngine;
+
+public class RoleData : ScriptableObject
 {
     #region Base
     /// <summary>

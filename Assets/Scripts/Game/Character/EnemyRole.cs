@@ -11,7 +11,8 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
     /// <summary>
     /// 敌人数据 (需要完善)
     /// </summary>
-    private EnemyRoleData roleData = new EnemyRoleData() {MaxHP = 100, HP = 100 };
+    [SerializeField]
+    private EnemyRoleData roleData;
 
     protected override void Init()
     {

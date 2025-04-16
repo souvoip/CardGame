@@ -1073,6 +1073,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 593504775}
+  - component: {fileID: 593504776}
   m_Layer: 5
   m_Name: BattleUI
   m_TagString: Untagged
@@ -1100,6 +1101,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &593504776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 593504774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73da80f5f677d82468dee87a36c69493, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turnOverBtn: {fileID: 86943768}
+  drawCardBtn: {fileID: 1387561119}
+  discardCardBtn: {fileID: 1671330361}
+  costCardBtn: {fileID: 1867335372}
+  apTxt: {fileID: 1531934878}
 --- !u!1 &593806022
 GameObject:
   m_ObjectHideFlags: 0
@@ -1871,7 +1889,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 815441022}
-  - component: {fileID: 815441023}
   m_Layer: 5
   m_Name: DownRegion
   m_TagString: Untagged
@@ -1903,23 +1920,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 150}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &815441023
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 815441021}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73da80f5f677d82468dee87a36c69493, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  turnOverBtn: {fileID: 86943768}
-  drawCardBtn: {fileID: 1387561119}
-  discardCardBtn: {fileID: 1671330361}
-  costCardBtn: {fileID: 1867335372}
-  apTxt: {fileID: 1531934878}
 --- !u!1 &927992747
 GameObject:
   m_ObjectHideFlags: 0
@@ -4633,6 +4633,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hpBar: {fileID: 1078466632}
   aesist: {fileID: 1991214814}
+  roleData: {fileID: 11400000, guid: c3601ae103863ed41ba3774207756bc3, type: 2}
 --- !u!114 &5509955841264644350
 MonoBehaviour:
   m_ObjectHideFlags: 0

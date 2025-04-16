@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BattleDownUI : MonoBehaviour
+public class BattleUI : MonoBehaviour
 {
     [SerializeField]
     private Button turnOverBtn;

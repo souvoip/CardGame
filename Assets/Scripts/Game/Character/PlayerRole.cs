@@ -10,8 +10,8 @@ public class PlayerRole : CharacterBase
     private StateBar hpBar;
     [SerializeField]
     private Transform aesist;
-
-    private PlayerRoleData roleData = new PlayerRoleData() {MaxHP = 100, HP = 100, MaxAP = 3 };
+    [SerializeField]
+    private PlayerRoleData roleData;
 
     public PlayerRoleData RoleData { get { return roleData; } }
 
