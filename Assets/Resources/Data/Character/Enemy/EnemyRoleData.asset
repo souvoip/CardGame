@@ -23,3 +23,23 @@ MonoBehaviour:
   MP: 50
   Aesist: 0
   Shield: 0
+  Actions:
+  - rid: 5035967028884406340
+  SelectedActionIndex: 0
+  EditAction:
+    rid: 5035967028884406341
+  references:
+    version: 2
+    RefIds:
+    - rid: 5035967028884406340
+      type: {class: EnemyAttackAction, ns: , asm: Assembly-CSharp}
+      data:
+        baseDamage:
+          DamageValue: 8
+          DamageRate: 1
+    - rid: 5035967028884406341
+      type: {class: EnemyAttackAction, ns: , asm: Assembly-CSharp}
+      data:
+        baseDamage:
+          DamageValue: 0
+          DamageRate: 0

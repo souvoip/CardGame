@@ -1,26 +1,34 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "EnemyRoleData", menuName = "Data/Character/EnemyRoleData")]
 public class EnemyRoleData : RoleData
 {
-    public List<EnemyDoAction> actions;
+    [SerializeReference]
+    public List<EnemyDoAction> Actions = new List<EnemyDoAction>();
+
+    // 当前正在编辑的动作索引
+    public int SelectedActionIndex = -1;
+
+    [SerializeReference]
+    public EnemyDoAction EditAction;
 
     public void InitActions(CharacterBase self)
     {
-        for (int i = 0; i < actions.Count; i++)
+        for (int i = 0; i < Actions.Count; i++)
         {
-            actions[i].self = self;
+            Actions[i].self = self;
         }
     }
 }
 
 [Serializable]
-public class EnemyDoAction
+public abstract class EnemyDoAction
 {
-    public EEnemyActionType actionType;
+    public abstract EEnemyActionType ActionType { get; }
 
     [NonSerialized]
     public CharacterBase self;
@@ -31,6 +39,8 @@ public class EnemyDoAction
 [Serializable]
 public class EnemyAttackAction : EnemyDoAction
 {
+    public override EEnemyActionType ActionType => EEnemyActionType.Attack;
+
     public Damage baseDamage;
 
     public override void DoAction()
@@ -46,6 +56,8 @@ public class EnemyAttackAction : EnemyDoAction
 [Serializable]
 public class EnemyGetAesistAction : EnemyDoAction
 {
+    public override EEnemyActionType ActionType => EEnemyActionType.GetAesist;
+
     public Block baseBlock;
 
     public override void DoAction()
@@ -58,6 +70,7 @@ public class EnemyGetAesistAction : EnemyDoAction
 [Serializable]
 public class EnemyGetBuffAction : EnemyDoAction
 {
+    public override EEnemyActionType ActionType => EEnemyActionType.GetBuff;
     public List<BuffItem> buffs;
 
     public override void DoAction()
@@ -71,6 +84,7 @@ public class EnemyGetBuffAction : EnemyDoAction
 [Serializable]
 public class EnemyGiveBuffAction : EnemyDoAction
 {
+    public override EEnemyActionType ActionType => EEnemyActionType.GiveBuff;
     public List<BuffItem> buffs;
     public override void DoAction()
     {
@@ -84,6 +98,7 @@ public class EnemyGiveBuffAction : EnemyDoAction
 [Serializable]
 public class EnemySummonAction : EnemyDoAction
 {
+    public override EEnemyActionType ActionType => EEnemyActionType.Summon;
     //public List<EnemyRoleData> enemies;
     public override void DoAction()
     {
@@ -93,6 +108,7 @@ public class EnemySummonAction : EnemyDoAction
 [Serializable]
 public class EnemyGiveCardAction : EnemyDoAction
 {
+    public override EEnemyActionType ActionType => EEnemyActionType.GiveCard;
     public List<int> cardIDs;
     public override void DoAction()
     {
