@@ -9,7 +9,6 @@ public static class BuffDataManager
     {
         var bs = Resources.LoadAll<BuffBase>("Data/Buff");
         foreach (var b in bs) { buffs.Add(b);}
-        Debug.Log("Load Buffs: " + bs.Length);
     }
 
     public static BuffBase GetBuff(int id)

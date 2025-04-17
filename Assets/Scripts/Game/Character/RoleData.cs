@@ -3,6 +3,7 @@ using UnityEngine;
 public class RoleData : ScriptableObject
 {
     #region Base
+    public int ID;
     /// <summary>
     /// 名字
     /// </summary>

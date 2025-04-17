@@ -22,7 +22,7 @@ public class Damage
         DamageRate = damage.DamageRate;
     }
 
-    public int GetDamage()
+    public int GetDamageValue()
     {
         return Mathf.CeilToInt(DamageValue * DamageRate);
     }

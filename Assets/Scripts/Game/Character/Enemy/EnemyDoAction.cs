@@ -9,34 +9,42 @@ public abstract class EnemyDoAction
     [NonSerialized]
     public CharacterBase self;
 
-    public virtual void DoAction() { }
+    public abstract void DoAction();
+
+    /// <summary>
+    /// TODO: 鑾峰彇鍥炬爣
+    /// </summary>
+    public virtual void GetIcon() { }
 }
 
-[System.Flags]
 public enum EEnemyActionType
 {
     /// <summary>
-    /// 攻击玩家
+    /// 鏀诲嚮鐜╁
     /// </summary>
-    Attack = 1 << 0,
+    Attack,
     /// <summary>
-    /// 获取抵抗
+    /// 鑾峰彇鎶垫姉
     /// </summary>
-    GetAesist = 1 << 1,
+    GetAesist,
     /// <summary>
-    /// 获取buff
+    /// 鑾峰彇buff
     /// </summary>
-    GetBuff = 1 << 2,
+    GetBuff,
     /// <summary>
-    /// 给予debuff
+    /// 缁欎簣debuff
     /// </summary>
-    GiveBuff = 1 << 3,
+    GiveBuff,
     /// <summary>
-    /// 召唤敌人
+    /// 鍙敜鏁屼汉
     /// </summary>
-    Summon = 1 << 4,
+    Summon,
     /// <summary>
-    /// 给予玩家卡牌
+    /// 缁欎簣鐜╁鍗＄墝
     /// </summary>
-    GiveCard = 1 << 5,
+    GiveCards,
+    /// <summary>
+    /// 娣峰悎
+    /// </summary>
+    Mix,
 }

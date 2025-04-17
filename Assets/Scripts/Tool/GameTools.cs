@@ -45,4 +45,12 @@ public static class GameTools
                 return "其它";
         }
     }
+
+    public static int CalculateDamage(CharacterBase attacker, CharacterBase defender, Damage damage)
+    {
+        var tempDamage = new Damage(damage);
+        attacker.CalculateAtkDamage(tempDamage);
+        defender.CalculateHitDamage(tempDamage);
+        return tempDamage.GetDamageValue();
+    }
 }

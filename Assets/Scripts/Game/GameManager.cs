@@ -9,5 +9,6 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         BuffDataManager.Init();
         CardDataManager.Init();
+        CharacterDataManager.Init();
     }
 }

@@ -40,6 +40,11 @@ public class TurnManager : MonoBehaviour
         TurnType = ETurnType.Enemy;
         OnEnemyTurnStart?.Invoke();
         // 敌人行动逻辑...
+        for (int i = 0; i < BattleManager.Instance.EnemyRoles.Count; i++)
+        {
+            BattleManager.Instance.EnemyRoles[i].DoAction();
+        }
+
         yield return new WaitForSeconds(1);
         OnEnemyTurnEnd?.Invoke();
         Debug.Log("Enemy Turn End");

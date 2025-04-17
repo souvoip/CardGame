@@ -5,14 +5,17 @@ public class EnemyAttackAction : EnemyDoAction
 {
     public override EEnemyActionType ActionType => EEnemyActionType.Attack;
 
-    public Damage baseDamage;
+    public Damage BaseDamage;
+
+    public int AtkCount;
 
     public override void DoAction()
     {
-        // ¹¥»÷Íæ¼Ò
-        Damage tempDamage = new Damage(baseDamage);
-        self.CalculateAtkDamage(tempDamage);
-        BattleManager.Instance.Player.CalculateHitDamage(tempDamage);
-        BattleManager.Instance.Player.ChangeAttribute(ERoleAttribute.HP, -tempDamage.GetDamage());
+        // æ”»å‡»çŽ©å®¶
+        int damageValue = GameTools.CalculateDamage(self, BattleManager.Instance.Player, BaseDamage);
+        for (int i = 0; i < AtkCount; i++)
+        {
+            BattleManager.Instance.Player.ChangeAttribute(ERoleAttribute.HP, -damageValue);
+        }
     }
 }

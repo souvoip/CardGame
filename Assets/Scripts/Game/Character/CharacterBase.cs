@@ -30,7 +30,7 @@ public class CharacterBase : MonoBehaviour
 
     protected virtual void Init() { }
 
-    private void Awake()
+    private void Start()
     {
         buffControl = GetComponent<BuffControl>();
         Init();
@@ -70,12 +70,17 @@ public class CharacterBase : MonoBehaviour
         return damage;
     }
 
-    public Block CalculateBlock(Block block) 
+    public Block CalculateBlock(Block block)
     {
         return block;
     }
 
     public virtual void ChangeAttribute(ERoleAttribute attribute, int value) { }
+
+    public virtual void Die()
+    {
+        DieEvent?.Invoke();
+    }
 }
 
 public enum ERoleAttribute

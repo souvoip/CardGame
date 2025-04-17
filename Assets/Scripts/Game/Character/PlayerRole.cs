@@ -9,19 +9,31 @@ public class PlayerRole : CharacterBase
     [SerializeField]
     private StateBar hpBar;
     [SerializeField]
-    private Transform aesist;
-    [SerializeField]
+    private Transform aesistzTrans;
+
+
     private PlayerRoleData roleData;
 
     public PlayerRoleData RoleData { get { return roleData; } }
 
     protected override void Init()
     {
+        // TODO: 获取玩家数据
+        roleData = CharacterDataManager.GetPlayerRoleData(1);
+
         hpBar.SetMaxHealth(roleData.MaxHP);
+        AddEvents();
+    }
+
+    private void AddEvents()
+    {
         TurnManager.OnPlayerTurnStart += OnPlayerTurnStart;
     }
 
-
+    private void RemoveEvents()
+    {
+        TurnManager.OnPlayerTurnStart -= OnPlayerTurnStart;
+    }
 
     public override void ChangeAttribute(ERoleAttribute attribute, int value)
     {
@@ -38,6 +50,13 @@ public class PlayerRole : CharacterBase
                 ChangeAesist(value);
                 break;
         }
+    }
+
+    public override void Die()
+    {
+        base.Die();
+        // TODO: 游戏结束
+        RemoveEvents();
     }
 
     private void ChangeAP(int value)
@@ -70,11 +89,11 @@ public class PlayerRole : CharacterBase
         {
             int temp = roleData.Aesist;
             roleData.Aesist = 0;
-            aesist.gameObject.SetActive(false);
+            aesistzTrans.gameObject.SetActive(false);
             return temp;
         }
-        aesist.gameObject.SetActive(true);
-        aesist.GetComponentInChildren<TMP_Text>().text = roleData.Aesist.ToString();
+        aesistzTrans.gameObject.SetActive(true);
+        aesistzTrans.GetComponentInChildren<TMP_Text>().text = roleData.Aesist.ToString();
         return 0;
     }
 

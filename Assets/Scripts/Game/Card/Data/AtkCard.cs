@@ -23,12 +23,10 @@ public class AtkCard : CardBase
         AddBuffs(EAddBuffTime.BeforeAttack, target);
 
         // 造成伤害
-        var damage = new Damage(BaseDamage);
-        damage = BattleManager.Instance.Player.CalculateAtkDamage(damage);
-        damage = target.CalculateHitDamage(damage);
+        int damageValue = GameTools.CalculateDamage(BattleManager.Instance.Player, target, BaseDamage);
         for (int i = 0; i < HitCount; i++)
         {
-            target.ChangeAttribute(ERoleAttribute.HP, -damage.GetDamage());
+            target.ChangeAttribute(ERoleAttribute.HP, -damageValue);
         }
 
         // 造成伤害后
@@ -51,7 +49,7 @@ public class AtkCard : CardBase
             tempDamage = BattleManager.Instance.EnemyRoles[i].CalculateAtkDamage(tempDamage);
             for (int j = 0; j < HitCount; j++)
             {
-                BattleManager.Instance.EnemyRoles[i].ChangeAttribute(ERoleAttribute.HP, -damage.GetDamage());
+                BattleManager.Instance.EnemyRoles[i].ChangeAttribute(ERoleAttribute.HP, -damage.GetDamageValue());
             }
         }
 

@@ -4,7 +4,7 @@ using System;
 [Serializable]
 public class EnemyGiveCardAction : EnemyDoAction
 {
-    public override EEnemyActionType ActionType => EEnemyActionType.GiveCard;
+    public override EEnemyActionType ActionType => EEnemyActionType.Mix;
     public List<int> cardIDs;
     public override void DoAction()
     {

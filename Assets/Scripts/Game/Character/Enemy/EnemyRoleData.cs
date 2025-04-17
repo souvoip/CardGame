@@ -23,5 +23,10 @@ public class EnemyRoleData : RoleData
             Actions[i].self = self;
         }
     }
+
+    public EnemyDoAction GetRandomAction()
+    {
+        return Actions[UnityEngine.Random.Range(0, Actions.Count)];
+    }
 }
 

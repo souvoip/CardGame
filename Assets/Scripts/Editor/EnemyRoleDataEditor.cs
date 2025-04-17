@@ -27,6 +27,9 @@ public class EnemyRoleDataEditor : Editor
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
+        EditorGUILayout.Space(20);
+        GUILayout.Label("EDIT ACTIONS ======================");
+
         serializedObject.Update();
         // 绘制类型选择下拉菜单
         DrawTypeSelector();
@@ -35,11 +38,6 @@ public class EnemyRoleDataEditor : Editor
         DrawActionProperties();
         AddActionBtn();
 
-        // 绘制可交互的动作列表
-        DrawInteractiveActionList();
-
-        // 绘制选中动作的详细信息
-        DrawSelectedActionDetails();
 
         serializedObject.ApplyModifiedProperties();
     }
@@ -87,7 +85,7 @@ public class EnemyRoleDataEditor : Editor
             EEnemyActionType.GetBuff => new EnemyGetBuffAction(),
             EEnemyActionType.GiveBuff => new EnemyGiveBuffAction(),
             EEnemyActionType.Summon => new EnemySummonAction(),
-            EEnemyActionType.GiveCard => new EnemyGiveCardAction(),
+            EEnemyActionType.GiveCards => new EnemyGiveCardAction(),
             _ => throw new ArgumentOutOfRangeException()
         };
 
@@ -99,63 +97,6 @@ public class EnemyRoleDataEditor : Editor
     {
         currentActionType = (editActionProperty.managedReferenceValue as EnemyDoAction)?.ActionType
                              ?? EEnemyActionType.Attack;
-    }
-
-    private void DrawInteractiveActionList()
-    {
-        EditorGUILayout.LabelField("Actions List", EditorStyles.boldLabel);
-
-        for (int i = 0; i < actionsProperty.arraySize; i++)
-        {
-            EditorGUILayout.BeginHorizontal();
-
-            // 显示条目内容
-            var action = actionsProperty.GetArrayElementAtIndex(i);
-            EditorGUILayout.PropertyField(action, new GUIContent($"Action {i}"), false);
-
-            // 选择按钮
-            if (GUILayout.Button("Select", GUILayout.Width(60)))
-            {
-                selectedIndexProperty.intValue = i;
-            }
-
-            // 删除按钮
-            if (GUILayout.Button("×", GUILayout.Width(20)))
-            {
-                actionsProperty.DeleteArrayElementAtIndex(i);
-                selectedIndexProperty.intValue = -1;
-            }
-
-            EditorGUILayout.EndHorizontal();
-        }
-
-        // 添加新动作按钮
-        if (GUILayout.Button("Add New Action"))
-        {
-            actionsProperty.arraySize++;
-            selectedIndexProperty.intValue = actionsProperty.arraySize - 1;
-        }
-    }
-
-    private void DrawSelectedActionDetails()
-    {
-        if (selectedIndexProperty.intValue < 0 ||
-            selectedIndexProperty.intValue >= actionsProperty.arraySize)
-            return;
-
-        EditorGUILayout.Space(20);
-        EditorGUILayout.LabelField("Selected Action Details", EditorStyles.boldLabel);
-
-        var selectedAction = actionsProperty.GetArrayElementAtIndex(selectedIndexProperty.intValue);
-
-        // 遍历并绘制所有子属性
-        var iterator = selectedAction.Copy();
-        var enterChildren = true;
-        while (iterator.NextVisible(enterChildren))
-        {
-            EditorGUILayout.PropertyField(iterator, true);
-            enterChildren = false;
-        }
     }
 
     private void AddActionBtn()

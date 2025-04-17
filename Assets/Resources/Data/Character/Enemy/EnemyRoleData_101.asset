@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e88fa94cf21ac04ebd00c30325b57ac, type: 3}
+  m_Name: EnemyRoleData_101
+  m_EditorClassIdentifier: 
+  ID: 101
+  Name: "\u6D4B\u8BD5"
+  Sex: 0
+  Age: 20
+  Level: 1
+  Exp: 20
+  MaxHP: 50
+  HP: 50
+  MaxMP: 50
+  MP: 50
+  Aesist: 0
+  Shield: 0
+  Actions:
+  - rid: 5035967028884406340
+  - rid: 5035967051556978754
+  - rid: 5035967051556978756
+  SelectedActionIndex: 0
+  EditAction:
+    rid: 5035967051556978757
+  references:
+    version: 2
+    RefIds:
+    - rid: 5035967028884406340
+      type: {class: EnemyAttackAction, ns: , asm: Assembly-CSharp}
+      data:
+        BaseDamage:
+          DamageValue: 8
+          DamageRate: 1
+        AtkCount: 1
+    - rid: 5035967051556978754
+      type: {class: EnemyGetAesistAction, ns: , asm: Assembly-CSharp}
+      data:
+        baseBlock:
+          Value: 10
+          Rate: 1
+    - rid: 5035967051556978756
+      type: {class: EnemyGetBuffAction, ns: , asm: Assembly-CSharp}
+      data:
+        buffs:
+        - BuffID: 2
+          Stacks: 1
+          Target: 0
+          AddBuffTime: 0
+    - rid: 5035967051556978757
+      type: {class: EnemyAttackAction, ns: , asm: Assembly-CSharp}
+      data:
+        BaseDamage:
+          DamageValue: 0
+          DamageRate: 0
+        AtkCount: 0
