@@ -53,4 +53,36 @@ public static class GameTools
         defender.CalculateHitDamage(tempDamage);
         return tempDamage.GetDamageValue();
     }
+
+    public static void GetDetailInfosWithCardFeatures(ECardFeatures features, ref List<DetailInfo> detailInfos)
+    {
+        if((features & ECardFeatures.Void) == ECardFeatures.Void)
+        {
+            var info = new DetailInfo();
+            info.Title = "虚无";
+            info.Description = "如果回合结束还在手牌中则消耗";
+            detailInfos.Add(info);
+        }
+        if ((features & ECardFeatures.Hold) == ECardFeatures.Hold)
+        {
+            var info = new DetailInfo();
+            info.Title = "保留";
+            info.Description = "回合结束时保留";
+            detailInfos.Add(info);
+        }
+        if ((features & ECardFeatures.Permanent) == ECardFeatures.Permanent)
+        {
+            var info = new DetailInfo();
+            info.Title = "固有";
+            info.Description = "在回合开始时获取";
+            detailInfos.Add(info);
+        }
+        if ((features & ECardFeatures.Cost) == ECardFeatures.Cost)
+        {
+            var info = new DetailInfo();
+            info.Title = "消耗";
+            info.Description = "使用后在本次战斗中移除";
+            detailInfos.Add(info);
+        }
+    }
 }

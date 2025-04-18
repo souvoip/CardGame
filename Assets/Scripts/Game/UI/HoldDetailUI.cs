@@ -9,20 +9,21 @@ public class HoldDetailUI : MonoBehaviour
     private GameObject infoItemPrefab;
 
     [SerializeField]
-    private float intervalY = 10;
+    private float intervalX = 10;
 
     [SerializeField]
-    private float intervalX = 10;
+    private float intervalY = 10;
 
     [SerializeField]
     private float maxHeight = 400;
 
-    public void ShowInfos(string[] infos)
+    public void ShowInfos(Vector2 pos, List<DetailInfo> infos)
     {
-        StartCoroutine(ShowInfosCoroutine(infos));
+        gameObject.SetActive(true);
+        StartCoroutine(ShowInfosCoroutine(pos, infos));
     }
 
-    private IEnumerator ShowInfosCoroutine(string[] infos)
+    private IEnumerator ShowInfosCoroutine(Vector2 pos, List<DetailInfo> infos)
     {
         // 清理所有子对象
         for (int i = 0; i < transform.childCount; i++)
@@ -30,7 +31,7 @@ public class HoldDetailUI : MonoBehaviour
             Destroy(transform.GetChild(i).gameObject);
         }
         // 添加新的子对象
-        for (int i = 0; i < infos.Length; i++)
+        for (int i = 0; i < infos.Count; i++)
         {
             GameObject go = Instantiate(infoItemPrefab, transform);
             go.GetComponent<InfoItem>().SetInfo(infos[i]);
@@ -47,6 +48,8 @@ public class HoldDetailUI : MonoBehaviour
             height += transform.GetChild(i).GetComponent<RectTransform>().rect.height + intervalY;
             if (height > maxHeight)
             {
+                Debug.Log(transform.GetChild(i).GetComponent<RectTransform>().rect.width);
+                Debug.Log(transform.GetChild(i).GetComponent<RectTransform>().rect.height);
                 offsetX += transform.GetChild(i).GetComponent<RectTransform>().rect.width + intervalX;
                 offsetY = 0;
                 height = 0;
@@ -55,11 +58,21 @@ public class HoldDetailUI : MonoBehaviour
                 height += transform.GetChild(i).GetComponent<RectTransform>().rect.height + intervalY;
             }
         }
+        // 计算调整UI位置，使其在屏幕内
+        float rHeight = 0;
+        if (offsetX > 0) { rHeight = maxHeight; }
+        else { rHeight = height; }
+        Vector3 newPos = pos;
+        if (pos.y - rHeight < 0)
+        {
+            newPos.y -= pos.y - rHeight;
+        }
+        transform.position = newPos;
     }
 
     public void Hide()
     {
-
+        gameObject.SetActive(false);
     }
 
     // Test =======
@@ -67,7 +80,17 @@ public class HoldDetailUI : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            ShowInfos(new string[] { "大师傅士大夫\n阿三大苏打实打实的", "大师傅士大夫\n阿三大苏打实打实的", "大师傅士大夫\n阿三大苏打实打实的", "大师傅士大夫\n阿三大苏打实打实的", "大师傅士大夫\n阿三大苏打实打实的", "大师傅士\n 双方都是垫付多少粉丝地方让他我让他 双方都是巅峰赛的适当放松的方式的方式\n适当放松", "大师傅士大夫\n阿三大苏打实打实的", "大师傅士大夫\n阿三大苏打实打实的", "大师傅士大夫\n阿三大苏打实打实的", "大师傅士\n 双方都是垫付多少粉丝地方让他我让他 双方都是巅峰赛的适当放松的方式的方式\n适当放松" });
+            List<DetailInfo> infos = new List<DetailInfo>();
+            Sprite testSprite = Resources.Load<Sprite>("Image/BuffIcon/002");
+            for (int i = 0; i < 10; i++)
+            {
+                DetailInfo info = new DetailInfo();
+                info.Title = "测试" + i;
+                info.Icon = testSprite;
+                info.Description = "这是测试" + i;
+                infos.Add(info);
+            }
+            ShowInfos(new Vector2(100, 100), infos);
         }
     }
 }

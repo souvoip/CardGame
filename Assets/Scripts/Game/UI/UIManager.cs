@@ -8,6 +8,8 @@ public class UIManager : MonoBehaviour
 
     public CardViewUI cardView;
 
+    public HoldDetailUI holdDetailUI;
+
     private void Awake()
     {
         if (Instance == null) { Instance = this; }

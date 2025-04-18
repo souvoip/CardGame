@@ -7,6 +7,7 @@ public abstract class BuffBase : ScriptableObject
     public int buffID;          // 唯一标识
     public string displayName;     // 显示名称
     public string iconPath;        // 图标
+    public string description; // 描述
     public Color tintColor = Color.white; // 图标颜色
 
     [Header("层数设置")]
@@ -82,5 +83,14 @@ public abstract class BuffBase : ScriptableObject
     public virtual void RemoveEvents()
     {
         TurnManager.OnEnemyTurnEnd -= OnTurnEnd;
+    }
+
+    public virtual DetailInfo GetDetailInfo()
+    {
+        var info = new DetailInfo();
+        info.Title = displayName;
+        info.Icon = Resources.Load<Sprite>(BuffIcon.BasePath + iconPath);
+        info.Description = description;
+        return info;
     }
 }

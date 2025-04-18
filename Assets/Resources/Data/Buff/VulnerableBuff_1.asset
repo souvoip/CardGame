@@ -15,6 +15,7 @@ MonoBehaviour:
   buffID: 1
   displayName: "\u6613\u4F24"
   iconPath: 001
+  description: "\u53D7\u5230\u4F24\u5BB3\u63D0\u53471.5\u500D"
   tintColor: {r: 1, g: 1, b: 1, a: 1}
   minStacks: 0
   maxStacks: 99

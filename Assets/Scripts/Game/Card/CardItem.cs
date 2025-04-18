@@ -1,17 +1,17 @@
-using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler, IPointerDownHandler
+public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler, IPointerDownHandler, IPointerEnterHandler
 {
     public static string baseCardImgPath = "Image/Card/";
 
     #region component
     [SerializeField]
-    private TMP_Text nameTxt; 
+    private TMP_Text nameTxt;
     [SerializeField]
     private TMP_Text feeTxt;
     [SerializeField]
@@ -75,7 +75,7 @@ public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler,
     {
         SetPos();
     }
-        
+
     public void Init(CardBase cardData, UnityAction<CardItem> onMouseMoveIn, UnityAction onMouseMoveOut, UnityAction<CardItem> onMouseDown)
     {
         this.cardData = cardData;
@@ -94,19 +94,29 @@ public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler,
         float rotZ = isSelect ? 0 : GameTools.GetAngleInDegrees(root, transform.position);
         // 选中卡牌大小提高成1.25倍
         float scale = isSelect ? 1.25f : 1f;
-        //设置卡牌位置  
+        //设置卡牌位置
         float x = root.x + Mathf.Cos(rot) * radius;
         float y = isSelect ? -3.4f : root.y + Mathf.Sin(rot) * radius;
-        transform.position = Vector3.Lerp(transform.position, new Vector3(x, y, root.z + selectZ), Time.deltaTime * animSpeed);
-        transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(scale, scale, scale), Time.deltaTime * animSpeed);
-        Quaternion rotationQuaternion = Quaternion.Euler(new Vector3(0, 0, rotZ));
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, rotationQuaternion, Time.deltaTime * animSpeed * 30);
+        if (isSelect)
+        {
+            transform.position = new Vector3(x, y, root.z + selectZ);
+            transform.localScale = new Vector3(scale, scale, scale);
+            Quaternion rotationQuaternion = Quaternion.Euler(new Vector3(0, 0, rotZ));
+            transform.rotation = rotationQuaternion;
+        }
+        else
+        {
+            transform.position = Vector3.Lerp(transform.position, new Vector3(x, y, root.z + selectZ), Time.deltaTime * animSpeed);
+            transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(scale, scale, scale), Time.deltaTime * animSpeed);
+            Quaternion rotationQuaternion = Quaternion.Euler(new Vector3(0, 0, rotZ));
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, rotationQuaternion, Time.deltaTime * animSpeed * 30);
+        }
     }
 
     public void UpdateData()
     {
         nameTxt.text = cardData.Name;
-        if(cardData.Fee > 0)
+        if (cardData.Fee > 0)
         {
             feeTxt.transform.parent.gameObject.SetActive(true);
             feeTxt.text = cardData.Fee.ToString();
@@ -125,14 +135,33 @@ public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler,
         onMouseMoveIn?.Invoke(this);
     }
 
+    [SerializeField]
+    private Vector2 tempOffset;
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        StartCoroutine(ShowCardDetailInfoCoroutine());
+    }
+
     public void OnPointerExit(PointerEventData eventData)
     {
         onMouseMoveOut?.Invoke();
+        UIManager.Instance.holdDetailUI.Hide();
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
         onMouseDown?.Invoke(this);
+        UIManager.Instance.holdDetailUI.Hide();
+    }
+
+    private IEnumerator ShowCardDetailInfoCoroutine()
+    {
+        yield return null;
+        // 显示提示
+        Vector3 spos = Camera.main.WorldToScreenPoint(transform.position);
+        Vector2 upos = new Vector2(spos.x + tempOffset.x, spos.y + tempOffset.y);
+        UIManager.Instance.holdDetailUI.ShowInfos(upos, cardData.GetDetailInfos());
     }
 }
 

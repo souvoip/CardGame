@@ -26,6 +26,11 @@ public class BuffItem
         Target = (EBuffTarget)jSONObject.GetField("Target").i;
         AddBuffTime = (EAddBuffTime)jSONObject.GetField("AddBuffTime").i;
     }
+
+    public DetailInfo GetDetailInfo()
+    {
+        return BuffDataManager.GetBuff(BuffID).GetDetailInfo();
+    }
 }
 
 /// <summary>

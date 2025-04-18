@@ -124,6 +124,17 @@ public abstract class CardBase : ScriptableObject
             }
         }
     }
+
+    public virtual List<DetailInfo> GetDetailInfos()
+    {
+        List<DetailInfo> infos = new List<DetailInfo>();
+        GameTools.GetDetailInfosWithCardFeatures(Features, ref infos);
+        foreach (var item in Buffs)
+        {
+            infos.Add(item.GetDetailInfo());
+        }
+        return infos;
+    }
 }
 
 public enum ECardRare

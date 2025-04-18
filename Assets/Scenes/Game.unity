@@ -1512,9 +1512,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   infoItemPrefab: {fileID: 5012485461018611465, guid: 10d7218001add8e4eb32a09d3dd585bf, type: 3}
-  intervalY: 10
   intervalX: 10
-  maxHeight: 600
+  intervalY: 10
+  maxHeight: 540
 --- !u!1 &647039261
 GameObject:
   m_ObjectHideFlags: 0
@@ -2872,6 +2872,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardView: {fileID: 1718405271}
+  holdDetailUI: {fileID: 640055201}
 --- !u!1 &1193700656
 GameObject:
   m_ObjectHideFlags: 0
