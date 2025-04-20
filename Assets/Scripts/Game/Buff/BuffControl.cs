@@ -111,4 +111,9 @@ public class BuffControl : MonoBehaviour
             }
         }
     }
+
+    public List<DetailInfo> GetBuffInfos()
+    {
+        return activeBuffs.Select(b => b.GetDetailInfo()).ToList();
+    }
 }

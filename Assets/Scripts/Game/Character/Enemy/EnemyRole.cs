@@ -41,14 +41,22 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
         TurnManager.OnEnemyTurnStart -= OnEnemyTurnStart;
     }
 
+    [SerializeField]
+    private Vector2 tempInfoOffset;
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         BattleManager.Instance.CardManager.SelectEnemy(this);
+
+        Vector3 pos = Camera.main.WorldToScreenPoint(transform.position);
+        UIManager.Instance.holdDetailUI.ShowInfos(pos, tempInfoOffset, buffControl.GetBuffInfos());
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         BattleManager.Instance.CardManager.SelectEnemy(null);
+
+        UIManager.Instance.holdDetailUI.Hide();
     }
 
     public override void ChangeAttribute(ERoleAttribute attribute, int value)

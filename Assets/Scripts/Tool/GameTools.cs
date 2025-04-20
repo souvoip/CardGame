@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -84,5 +85,13 @@ public static class GameTools
             info.Description = "使用后在本次战斗中移除";
             detailInfos.Add(info);
         }
+    }
+
+    public static float GetAngleBetweenObjects(this Transform tran1, Transform tran2)
+    {
+        Vector2 direction = tran2.position - tran1.position;
+        float angle = Mathf.Atan2(direction.y, direction.x);
+        angle = Mathf.Rad2Deg * angle;
+        return angle;
     }
 }

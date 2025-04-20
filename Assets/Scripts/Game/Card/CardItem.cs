@@ -160,8 +160,7 @@ public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler,
         yield return null;
         // 显示提示
         Vector3 spos = Camera.main.WorldToScreenPoint(transform.position);
-        Vector2 upos = new Vector2(spos.x + tempOffset.x, spos.y + tempOffset.y);
-        UIManager.Instance.holdDetailUI.ShowInfos(upos, cardData.GetDetailInfos());
+        UIManager.Instance.holdDetailUI.ShowInfos(spos, tempOffset, cardData.GetDetailInfos());
     }
 }
 

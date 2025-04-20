@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class PlayerRole : CharacterBase
+public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField]
     private StateBar hpBar;
@@ -107,5 +108,19 @@ public class PlayerRole : CharacterBase
 
         // 清空抵抗 TODO: 需要实现 Buff 对抵抗的影响
         ChangeAesist(int.MinValue);
+    }
+
+    [SerializeField]
+    private Vector2 tempInfoOffset;
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        Vector3 pos = Camera.main.WorldToScreenPoint(transform.position);
+        UIManager.Instance.holdDetailUI.ShowInfos(pos, tempInfoOffset, buffControl.GetBuffInfos());
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        UIManager.Instance.holdDetailUI.Hide();
     }
 }

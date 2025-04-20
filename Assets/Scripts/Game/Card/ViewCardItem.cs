@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ViewCardItem : MonoBehaviour
+public class ViewCardItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     #region component
     [SerializeField]
@@ -20,6 +21,9 @@ public class ViewCardItem : MonoBehaviour
     [SerializeField]
     private TMP_Text descTxt;
     #endregion
+
+    [SerializeField]
+    private Vector2 tempOffset;
 
     public CardBase cardData;
 
@@ -39,5 +43,15 @@ public class ViewCardItem : MonoBehaviour
         cardImg.sprite = Resources.Load<Sprite>(CardItem.baseCardImgPath + cardData.ImagePath);
         typeTxt.text = cardData.GetCardTypeeString();
         descTxt.text = cardData.Desc;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        UIManager.Instance.holdDetailUI.ShowInfos(transform.position, tempOffset, cardData.GetDetailInfos());
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        UIManager.Instance.holdDetailUI.Hide();
     }
 }

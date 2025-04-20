@@ -17,9 +17,12 @@ public class HoldDetailUI : MonoBehaviour
     [SerializeField]
     private float maxHeight = 400;
 
-    public void ShowInfos(Vector2 pos, List<DetailInfo> infos)
+    public void ShowInfos(Vector2 pos, Vector2 offset, List<DetailInfo> infos)
     {
+        if(infos == null || infos.Count == 0) { return; }
         gameObject.SetActive(true);
+        float scale = Screen.width / 1920f;
+        pos += offset * scale;
         StartCoroutine(ShowInfosCoroutine(pos, infos));
     }
 
@@ -90,7 +93,7 @@ public class HoldDetailUI : MonoBehaviour
                 info.Description = "这是测试" + i;
                 infos.Add(info);
             }
-            ShowInfos(new Vector2(100, 100), infos);
+            ShowInfos(new Vector2(100, 100), Vector2.zero, infos);
         }
     }
 }

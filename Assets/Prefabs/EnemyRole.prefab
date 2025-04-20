@@ -198,6 +198,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hpBar: {fileID: 7627031066011497835}
   aesistzTrans: {fileID: 491079771183425166}
+  tempInfoOffset: {x: 160, y: 200}
 --- !u!114 &992592048683393316
 MonoBehaviour:
   m_ObjectHideFlags: 0
