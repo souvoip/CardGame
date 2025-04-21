@@ -706,7 +706,8 @@ MonoBehaviour:
   cardImg: {fileID: 4785890986645983426}
   typeTxt: {fileID: 5026002846464499185}
   descTxt: {fileID: 6374795383297592087}
-  tempOffset: {x: 110, y: 130}
+  tempOffset: {x: 115, y: 155}
+  scale: 1.2
   cardData: {fileID: 0}
 --- !u!1 &8306119411653666693
 GameObject:

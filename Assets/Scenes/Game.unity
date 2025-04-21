@@ -1473,6 +1473,7 @@ GameObject:
   m_Component:
   - component: {fileID: 640055200}
   - component: {fileID: 640055201}
+  - component: {fileID: 640055202}
   m_Layer: 5
   m_Name: HoldDetailUI
   m_TagString: Untagged
@@ -1487,7 +1488,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 640055199}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1512,9 +1513,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   infoItemPrefab: {fileID: 5012485461018611465, guid: 10d7218001add8e4eb32a09d3dd585bf, type: 3}
+  cg: {fileID: 640055202}
   intervalX: 10
   intervalY: 10
   maxHeight: 540
+--- !u!225 &640055202
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 640055199}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &647039261
 GameObject:
   m_ObjectHideFlags: 0
@@ -4490,7 +4504,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
+    m_Left: 30
     m_Right: 0
     m_Top: 30
     m_Bottom: 0

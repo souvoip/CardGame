@@ -187,7 +187,7 @@ public enum ECardFeatures
     /// <summary>
     /// 固有
     /// </summary>
-    Permanent = 1 << 1,
+    Fixed = 1 << 1,
     /// <summary>
     /// 虚无
     /// </summary>

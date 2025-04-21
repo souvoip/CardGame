@@ -36,6 +36,7 @@ public enum EExtractCardType
     Ability = 1 << 2,
     State = 1 << 3,
     Other = 1 << 4,
+    All = Atkack | Skill | Ability | State | Other
 }
 
 public enum EExtractMode

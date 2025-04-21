@@ -71,7 +71,7 @@ public static class GameTools
             info.Description = "回合结束时保留";
             detailInfos.Add(info);
         }
-        if ((features & ECardFeatures.Permanent) == ECardFeatures.Permanent)
+        if ((features & ECardFeatures.Fixed) == ECardFeatures.Fixed)
         {
             var info = new DetailInfo();
             info.Title = "固有";

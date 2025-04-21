@@ -25,6 +25,9 @@ public class ViewCardItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     [SerializeField]
     private Vector2 tempOffset;
 
+    [SerializeField]
+    private float scale = 1.2f;
+
     public CardBase cardData;
 
     public void UpdateData(CardBase cardData)
@@ -48,10 +51,12 @@ public class ViewCardItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public void OnPointerEnter(PointerEventData eventData)
     {
         UIManager.Instance.holdDetailUI.ShowInfos(transform.position, tempOffset, cardData.GetDetailInfos());
+        transform.localScale = scale * Vector3.one;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         UIManager.Instance.holdDetailUI.Hide();
+        transform.localScale = Vector3.one;
     }
 }

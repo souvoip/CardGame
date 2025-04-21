@@ -26,3 +26,4 @@ MonoBehaviour:
   Shield: 0
   MaxAP: 3
   AP: 3
+  DrawCardCount: 5

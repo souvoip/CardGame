@@ -8,4 +8,9 @@ public class PlayerRoleData : RoleData
     public int MaxAP;
 
     public int AP;
+
+    /// <summary>
+    /// 每回抽取的卡牌数量
+    /// </summary>
+    public int DrawCardCount;
 }

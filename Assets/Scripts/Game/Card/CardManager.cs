@@ -117,13 +117,17 @@ public class CardManager : MonoBehaviour
             playerAllCards.Add(CardDataManager.GetCard(1));
             playerAllCards.Add(CardDataManager.GetCard(101));
         }
+        playerAllCards.Add(CardDataManager.GetCard(-1));
         playerAllCards.Add(CardDataManager.GetCard(2));
         playerAllCards.Add(CardDataManager.GetCard(102));
         playerAllCards.Add(CardDataManager.GetCard(201));
         playerAllCards.Add(CardDataManager.GetCard(301));
         InitBattleCardData();
 
-        BattleManager.Instance.TestBattle();
+        TimerTools.Timer.Once(0.1f, () =>
+        {
+            BattleManager.Instance.TestBattle();
+        });
         #endregion
     }
 
@@ -208,10 +212,15 @@ public class CardManager : MonoBehaviour
 
     private void TurnStart()
     {
-        // 抽卡 TODO: 需要完善,抽取固有卡牌
-        for (int i = 0; i < 5; i++)
+        // 抽卡 TODO: 需要完善,抽取固有卡牌, 每回抽取的卡牌数量
+        int reduce = 0;
+        if (TurnManager.CurrentTurnCount == 1)
         {
-            DrawCards(EExtractMode.Order, EExtractCardType.Other | EExtractCardType.Atkack | EExtractCardType.Skill | EExtractCardType.Ability | EExtractCardType.State);
+            reduce = DrawFixedCards();
+        }
+        for (int i = 0; i < BattleManager.Instance.Player.RoleData.DrawCardCount - reduce; i++)
+        {
+            DrawCards(EExtractMode.Order, EExtractCardType.All);
         }
     }
 
@@ -245,6 +254,7 @@ public class CardManager : MonoBehaviour
     /// <param name="cardType"></param>
     private void DrawCards(EExtractMode mode, EExtractCardType cardType)
     {
+        if(cardList.Count > CardMaxCount) { return; }
         if (drawRegionCards.Count == 0)
         {
             if (!ShuffleCards()) { return; }
@@ -264,7 +274,35 @@ public class CardManager : MonoBehaviour
                 handRegionCards.Add(cardTemp);
                 AddCard(cardTemp);
                 break;
+            case EExtractMode.Specified:
+                break;
         }
+    }
+
+    /// <summary>
+    /// 抽取固有卡牌
+    /// </summary>
+    /// <returns> 抽取的数量 </returns>
+    private int DrawFixedCards()
+    {
+        int count = 0;
+        CardBase cardTemp;
+        for (int i = 0; i < drawRegionCards.Count; i++)
+        {
+            if ((drawRegionCards[i].Features & ECardFeatures.Fixed) == ECardFeatures.Fixed)
+            {
+                cardTemp = drawRegionCards[i];
+                drawRegionCards.RemoveAt(i);
+                handRegionCards.Add(cardTemp);
+                AddCard(cardTemp);
+                count++;
+                if(count >= BattleManager.Instance.Player.RoleData.DrawCardCount)
+                {
+                    break;
+                }
+            }
+        }
+        return count;
     }
 
     /// <summary>

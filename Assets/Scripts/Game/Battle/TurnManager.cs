@@ -11,6 +11,8 @@ public class TurnManager : MonoBehaviour
     public static ETurnType TurnType;
     public static TurnManager Instance;
 
+    public static int CurrentTurnCount = 0;
+
     private void Awake()
     {
         if (Instance == null)
@@ -21,6 +23,7 @@ public class TurnManager : MonoBehaviour
 
     public void PlayerTurnStart()
     {
+        CurrentTurnCount++;
         Debug.Log("Player Turn Start");
         TurnType = ETurnType.Player;
         OnPlayerTurnStart?.Invoke();
