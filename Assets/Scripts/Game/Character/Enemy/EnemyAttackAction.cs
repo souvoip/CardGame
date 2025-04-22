@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 [Serializable]
 public class EnemyAttackAction : EnemyDoAction
@@ -9,6 +10,8 @@ public class EnemyAttackAction : EnemyDoAction
 
     public int AtkCount;
 
+    private ActionInfo actionInfo;
+
     public override void DoAction()
     {
         // 攻击玩家
@@ -17,5 +20,31 @@ public class EnemyAttackAction : EnemyDoAction
         {
             BattleManager.Instance.Player.ChangeAttribute(ERoleAttribute.HP, -damageValue);
         }
+    }
+
+    public override ActionInfo GetActionInfo()
+    {
+        if (actionInfo != null)
+        {
+            UpdateActionInfo();
+            return actionInfo;
+        }
+        actionInfo = new ActionInfo();
+        actionInfo.icon = Resources.Load<Sprite>("Image/EnemyIntention/001");
+        int dv = GameTools.CalculateDamage(self, BattleManager.Instance.Player, BaseDamage);
+        actionInfo.text = dv.ToString();
+        actionInfo.detailInfo = new DetailInfo();
+        actionInfo.detailInfo.Title = "策略";
+        actionInfo.detailInfo.Icon = actionInfo.icon;
+        actionInfo.detailInfo.Description = $"将会对玩家造成{dv}点伤害。";
+        return actionInfo;
+    }
+
+    private void UpdateActionInfo()
+    {
+        int dv = GameTools.CalculateDamage(self, BattleManager.Instance.Player, BaseDamage);
+
+        actionInfo.text = dv.ToString();
+        actionInfo.detailInfo.Description = $"将会对玩家造成{dv}点伤害。";
     }
 }

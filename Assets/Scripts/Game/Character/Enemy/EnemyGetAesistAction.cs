@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 [Serializable]
 public class EnemyGetAesistAction : EnemyDoAction
@@ -7,9 +8,24 @@ public class EnemyGetAesistAction : EnemyDoAction
 
     public Block baseBlock;
 
+    private ActionInfo actionInfo;
+
     public override void DoAction()
     {
-        // »ñÈ¡µÖ¿¹ TODO: ĞèÒª¼ÆËãÏà¹ØBuff
+        // è·å–æŠµæŠ— TODO: éœ€è¦è®¡ç®—ç›¸å…³Buff
         self.ChangeAttribute(ERoleAttribute.Aesist, baseBlock.GetBlockValue());
+    }
+
+    public override ActionInfo GetActionInfo()
+    {
+        if(actionInfo != null) { return actionInfo; }
+        actionInfo = new ActionInfo();
+        actionInfo.icon = Resources.Load<Sprite>("Image/EnemyIntention/002");
+        actionInfo.text = baseBlock.GetBlockValue().ToString();
+        actionInfo.detailInfo = new DetailInfo();
+        actionInfo.detailInfo.Title = "ç­–ç•¥";
+        actionInfo.detailInfo.Icon = actionInfo.icon;
+        actionInfo.detailInfo.Description = $"å°†ä¼šè·å¾—{baseBlock.GetBlockValue()}ç‚¹æŠµæŠ—ã€‚";
+        return actionInfo;
     }
 }

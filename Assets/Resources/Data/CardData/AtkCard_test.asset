@@ -22,7 +22,7 @@ MonoBehaviour:
   Fee: 0
   Buffs: []
   Extract: []
-  Features: -1
+  Features: 11
   BaseDamage:
     DamageValue: 5
     DamageRate: 1

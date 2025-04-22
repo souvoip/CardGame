@@ -10,15 +10,10 @@ public class EnemyRoleDataEditor : Editor
     private SerializedProperty editActionProperty;
     private EEnemyActionType currentActionType;
 
-    private SerializedProperty actionsProperty;
-    private SerializedProperty selectedIndexProperty;
-
     private EnemyRoleData enemyRoleData;
 
     private void OnEnable()
     {
-        actionsProperty = serializedObject.FindProperty("Actions");
-        selectedIndexProperty = serializedObject.FindProperty("SelectedActionIndex");
         editActionProperty = serializedObject.FindProperty("EditAction");
         enemyRoleData = target as EnemyRoleData;
         UpdateCurrentActionType();

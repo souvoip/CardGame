@@ -10,9 +10,6 @@ public class EnemyRoleData : RoleData
     [SerializeReference]
     public List<EnemyDoAction> Actions = new List<EnemyDoAction>();
 
-    // 当前正在编辑的动作索引
-    public int SelectedActionIndex = -1;
-
     [SerializeReference]
     public EnemyDoAction EditAction;
 

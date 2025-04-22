@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -10,6 +11,9 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
     private StateBar hpBar;
     [SerializeField]
     private Transform aesistzTrans;
+    [SerializeField]
+    private EnemyIntention intention;
+
     /// <summary>
     /// 敌人数据 (需要完善)
     /// </summary>
@@ -32,13 +36,14 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
     {
         TurnManager.OnPlayerTurnStart += OnPlayerTurnStart;
         TurnManager.OnEnemyTurnStart += OnEnemyTurnStart;
-
+        EventCenter.GetInstance().AddEventListener(EventNames.CHARACTER_BUFF_UPDATA, UpdateBuff);
     }
 
     private void RemoveEvents()
     {
         TurnManager.OnPlayerTurnStart -= OnPlayerTurnStart;
         TurnManager.OnEnemyTurnStart -= OnEnemyTurnStart;
+        EventCenter.GetInstance().RemoveEventListener(EventNames.CHARACTER_BUFF_UPDATA, UpdateBuff);
     }
 
     [SerializeField]
@@ -49,7 +54,12 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
         BattleManager.Instance.CardManager.SelectEnemy(this);
 
         Vector3 pos = Camera.main.WorldToScreenPoint(transform.position);
-        UIManager.Instance.holdDetailUI.ShowInfos(pos, tempInfoOffset, buffControl.GetBuffInfos());
+        var infos = buffControl.GetBuffInfos();
+        if(currentRoundAction != null)
+        {
+            infos.Insert(0, currentRoundAction.GetActionInfo().detailInfo);
+        }
+        UIManager.Instance.holdDetailUI.ShowInfos(pos, tempInfoOffset, infos);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -111,12 +121,18 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
     private void OnPlayerTurnStart()
     {
         currentRoundAction = roleData.GetRandomAction();
+        intention.ShowIntention(currentRoundAction.GetActionInfo());
     }
 
     private void OnEnemyTurnStart()
     {
         // 清空抵抗 TODO: 需要实现 Buff 对抵抗的影响
         ChangeAesist(int.MinValue);
+    }
+
+    private void UpdateBuff()
+    {
+        intention.ShowIntention(currentRoundAction.GetActionInfo());
     }
 
     public void DoAction()

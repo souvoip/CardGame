@@ -37,6 +37,7 @@ public class BuffControl : MonoBehaviour
         }
 
         UpdateBuffUI(buff.buffID);
+        EventCenter.GetInstance().EventTrigger(EventNames.CHARACTER_BUFF_UPDATA);
     }
 
     public void RemoveBuff(int buffId)

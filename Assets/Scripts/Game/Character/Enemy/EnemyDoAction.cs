@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System;
+using UnityEngine;
 
 [Serializable]
 public abstract class EnemyDoAction
@@ -14,8 +15,17 @@ public abstract class EnemyDoAction
     /// <summary>
     /// TODO: 获取图标
     /// </summary>
-    public virtual void GetIcon() { }
+    public virtual ActionInfo GetActionInfo() { return null; }
 }
+
+
+public class ActionInfo
+{
+    public Sprite icon;
+    public string text;
+    public DetailInfo detailInfo;
+}
+
 
 public enum EEnemyActionType
 {
