@@ -58,4 +58,25 @@ public class AtkCard : CardBase
 
         base.UseCard();
     }
+
+    public override string GetDesc()
+    {
+        string desc = GetFeaturesDesc();
+        if(UseType == EUseType.Directivity) { desc += "造成"; }
+        else if(UseType == EUseType.NonDirectivity) { desc += "对所有敌人造成"; }
+        // 计算实际伤害
+        int baseDamageValue = BaseDamage.GetDamageValue();
+        int damageValue = GameTools.CalculateDamage(BattleManager.Instance.Player, BattleManager.Instance.CardManager.NowSelectEnemy, BaseDamage);
+        string damageStr = baseDamageValue > damageValue ? $"<color=#FF0000>{damageValue}</color>" : baseDamageValue == damageValue ? $"{damageValue}" : $"<color=#00FF00>{damageValue}</color>";
+        if(HitCount == 1)
+        {
+            desc += damageStr + "点伤害";
+        }
+        else
+        {
+            desc += damageStr + "点伤害" + HitCount + "次";
+        }
+        desc += "\n" + GetBuffsDesc() + Desc;
+        return desc;
+    }
 }

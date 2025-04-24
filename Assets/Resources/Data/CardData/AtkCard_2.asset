@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 2
   Name: "\u91CD\u51FB"
-  Desc: "\u9020\u62108\u70B9\u4F24\u5BB3\uFF0C\u7ED9\u4E882\u5C42\u6613\u662F\u4F24"
+  Desc: 
   ImagePath: 002
   CardType: 0
   UseType: 0

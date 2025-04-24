@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -116,5 +117,13 @@ public class BuffControl : MonoBehaviour
     public List<DetailInfo> GetBuffInfos()
     {
         return activeBuffs.Select(b => b.GetDetailInfo()).ToList();
+    }
+
+    public void ClearBuff()
+    {
+        for (int i = activeBuffs.Count - 1; i >= 0; i--)
+        {
+            RemoveBuff(activeBuffs[i].buffID);
+        }
     }
 }

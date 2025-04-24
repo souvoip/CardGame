@@ -38,8 +38,14 @@ public class MapItemBase : MonoBehaviour
             OnEnterEffect();
             MapManager.instance.UpdateMapStateInfo();
             MapManager.instance.CurrentLayer = Layer;
-
+            EnterEvent();
         }
+    }
+
+    protected virtual void EnterEvent()
+    {
+        // 默认设置为战斗场景
+        BattleManager.Instance.StartBattleTest();
     }
 
     public virtual void OnEnterEffect()

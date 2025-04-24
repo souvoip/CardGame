@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 201
   Name: "\u529B\u91CF\u589E\u5F3A"
-  Desc: "\u83B7\u5F971\u529B\u91CF"
+  Desc: 
   ImagePath: 201
   CardType: 2
   UseType: 1
@@ -26,5 +26,4 @@ MonoBehaviour:
     Target: 0
     AddBuffTime: 0
   Extract: []
-  UserOverRegion: 5
-  TurnOverRegion: 3
+  Features: 0

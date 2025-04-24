@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 102
   Name: "\u667A\u6167"
-  Desc: "\u62BD3\u5F20\u724C\\n\u6D88\u8017"
+  Desc: "\u62BD\u53D63\u5F20\u724C"
   ImagePath: 102
   CardType: 1
   UseType: 1
@@ -31,3 +31,4 @@ MonoBehaviour:
   BaseBlock:
     Value: 0
     Rate: 0
+  SkillCount: 1

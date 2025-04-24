@@ -10,6 +10,8 @@ public class UIManager : MonoBehaviour
 
     public HoldDetailUI holdDetailUI;
 
+    public MapManager mapUI;
+
     private void Awake()
     {
         if (Instance == null) { Instance = this; }

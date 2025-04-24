@@ -33,10 +33,20 @@ public class MapManager : MonoBehaviour
         //CreatorMap();
     }
 
-    //private void Start()
-    //{
-    //    CreatorMap();
-    //}
+    private void Start()
+    {
+        CreatorMap();
+    }
+
+    public void Show()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
 
     public void CreatorMap()
     {
@@ -108,7 +118,7 @@ public class MapManager : MonoBehaviour
     }
 
     /// <summary>
-    /// »ñÈ¡Ëæ»úµÄµØÍ¼ÀàĞÍ
+    /// è·å–éšæœºçš„åœ°å›¾ç±»å‹
     /// </summary>
     /// <returns></returns>
     public EMapItemType GetRandomMapItemType()
@@ -140,14 +150,14 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    #region Test
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
+    //#region Test
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.R))
+    //    {
 
-            CreatorMap();
-        }
-    }
-    #endregion
+    //        CreatorMap();
+    //    }
+    //}
+    //#endregion
 }

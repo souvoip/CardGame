@@ -82,6 +82,13 @@ public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler,
         this.onMouseMoveIn = onMouseMoveIn;
         this.onMouseMoveOut = onMouseMoveOut;
         this.onMouseDown = onMouseDown;
+
+        EventCenter.GetInstance().AddEventListener(EventNames.CHARACTER_BUFF_UPDATA, UpdateDesc);
+    }
+
+    private void OnDestroy()
+    {
+        EventCenter.GetInstance().RemoveEventListener(EventNames.CHARACTER_BUFF_UPDATA, UpdateDesc);
     }
 
     public void SetPos()
@@ -127,7 +134,12 @@ public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler,
         }
         cardImg.sprite = Resources.Load<Sprite>(baseCardImgPath + cardData.ImagePath);
         typeTxt.text = cardData.GetCardTypeeString();
-        descTxt.text = cardData.Desc;
+        descTxt.text = cardData.GetDesc();
+    }
+
+    public void UpdateDesc()
+    {
+        descTxt.text = cardData.GetDesc();
     }
 
     public void OnPointerMove(PointerEventData eventData)

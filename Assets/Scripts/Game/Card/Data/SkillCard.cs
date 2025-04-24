@@ -10,6 +10,10 @@ public class SkillCard : CardBase
     /// 给予的护盾值
     /// </summary>
     public Block BaseBlock;
+    /// <summary>
+    /// 次数
+    /// </summary>
+    public int SkillCount = 1;
 
     public SkillCard()
     {
@@ -38,5 +42,27 @@ public class SkillCard : CardBase
         AddBuffs(EAddBuffTime.AfterAttack, target);
 
         base.UseCard(target);
+    }
+
+    public override string GetDesc()
+    {
+        string desc = GetFeaturesDesc();
+        // 计算实际防护值
+        int baseBlockValue = BaseBlock.GetBlockValue();
+        //int damageValue = GameTools.CalculateDamage(BattleManager.Instance.Player, BattleManager.Instance.CardManager.NowSelectEnemy, BaseDamage);
+        //string damageStr = baseDamageValue > damageValue ? $"</color=#FF0000>{damageValue}</color>" : baseDamageValue == damageValue ? $"{damageValue}" : $"<color=#00FF00>{damageValue}</color>";
+        if(baseBlockValue != 0)
+        {
+            if (SkillCount == 1)
+            {
+                desc += "获取" + baseBlockValue + "抵抗";
+            }
+            else
+            {
+                desc += "获取" + baseBlockValue + "抵抗" + SkillCount + "次";
+            }
+            desc += "\n" + GetBuffsDesc() + Desc;
+        }
+        return desc;
     }
 }

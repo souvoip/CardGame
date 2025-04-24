@@ -51,7 +51,10 @@ public static class GameTools
     {
         var tempDamage = new Damage(damage);
         attacker.CalculateAtkDamage(tempDamage);
-        defender.CalculateHitDamage(tempDamage);
+        if(defender != null)
+        {
+            defender.CalculateHitDamage(tempDamage);
+        }
         return tempDamage.GetDamageValue();
     }
 

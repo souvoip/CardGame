@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: -1
   Name: "\u6D4B\u8BD5\u5361\u724C"
-  Desc: "\u6D4B\u8BD5\u5361\u724C\uFF0C\u5BF9\u6240\u6709\u654C\u4EBA\u9020\u62105\u4F24\u5BB3"
+  Desc: "\u6D4B\u8BD5\u5361\u724C"
   ImagePath: 001
   CardType: 0
   UseType: 1
@@ -24,6 +24,6 @@ MonoBehaviour:
   Extract: []
   Features: 11
   BaseDamage:
-    DamageValue: 5
+    DamageValue: 100
     DamageRate: 1
   HitCount: 1

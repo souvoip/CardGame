@@ -33,6 +33,11 @@ public class TempCardItem : MonoBehaviour
         }
         cardImg.sprite = Resources.Load<Sprite>(CardItem.baseCardImgPath + cardData.ImagePath);
         typeTxt.text = cardData.GetCardTypeeString();
-        descTxt.text = cardData.Desc;
+        descTxt.text = cardData.GetDesc();
+    }
+
+    public void UpdateDesc(CardBase cardData)
+    {
+        descTxt.text = cardData.GetDesc();
     }
 }

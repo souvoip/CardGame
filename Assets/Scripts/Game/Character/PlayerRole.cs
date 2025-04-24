@@ -123,4 +123,9 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
     {
         UIManager.Instance.holdDetailUI.Hide();
     }
+
+    public void ClearBattleBuff()
+    {
+        buffControl.ClearBuff();
+    }
 }

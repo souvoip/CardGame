@@ -13,6 +13,9 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
     private Transform aesistzTrans;
     [SerializeField]
     private EnemyIntention intention;
+    [SerializeField]
+    private Vector2 tempInfoOffset;
+
 
     /// <summary>
     /// 敌人数据 (需要完善)
@@ -23,13 +26,15 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
 
     protected override void Init()
     {
-        // TODO: 测试数据， 需要完善
-        roleData = CharacterDataManager.GetEnemyRoleData(101);
+        AddEvents();
+    }
 
+    public void SetEnemyData(int enemyID)
+    {
+        roleData = CharacterDataManager.GetEnemyRoleData(enemyID);
 
         hpBar.SetMaxHealth(roleData.MaxHP);
         roleData.InitActions(this);
-        AddEvents();
     }
 
     private void AddEvents()
@@ -45,9 +50,6 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
         TurnManager.OnEnemyTurnStart -= OnEnemyTurnStart;
         EventCenter.GetInstance().RemoveEventListener(EventNames.CHARACTER_BUFF_UPDATA, UpdateBuff);
     }
-
-    [SerializeField]
-    private Vector2 tempInfoOffset;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -76,6 +78,10 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
             case ERoleAttribute.HP:
                 Debug.Log("受到 ：" + value + " 伤害");
                 ChangeHealth(value);
+                if(roleData.HP <= 0)
+                {
+                    Die();
+                }
                 break;
             case ERoleAttribute.Aesist:
                 ChangeAesist(value);
@@ -90,8 +96,7 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
         // 移除相关事件
         RemoveEvents();
         // 移除敌人
-        BattleManager.Instance.EnemyRoles.Remove(this);
-        Destroy(gameObject);
+        BattleManager.Instance.EnemyDie(this);
     }
 
     private void ChangeHealth(int value)

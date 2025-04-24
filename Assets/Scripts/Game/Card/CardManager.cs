@@ -100,6 +100,7 @@ public class CardManager : MonoBehaviour
     /// 当前选中敌人
     /// </summary>
     private EnemyRole nowSelectEnemy;
+    public EnemyRole NowSelectEnemy { get => nowSelectEnemy; }
 
     private Vector3 temporaryCardStartPos;
 
@@ -122,12 +123,12 @@ public class CardManager : MonoBehaviour
         playerAllCards.Add(CardDataManager.GetCard(102));
         playerAllCards.Add(CardDataManager.GetCard(201));
         playerAllCards.Add(CardDataManager.GetCard(301));
-        InitBattleCardData();
+        //InitBattleCardData();
 
-        TimerTools.Timer.Once(0.1f, () =>
-        {
-            BattleManager.Instance.TestBattle();
-        });
+        //TimerTools.Timer.Once(0.1f, () =>
+        //{
+        //    BattleManager.Instance.TestBattle();
+        //});
         #endregion
     }
 
@@ -174,16 +175,27 @@ public class CardManager : MonoBehaviour
         //SelectItemDetection();
         CardUseEffect();
 
-        drawCountTxt.text = drawRegionCards.Count.ToString();
-        discardCountTxt.text = discardRegionCards.Count.ToString();
-        costCountTxt.text = costRegionCards.Count.ToString();
+        if(drawRegionCards != null)
+        {
+            drawCountTxt.text = drawRegionCards.Count.ToString();
+            discardCountTxt.text = discardRegionCards.Count.ToString();
+            costCountTxt.text = costRegionCards.Count.ToString();
+        }
     }
 
     /// <summary>
     /// 战斗开始，初始化卡牌
     /// </summary>
-    private void InitBattleCardData()
+    public void InitBattleCardData()
     {
+        if(cardList != null && cardList.Count > 0)
+        {
+            for(int i = cardList.Count - 1; i >= 0; i--)
+            {
+                RemoveCard(cardList[i]);
+            }
+        }
+
         drawRegionCards = new List<CardBase>();
         for (int i = 0; i < playerAllCards.Count; i++)
         {
@@ -536,6 +548,8 @@ public class CardManager : MonoBehaviour
                 nowSelectEnemy = enemy;
                 break;
         }
+        nowTaskItem.UpdateDesc();
+        temporaryCard.GetComponent<TempCardItem>().UpdateDesc(nowTaskItem.CardData);
     }
 
     /// <summary>
