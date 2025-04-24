@@ -43,13 +43,13 @@ public class AtkCard : CardBase
         // 对所有敌人造成伤害
         var damage = new Damage(BaseDamage);
         damage = BattleManager.Instance.Player.CalculateAtkDamage(damage);
-        for (int i = 0; i < BattleManager.Instance.EnemyRoles.Count; i++)
+        for (int i = BattleManager.Instance.EnemyRoles.Count - 1; i >= 0; i--)
         {
             var tempDamage = new Damage(damage);
             tempDamage = BattleManager.Instance.EnemyRoles[i].CalculateAtkDamage(tempDamage);
             for (int j = 0; j < HitCount; j++)
             {
-                BattleManager.Instance.EnemyRoles[i].ChangeAttribute(ERoleAttribute.HP, -damage.GetDamageValue());
+                BattleManager.Instance.EnemyRoles[i].ChangeAttribute(ERoleAttribute.HP, -tempDamage.GetDamageValue());
             }
         }
 
