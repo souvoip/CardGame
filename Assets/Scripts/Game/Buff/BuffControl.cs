@@ -24,6 +24,12 @@ public class BuffControl : MonoBehaviour
     // 应用新Buff
     public void ApplyBuff(BuffBase buff, int stracks)
     {
+        // 判断是否为无效Buff
+        if (buff.buffID == -1)
+        {
+            return;
+        }
+
         // 检查是否存在同类Buff
         var existingBuff = activeBuffs.Find(b => b.buffID == buff.buffID);
 
@@ -123,7 +129,7 @@ public class BuffControl : MonoBehaviour
     {
         for (int i = activeBuffs.Count - 1; i >= 0; i--)
         {
-            RemoveBuff(activeBuffs[i].buffID);
+            activeBuffs[i].RemoveBuff();
         }
     }
 }

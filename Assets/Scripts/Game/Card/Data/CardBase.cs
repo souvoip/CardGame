@@ -146,9 +146,9 @@ public abstract class CardBase : ScriptableObject
         if(Features ==ECardFeatures.None) { return ""; }
         string str = "<color=#FFDA00>";
         if((Features & ECardFeatures.Fixed) == ECardFeatures.Fixed) { str += "固有，"; }
-        if ((Features & ECardFeatures.Void) == ECardFeatures.Void) { str += "虚无，"; }
         if ((Features & ECardFeatures.Hold) == ECardFeatures.Hold) { str += "保留，"; }
         if ((Features & ECardFeatures.Cost) == ECardFeatures.Cost) { str += "消耗，"; }
+        if ((Features & ECardFeatures.Void) == ECardFeatures.Void) { str += "虚无，"; }
         str = str.Remove(str.Length - 1);
         str += "</color>\n";
         return str;

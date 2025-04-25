@@ -1,3 +1,5 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class RoleData : ScriptableObject
@@ -44,5 +46,9 @@ public class RoleData : ScriptableObject
     /// 护盾
     /// </summary>
     public int Shield;
+    /// <summary>
+    /// 开始战斗时，添加的buff
+    /// </summary>
+    public List<BuffItem> FixedBattleBuffs = new List<BuffItem>();
     #endregion
 }

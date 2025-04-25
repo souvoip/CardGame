@@ -17,7 +17,7 @@ public class Buff_Strength : BuffBase
     public override void RemoveEvents()
     {
         base.RemoveEvents();
-        target.ChangeHitDamageEvent.Remove(buffID);
+        target.ChangeAtkDamageEvent.Remove(buffID);
     }
 
     private void ChangeAtkDamage(Damage damage)

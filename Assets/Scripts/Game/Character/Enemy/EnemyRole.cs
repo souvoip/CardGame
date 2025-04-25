@@ -41,6 +41,7 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
     {
         TurnManager.OnPlayerTurnStart += OnPlayerTurnStart;
         TurnManager.OnEnemyTurnStart += OnEnemyTurnStart;
+        TurnManager.OnStartBattle += OnStartBattle;
         EventCenter.GetInstance().AddEventListener(EventNames.CHARACTER_BUFF_UPDATA, UpdateBuff);
     }
 
@@ -48,7 +49,19 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
     {
         TurnManager.OnPlayerTurnStart -= OnPlayerTurnStart;
         TurnManager.OnEnemyTurnStart -= OnEnemyTurnStart;
+        TurnManager.OnStartBattle -= OnStartBattle;
         EventCenter.GetInstance().RemoveEventListener(EventNames.CHARACTER_BUFF_UPDATA, UpdateBuff);
+    }
+
+
+
+    private void OnStartBattle()
+    {
+        // 添加战斗 Buff
+        for (int i = 0; i < roleData.FixedBattleBuffs.Count; i++)
+        {
+            AddBuff(BuffDataManager.GetBuff(roleData.FixedBattleBuffs[i].BuffID), roleData.FixedBattleBuffs[i].Stacks);
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -137,7 +150,10 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
 
     private void UpdateBuff()
     {
-        intention.ShowIntention(currentRoundAction.GetActionInfo());
+        if(currentRoundAction != null)
+        {
+            intention.ShowIntention(currentRoundAction.GetActionInfo());
+        }
     }
 
     public void DoAction()

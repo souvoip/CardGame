@@ -16,6 +16,8 @@ public class CharacterBase : MonoBehaviour
     public Dictionary<int, Action<Damage>> ChangeAtkDamageEvent = new Dictionary<int, Action<Damage>>();
 
     public Dictionary<int, Action<Damage>> ChangeHitDamageEvent = new Dictionary<int, Action<Damage>>();
+
+    public Dictionary<int, Action<Block>> ChangeBlockEvent = new Dictionary<int, Action<Block>>();
     /// <summary>
     /// 角色受伤事件, 造成伤害的来源,伤害值
     /// </summary>
@@ -24,6 +26,10 @@ public class CharacterBase : MonoBehaviour
     /// 角色攻击事件, 攻击的目标,伤害值
     /// </summary>
     public event Action<CharacterBase, int> AttackEvent;
+    /// <summary>
+    ///  角色获得buff事件，获得的buff
+    /// </summary>
+    public event Action<BuffBase> AddBuffEvent;
     #endregion
 
     protected BuffControl buffControl;
@@ -38,6 +44,10 @@ public class CharacterBase : MonoBehaviour
 
     public void AddBuff(BuffBase buff, int stracks)
     {
+        if(stracks > 0)
+        {
+            AddBuffEvent?.Invoke(buff);
+        }
         buffControl.ApplyBuff(buff, stracks);
     }
 
@@ -72,6 +82,10 @@ public class CharacterBase : MonoBehaviour
 
     public Block CalculateBlock(Block block)
     {
+        foreach (var i in ChangeBlockEvent.Keys)
+        {
+            ChangeBlockEvent[i].Invoke(block);
+        }
         return block;
     }
 

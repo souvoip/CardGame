@@ -24,6 +24,6 @@ MonoBehaviour:
   Extract: []
   Features: 11
   BaseDamage:
-    DamageValue: 10
+    DamageValue: 100
     DamageRate: 1
   HitCount: 1

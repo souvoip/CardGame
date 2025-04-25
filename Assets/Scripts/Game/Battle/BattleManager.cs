@@ -42,7 +42,7 @@ public class BattleManager : MonoBehaviour
 
         TimerTools.Timer.Once(0.5f, () =>
         {
-            TurnManager.CurrentTurnCount = 0;
+            TurnManager.StartBattle();
             TurnManager.PlayerTurnStart();
             UIManager.Instance.mapUI.Hide();
         });
@@ -69,7 +69,7 @@ public class BattleManager : MonoBehaviour
 
         TimerTools.Timer.Once(0.5f, () =>
         {
-            TurnManager.CurrentTurnCount = 0;
+            TurnManager.StartBattle();
             TurnManager.PlayerTurnStart();
             UIManager.Instance.mapUI.Hide();
         });
@@ -88,6 +88,11 @@ public class BattleManager : MonoBehaviour
         {
             BattleOver(true);
         }
+    }
+
+    public void PlayerDie()
+    {
+        BattleOver(false);
     }
 
     public void BattleOver(bool isWin)

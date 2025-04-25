@@ -45,23 +45,32 @@ public class CardManager : MonoBehaviour
     private int CardMaxCount = 8;
 
     private CardItem nowSelectItem;
-
+    /// <summary>
+    /// 玩家本局游戏所拥有的卡牌
+    /// </summary>
     private List<CardBase> playerAllCards;
-
+    /// <summary>
+    /// 战斗中抽卡区
+    /// </summary>
     private List<CardBase> drawRegionCards;
-
     public List<CardBase> DrawRegionCards { get => drawRegionCards; }
-
+    /// <summary>
+    /// 战斗中手牌区
+    /// </summary>
     private List<CardBase> handRegionCards;
-
+    /// <summary>
+    /// 战斗中弃牌区
+    /// </summary>
     private List<CardBase> discardRegionCards;
-
     public List<CardBase> DiscardRegionCards { get => discardRegionCards; }
-
+    /// <summary>
+    /// 战斗中消耗区
+    /// </summary>
     private List<CardBase> costRegionCards;
-
     public List<CardBase> CostRegionCards { get => costRegionCards; }
-
+    /// <summary>
+    /// 战斗中移除区
+    /// </summary>
     private List<CardBase> removeRegionCards;
 
     [SerializeField]
@@ -664,6 +673,10 @@ public class CardManager : MonoBehaviour
     private void UseCardOver(CardItem cardItem)
     {
         handRegionCards.Remove(cardItem.CardData);
+        if(cardItem.CardData.CardType == ECardType.Ability)
+        {
+            removeRegionCards.Add(cardItem.CardData);
+        }
         if ((cardItem.CardData.Features & ECardFeatures.Cost) == ECardFeatures.Cost)
         {
             // 移动到消耗堆

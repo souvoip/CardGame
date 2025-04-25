@@ -69,12 +69,6 @@ public abstract class BuffBase : ScriptableObject
 
     }
 
-    // 获取描述文本（用于UI显示）
-    public virtual string GetDescription()
-    {
-        return $"{displayName} ({currentStacks})";
-    }
-
     public virtual void AddEvents()
     {
         TurnManager.OnEnemyTurnEnd += OnTurnEnd;
@@ -85,6 +79,7 @@ public abstract class BuffBase : ScriptableObject
         TurnManager.OnEnemyTurnEnd -= OnTurnEnd;
     }
 
+    // 获取描述文本（用于UI显示）
     public virtual DetailInfo GetDetailInfo()
     {
         var info = new DetailInfo();

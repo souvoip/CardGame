@@ -58,8 +58,8 @@ public enum EAddBuffTime
     /// 攻击造成伤害后
     /// </summary>
     AfterAttack,
-    /// <summary>
-    /// 受到伤害时
-    /// </summary>
-    DuringAttack,
+    ///// <summary>
+    ///// 受到伤害时
+    ///// </summary>
+    //DuringAttack,
 }

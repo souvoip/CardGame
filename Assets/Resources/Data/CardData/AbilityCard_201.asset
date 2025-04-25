@@ -22,7 +22,7 @@ MonoBehaviour:
   Fee: 1
   Buffs:
   - BuffID: 2
-    Stacks: 1
+    Stacks: 2
     Target: 0
     AddBuffTime: 0
   Extract: []

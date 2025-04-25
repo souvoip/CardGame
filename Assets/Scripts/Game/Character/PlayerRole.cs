@@ -29,11 +29,13 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
     private void AddEvents()
     {
         TurnManager.OnPlayerTurnStart += OnPlayerTurnStart;
+        TurnManager.OnStartBattle += OnStartBattle;
     }
 
     private void RemoveEvents()
     {
         TurnManager.OnPlayerTurnStart -= OnPlayerTurnStart;
+        TurnManager.OnStartBattle -= OnStartBattle;
     }
 
     public override void ChangeAttribute(ERoleAttribute attribute, int value)
@@ -53,11 +55,22 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
         }
     }
 
+    private void OnStartBattle()
+    {
+        // 添加战斗 Buff
+        for (int i = 0; i < roleData.FixedBattleBuffs.Count; i++)
+        {
+            AddBuff(BuffDataManager.GetBuff(roleData.FixedBattleBuffs[i].BuffID), roleData.FixedBattleBuffs[i].Stacks);
+        }
+    }
+
+
     public override void Die()
     {
         base.Die();
         // TODO: 游戏结束
         RemoveEvents();
+        BattleManager.Instance.PlayerDie();
     }
 
     private void ChangeAP(int value)

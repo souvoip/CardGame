@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TurnManager : MonoBehaviour
 {
+    public static event Action OnStartBattle;
     public static event Action OnPlayerTurnStart;
     public static event Action OnPlayerTurnEnd;
     public static event Action OnEnemyTurnStart;
@@ -19,6 +20,12 @@ public class TurnManager : MonoBehaviour
         {
             Instance = this;
         }
+    }
+
+    public void StartBattle()
+    {
+        CurrentTurnCount = 0;
+        OnStartBattle?.Invoke();
     }
 
     public void PlayerTurnStart()

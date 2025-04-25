@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 受到伤害倍率变化buff
+/// 造成伤害倍率变化buff
 /// </summary>
-[CreateAssetMenu(fileName = "VulnerableBuff", menuName = "Data/Buff/VulnerableBuff")]
-public class Buff_Vulnerable : BuffBase
+[CreateAssetMenu(fileName = "WeaknessBuff", menuName = "Data/Buff/WeaknessBuff")]
+public class Buff_Weakness : BuffBase
 {
-    public float changeRate = 1.5f; // 50% more damage taken
+    public float changeRate = 0.75f; // 25% less damage dealt
 
     public override void OnTurnEnd()
     {
@@ -19,13 +19,13 @@ public class Buff_Vulnerable : BuffBase
     public override void AddEvents()
     {
         base.AddEvents();
-        target.ChangeHitDamageEvent.Add(buffID, ChangeHitDamage);
+        target.ChangeAtkDamageEvent.Add(buffID, ChangeHitDamage);
     }
 
     public override void RemoveEvents()
     {
         base.RemoveEvents();
-        target.ChangeHitDamageEvent.Remove(buffID);
+        target.ChangeAtkDamageEvent.Remove(buffID);
     }
 
     private void ChangeHitDamage(Damage damage)
