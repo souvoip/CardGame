@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -141,7 +140,9 @@ public class MapItemBase : MonoBehaviour
             Transform line = Instantiate(lineObj, lineNode);
             float dis = Vector2.Distance(transform.position, item.transform.position);
             line.eulerAngles = new Vector3(0, 0, transform.GetAngleBetweenObjects(item.transform));
-            line.localScale = new Vector3(dis, 1, 1);
+            float scale =  1920f / Screen.width;
+            Debug.Log(scale);
+            line.localScale = new Vector3(dis * scale, 1, 1);
             line.position = transform.position;
             line.gameObject.SetActive(true);
         }
