@@ -41,6 +41,9 @@ MonoBehaviour:
     - rid: 5035967028884406340
       type: {class: EnemyAttackAction, ns: , asm: Assembly-CSharp}
       data:
+        actionAnim:
+          path: NormalAtk
+          time: 1
         BaseDamage:
           DamageValue: 8
           DamageRate: 1
@@ -48,12 +51,18 @@ MonoBehaviour:
     - rid: 5035967051556978754
       type: {class: EnemyGetAesistAction, ns: , asm: Assembly-CSharp}
       data:
+        actionAnim:
+          path: NormalSkill
+          time: 1
         baseBlock:
           Value: 10
           Rate: 1
     - rid: 5035967051556978756
       type: {class: EnemyGetBuffAction, ns: , asm: Assembly-CSharp}
       data:
+        actionAnim:
+          path: NormalSkill
+          time: 1
         buffs:
         - BuffID: 2
           Stacks: 1
@@ -62,6 +71,9 @@ MonoBehaviour:
     - rid: 5035967051556978757
       type: {class: EnemyAttackAction, ns: , asm: Assembly-CSharp}
       data:
+        actionAnim:
+          path: 
+          time: 0
         BaseDamage:
           DamageValue: 0
           DamageRate: 0

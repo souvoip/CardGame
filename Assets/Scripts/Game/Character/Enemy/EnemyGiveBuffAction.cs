@@ -13,6 +13,7 @@ public class EnemyGiveBuffAction : EnemyDoAction
         for (int i = 0; i < buffs.Count; i++)
         {
             BattleManager.Instance.Player.AddBuff(BuffDataManager.GetBuff(buffs[i].BuffID), buffs[i].Stacks);
+            BattleAnimManager.Instance.PlayAnim(BattleManager.Instance.Player.transform.position, actionAnim);
         }
     }
 

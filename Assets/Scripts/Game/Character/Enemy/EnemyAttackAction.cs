@@ -19,6 +19,7 @@ public class EnemyAttackAction : EnemyDoAction
         for (int i = 0; i < AtkCount; i++)
         {
             BattleManager.Instance.Player.ChangeAttribute(ERoleAttribute.HP, -damageValue);
+            BattleAnimManager.Instance.PlayAnim(BattleManager.Instance.Player.transform.position, actionAnim);
         }
     }
 

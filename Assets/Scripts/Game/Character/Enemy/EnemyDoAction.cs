@@ -10,6 +10,8 @@ public abstract class EnemyDoAction
     [NonSerialized]
     public CharacterBase self;
 
+    public BattleAnimData actionAnim;
+
     public abstract void DoAction();
 
     /// <summary>

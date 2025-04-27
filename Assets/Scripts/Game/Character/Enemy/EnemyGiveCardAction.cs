@@ -10,7 +10,7 @@ public class EnemyGiveCardAction : EnemyDoAction
     private ActionInfo actionInfo;
     public override void DoAction()
     {
-
+        BattleAnimManager.Instance.PlayAnim(BattleManager.Instance.Player.transform.position, actionAnim);
     }
 
     public override ActionInfo GetActionInfo()

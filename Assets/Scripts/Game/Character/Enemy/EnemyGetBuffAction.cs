@@ -15,6 +15,7 @@ public class EnemyGetBuffAction : EnemyDoAction
         for (int i = 0; i < buffs.Count; i++)
         {
             self.AddBuff(BuffDataManager.GetBuff(buffs[i].BuffID), buffs[i].Stacks);
+            BattleAnimManager.Instance.PlayAnim(self.transform.position, actionAnim);
         }
     }
 

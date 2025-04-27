@@ -24,6 +24,8 @@ MonoBehaviour:
   MP: 100
   Aesist: 0
   Shield: 0
+  FixedBattleBuffs: []
   MaxAP: 3
   AP: 3
   DrawCardCount: 5
+  MaxCardCount: 8
