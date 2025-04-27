@@ -197,6 +197,7 @@ public class CardManager : MonoBehaviour
     /// </summary>
     public void InitBattleCardData()
     {
+        CardMaxCount = BattleManager.Instance.Player.RoleData.MaxCardCount;
         if(cardList != null && cardList.Count > 0)
         {
             for(int i = cardList.Count - 1; i >= 0; i--)
