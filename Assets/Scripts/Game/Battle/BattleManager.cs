@@ -99,10 +99,13 @@ public class BattleManager : MonoBehaviour
     {
         if (isWin)
         {
-            // 胜利
-            UIManager.Instance.mapUI.Show();
             // 清理玩家在战斗中获取的buff
             Player.ClearBattleBuff();
+            // 胜利
+            UIManager.Instance.selectCardUI.Show(CardDataManager.GetRandomCardIds(3), () =>
+            {
+                UIManager.Instance.mapUI.Show();
+            });
         }
         else
         {

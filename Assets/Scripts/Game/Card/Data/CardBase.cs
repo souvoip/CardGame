@@ -44,6 +44,8 @@ public abstract class CardBase : ScriptableObject
 
     public ECardFeatures Features;
 
+    public BattleAnimData cardAnimData;
+
     /// <summary>
     /// 非指向性
     /// </summary>
@@ -162,16 +164,16 @@ public abstract class CardBase : ScriptableObject
             switch (item.Target)
             {
                 case EBuffTarget.Self:
-                    str += $"给予自身{item.Stacks}层<color=#FFDA00>{BuffDataManager.GetBuffName(item.BuffID)}</color> + \n";
+                    str += $"给予自身{item.Stacks}层<color=#FFDA00>{BuffDataManager.GetBuffName(item.BuffID)}</color>\n";
                     break;
                 case EBuffTarget.Enemy:
-                    str += $"给予目标{item.Stacks}层<color=#FFDA00>{BuffDataManager.GetBuffName(item.BuffID)}</color> + \n";
+                    str += $"给予目标{item.Stacks}层<color=#FFDA00>{BuffDataManager.GetBuffName(item.BuffID)}</color>\n";
                     break;
                 case EBuffTarget.AllEnemy:
-                    str += $"给予所有敌人{item.Stacks}层<color=#FFDA00>{BuffDataManager.GetBuffName(item.BuffID)}</color> + \n";
+                    str += $"给予所有敌人{item.Stacks}层<color=#FFDA00>{BuffDataManager.GetBuffName(item.BuffID)}</color>\n";
                     break;
                 case EBuffTarget.All:
-                    str += $"给予所有单位{item.Stacks}层<color=#FFDA00>{BuffDataManager.GetBuffName(item.BuffID)}</color> + \n";
+                    str += $"给予所有单位{item.Stacks}层<color=#FFDA00>{BuffDataManager.GetBuffName(item.BuffID)}</color>\n";
                     break;
             }
         }

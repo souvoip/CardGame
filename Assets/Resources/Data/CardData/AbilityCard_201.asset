@@ -27,3 +27,6 @@ MonoBehaviour:
     AddBuffTime: 0
   Extract: []
   Features: 0
+  cardAnimData:
+    path: NormalAbility
+    time: 1.2

@@ -123,7 +123,7 @@ public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler,
     public void UpdateData()
     {
         nameTxt.text = cardData.Name;
-        if (cardData.Fee > 0)
+        if (cardData.Fee >= 0)
         {
             feeTxt.transform.parent.gameObject.SetActive(true);
             feeTxt.text = cardData.Fee.ToString();

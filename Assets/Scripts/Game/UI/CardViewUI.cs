@@ -33,12 +33,12 @@ public class CardViewUI : MonoBehaviour
             {
                 GameObject go = Instantiate(viewCardPrefab, viewCardContent);
                 ViewCardItem item = go.GetComponent<ViewCardItem>();
-                item.UpdateData(cards[i]);
+                item.InitData(cards[i]);
                 items.Add(item);
             }
             else
             {
-                items[i].UpdateData(cards[i]);
+                items[i].InitData(cards[i]);
                 items[i].gameObject.SetActive(true);
             }
         }

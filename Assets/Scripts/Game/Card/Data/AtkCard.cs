@@ -27,6 +27,7 @@ public class AtkCard : CardBase
         for (int i = 0; i < HitCount; i++)
         {
             target.ChangeAttribute(ERoleAttribute.HP, -damageValue);
+            BattleAnimManager.Instance.PlayAnim(target.transform.position, cardAnimData);
         }
 
         // 造成伤害后
@@ -50,6 +51,7 @@ public class AtkCard : CardBase
             for (int j = 0; j < HitCount; j++)
             {
                 BattleManager.Instance.EnemyRoles[i].ChangeAttribute(ERoleAttribute.HP, -tempDamage.GetDamageValue());
+                BattleAnimManager.Instance.PlayAnim(BattleManager.Instance.EnemyRoles[i].transform.position, cardAnimData);
             }
         }
 

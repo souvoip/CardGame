@@ -24,11 +24,12 @@ public class SkillCard : CardBase
     {
         AddBuffs(EAddBuffTime.BeforeAttack);
 
-        // TODO：添加护盾(未计算buff加成)
+        // 添加护盾
         if(BaseBlock.Value != 0)
         {
             var tempBlock = new Block(BaseBlock);
             BattleManager.Instance.Player.ChangeAttribute(ERoleAttribute.Aesist, BattleManager.Instance.Player.CalculateBlock(tempBlock).GetBlockValue());
+            BattleAnimManager.Instance.PlayAnim(BattleManager.Instance.Player.transform.position, cardAnimData);
         }
         AddBuffs(EAddBuffTime.AfterAttack);
 
@@ -39,11 +40,12 @@ public class SkillCard : CardBase
     {
         AddBuffs(EAddBuffTime.BeforeAttack, target);
 
-        // TODO：添加护盾(未计算buff加成)
+        // 添加护盾
         if(BaseBlock.Value != 0)
         {
             var tempBlock = new Block(BaseBlock);
             BattleManager.Instance.Player.ChangeAttribute(ERoleAttribute.Aesist, BattleManager.Instance.Player.CalculateBlock(tempBlock).GetBlockValue());
+            BattleAnimManager.Instance.PlayAnim(BattleManager.Instance.Player.transform.position, cardAnimData);
         }
         AddBuffs(EAddBuffTime.AfterAttack, target);
 
@@ -61,14 +63,14 @@ public class SkillCard : CardBase
         {
             if (SkillCount == 1)
             {
-                desc += "获取" + baseBlockValue + "抵抗";
+                desc += "获取" + baseBlockValue + "抵抗\n";
             }
             else
             {
-                desc += "获取" + baseBlockValue + "抵抗" + SkillCount + "次";
+                desc += "获取" + baseBlockValue + "抵抗" + SkillCount + "次\n";
             }
-            desc += "\n" + GetBuffsDesc() + Desc;
         }
+        desc += GetBuffsDesc() + Desc;
         return desc;
     }
 }

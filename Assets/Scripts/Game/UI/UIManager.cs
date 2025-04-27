@@ -12,6 +12,8 @@ public class UIManager : MonoBehaviour
 
     public MapManager mapUI;
 
+    public SelectCardUI selectCardUI;
+
     private void Awake()
     {
         if (Instance == null) { Instance = this; }

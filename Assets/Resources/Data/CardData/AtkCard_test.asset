@@ -18,11 +18,14 @@ MonoBehaviour:
   ImagePath: 001
   CardType: 0
   UseType: 1
-  Rare: 2
+  Rare: 3
   Fee: 0
   Buffs: []
   Extract: []
   Features: 11
+  cardAnimData:
+    path: NormalAtk
+    time: 1
   BaseDamage:
     DamageValue: 100
     DamageRate: 1

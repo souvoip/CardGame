@@ -23,6 +23,9 @@ MonoBehaviour:
   Buffs: []
   Extract: []
   Features: 0
+  cardAnimData:
+    path: NormalAtk
+    time: 1
   BaseDamage:
     DamageValue: 5
     DamageRate: 1

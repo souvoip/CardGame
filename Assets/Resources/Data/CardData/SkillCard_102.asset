@@ -28,7 +28,10 @@ MonoBehaviour:
     cardType: -1
     mode: 1
   Features: 1
+  cardAnimData:
+    path: NormalSkill
+    time: 1
   BaseBlock:
     Value: 0
     Rate: 0
-  SkillCount: 1
+  SkillCount: 0

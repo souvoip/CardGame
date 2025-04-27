@@ -27,6 +27,9 @@ MonoBehaviour:
     AddBuffTime: 2
   Extract: []
   Features: 0
+  cardAnimData:
+    path: NormalAtk
+    time: 1
   BaseDamage:
     DamageValue: 8
     DamageRate: 1

@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -30,7 +32,9 @@ public class ViewCardItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public CardBase cardData;
 
-    public void UpdateData(CardBase cardData)
+    private Action<ViewCardItem> onClick;
+
+    public void InitData(CardBase cardData, Action<ViewCardItem> onClick = null)
     {
         this.cardData = cardData;
         nameTxt.text = cardData.Name;
@@ -45,7 +49,9 @@ public class ViewCardItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         }
         cardImg.sprite = Resources.Load<Sprite>(CardItem.baseCardImgPath + cardData.ImagePath);
         typeTxt.text = cardData.GetCardTypeeString();
-        descTxt.text = cardData.Desc;
+        descTxt.text = cardData.GetDesc();
+        this.onClick = onClick;
+        GetComponent<Button>().onClick.AddListener(OnClick);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -58,5 +64,10 @@ public class ViewCardItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     {
         UIManager.Instance.holdDetailUI.Hide();
         transform.localScale = Vector3.one;
+    }
+
+    private void OnClick()
+    {
+        onClick?.Invoke(this);
     }
 }

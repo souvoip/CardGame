@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 746c5d51f1b5b3442aeea3644850f561, type: 3}
+  m_Name: SkillCard_103
+  m_EditorClassIdentifier: 
+  ID: 103
+  Name: "\u5FEB\u901F\u62B5\u6321"
+  Desc: "\u62BD\u53D61\u5F20\u724C"
+  ImagePath: 103
+  CardType: 1
+  UseType: 1
+  Rare: 1
+  Fee: 1
+  Buffs: []
+  Extract:
+  - origin: 1
+    target: 2
+    Count: 1
+    cardType: -1
+    mode: 1
+  Features: 0
+  cardAnimData:
+    path: NormalSkill
+    time: 1
+  BaseBlock:
+    Value: 7
+    Rate: 1
+  SkillCount: 1

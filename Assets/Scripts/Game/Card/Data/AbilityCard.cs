@@ -8,6 +8,7 @@ public class AbilityCard : CardBase
     public override void UseCard()
     {
         AddBuffs(EAddBuffTime.None);
+        BattleAnimManager.Instance.PlayAnim(BattleManager.Instance.Player.transform.position, cardAnimData);
         base.UseCard();
     }
 }

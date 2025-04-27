@@ -23,6 +23,9 @@ MonoBehaviour:
   Buffs: []
   Extract: []
   Features: 0
+  cardAnimData:
+    path: NormalSkill
+    time: 1
   BaseBlock:
     Value: 5
     Rate: 1

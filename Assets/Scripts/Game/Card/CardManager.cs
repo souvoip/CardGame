@@ -527,7 +527,6 @@ public class CardManager : MonoBehaviour
         return false;
     }
 
-
     /// <summary>
     /// 选中卡牌
     /// </summary>
@@ -535,6 +534,11 @@ public class CardManager : MonoBehaviour
     {
         nowTaskItem = item;
         nowTaskItem.gameObject.SetActive(false);
+    }
+
+    public void AddBattleCard(CardBase card)
+    {
+        playerAllCards.Add(card);
     }
 
     /// <summary>
