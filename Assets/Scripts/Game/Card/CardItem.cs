@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using TMPro;
@@ -9,6 +10,8 @@ using UnityEngine.UI;
 public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler, IPointerDownHandler, IPointerEnterHandler
 {
     public static string baseCardImgPath = "Image/Card/";
+
+    private static Vector3 discardPos = new Vector3(9.78f, -5.86f, 0);
 
     #region component
     [SerializeField]
@@ -157,7 +160,7 @@ public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler,
     public void PlayDissolveAnim(Vector3 pos, Action<CardItem> overAction = null)
     {
         transform.position = pos;
-
+        isPlayAnim = true;
         gameObject.SetActive(true);
         StartCoroutine(DissolveAnimCoroutine(overAction));
     }
@@ -169,7 +172,11 @@ public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler,
         transform.position = pos;
         //transform.localScale = Vector3.one;
         gameObject.SetActive(true);
-        StartCoroutine(MoveToDiscardAnimCoroutine(overAction));
+        isPlayAnim = true;
+        transform.DOMove(discardPos, 1f).OnComplete(() =>
+        {
+            overAction?.Invoke(this);
+        });
     }
 
     public void OnPointerMove(PointerEventData eventData)
@@ -210,7 +217,6 @@ public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler,
 
     private IEnumerator DissolveAnimCoroutine(Action<CardItem> overAction)
     {
-        isPlayAnim = true;
         var imgs = transform.GetComponentsInChildren<Image>();
         var dissolves = Instantiate(dissolveMat);
         foreach (var img in imgs)
@@ -223,21 +229,19 @@ public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler,
         typeTxt.enabled = false;
         descTxt.enabled = false;
         float dt = dissolveTime;
+        float value;
         while (dt > 0)
         {
             dt -= Time.deltaTime;
+            value = dt / dissolveTime;
             dissolves.SetFloat("_Progress", dt / dissolveTime);
+            nameTxt.alpha = value;
+            feeTxt.alpha = value;
+            typeTxt.alpha = value;
+            descTxt.alpha = value;
             yield return null;
         }
         overAction?.Invoke(this);
     }
-
-    private IEnumerator MoveToDiscardAnimCoroutine(Action<CardItem> overAction)
-    {
-        isPlayAnim = true;
-        yield return new WaitForSeconds(0.5f);
-        overAction?.Invoke(this);
-    }
-
 }
 
