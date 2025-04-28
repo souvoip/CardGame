@@ -203,9 +203,8 @@ public class CardManager : MonoBehaviour
         {
             for (int i = cardList.Count - 1; i >= 0; i--)
             {
-                var temp = cardList[i];
+                Destroy(cardList[i].gameObject);
                 RemoveCard(cardList[i]);
-                Destroy(temp);
             }
         }
 
@@ -269,6 +268,7 @@ public class CardManager : MonoBehaviour
             }
             handRegionCards.Remove(cardList[i].CardData);
             cardList[i].PlayMoveToDiscardAnim(cardList[i].transform.position, (item) => { Destroy(item.gameObject); });
+            Destroy(cardList[i].gameObject);
             RemoveCard(cardList[i]);
         }
     }

@@ -69,7 +69,6 @@ public class CharacterBase : MonoBehaviour
         foreach (var i in ChangeAtkDamageEvent.Keys)
         {
             ChangeAtkDamageEvent[i].Invoke(damage);
-            Debug.Log(damage.DamageValue + " " + damage.DamageRate);
         }
         return damage;
     }
