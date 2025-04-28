@@ -20,6 +20,20 @@ public class MapItemBase : MonoBehaviour
 
     public List<MapItemBase> PrevItems = new List<MapItemBase>();
 
+    private static float screenScale;
+
+    public static float ScreenScale
+    {
+        get
+        {
+            if (screenScale == 0)
+            {
+                screenScale = 1920f / Screen.width;
+            }
+            return screenScale;
+        }
+    }
+
     public virtual void Init(EMapItemType itemType, EMapState state, int layer)
     {
         mapItemImage = transform.GetComponent<Image>();
@@ -140,9 +154,7 @@ public class MapItemBase : MonoBehaviour
             Transform line = Instantiate(lineObj, lineNode);
             float dis = Vector2.Distance(transform.position, item.transform.position);
             line.eulerAngles = new Vector3(0, 0, transform.GetAngleBetweenObjects(item.transform));
-            float scale =  1920f / Screen.width;
-            Debug.Log(scale);
-            line.localScale = new Vector3(dis * scale, 1, 1);
+            line.localScale = new Vector3(dis * ScreenScale, 1, 1);
             line.position = transform.position;
             line.gameObject.SetActive(true);
         }

@@ -4,6 +4,9 @@ using UnityEngine;
 [Serializable]
 public class EnemyAttackAction : EnemyDoAction
 {
+    [SerializeField, DisplayOnly]
+    private string actionName= "攻击";
+
     public override EEnemyActionType ActionType => EEnemyActionType.Attack;
 
     public Damage BaseDamage;
@@ -48,4 +51,9 @@ public class EnemyAttackAction : EnemyDoAction
         actionInfo.text = dv.ToString();
         actionInfo.detailInfo.Description = $"将会对玩家造成{dv}点伤害。";
     }
+
+}
+
+public class DisplayOnlyAttribute : PropertyAttribute
+{
 }

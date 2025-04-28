@@ -34,6 +34,9 @@ public class CharacterBase : MonoBehaviour
 
     protected BuffControl buffControl;
 
+    protected bool isDie = false;
+    public bool IsDie { get { return isDie; } }
+
     protected virtual void Init() { }
 
     private void Start()

@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public abstract class CardBase : ScriptableObject
 {
@@ -77,8 +75,8 @@ public abstract class CardBase : ScriptableObject
 
     public bool IsCanUse()
     {
-        if(UseType == EUseType.CannotUse) { return false; }
-        if(BattleManager.Instance.Player.RoleData.AP < Fee) { return false; }
+        if (UseType == EUseType.CannotUse) { return false; }
+        if (BattleManager.Instance.Player.RoleData.AP < Fee) { return false; }
         return true;
     }
 
@@ -106,12 +104,14 @@ public abstract class CardBase : ScriptableObject
                 else if (Buffs[i].Target == EBuffTarget.Enemy)
                 {
                     if (characterTarget == null) { return; }
+                    if (characterTarget.IsDie) { return; }
                     characterTarget.AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
                 }
                 else if (Buffs[i].Target == EBuffTarget.AllEnemy)
                 {
                     for (int j = 0; j < BattleManager.Instance.EnemyRoles.Count; j++)
                     {
+                        if (BattleManager.Instance.EnemyRoles[j].IsDie) { continue; }
                         BattleManager.Instance.EnemyRoles[j].AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
                     }
                 }
@@ -120,6 +120,7 @@ public abstract class CardBase : ScriptableObject
                     BattleManager.Instance.Player.AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
                     for (int j = 0; j < BattleManager.Instance.EnemyRoles.Count; j++)
                     {
+                        if (BattleManager.Instance.EnemyRoles[j].IsDie) { continue; }
                         BattleManager.Instance.EnemyRoles[j].AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
                     }
                 }
@@ -145,9 +146,9 @@ public abstract class CardBase : ScriptableObject
 
     protected string GetFeaturesDesc()
     {
-        if(Features ==ECardFeatures.None) { return ""; }
+        if (Features == ECardFeatures.None) { return ""; }
         string str = "<color=#FFDA00>";
-        if((Features & ECardFeatures.Fixed) == ECardFeatures.Fixed) { str += "固有，"; }
+        if ((Features & ECardFeatures.Fixed) == ECardFeatures.Fixed) { str += "固有，"; }
         if ((Features & ECardFeatures.Hold) == ECardFeatures.Hold) { str += "保留，"; }
         if ((Features & ECardFeatures.Cost) == ECardFeatures.Cost) { str += "消耗，"; }
         if ((Features & ECardFeatures.Void) == ECardFeatures.Void) { str += "虚无，"; }

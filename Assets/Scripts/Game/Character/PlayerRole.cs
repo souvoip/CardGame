@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandler
 {
@@ -11,7 +12,12 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
     private StateBar hpBar;
     [SerializeField]
     private Transform aesistzTrans;
+    [SerializeField]
+    private Image playerImg;
+    [SerializeField]
+    private Material dissolveMat;
 
+    private float dieAnimTime = 1.2f;
 
     private PlayerRoleData roleData;
 
@@ -19,11 +25,12 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
 
     protected override void Init()
     {
-        // TODO: 获取玩家数据
+        // 获取玩家数据
         roleData = CharacterDataManager.GetPlayerRoleData(1);
 
         hpBar.SetMaxHealth(roleData.MaxHP);
         AddEvents();
+        playerImg.material = dissolveMat;
     }
 
     private void AddEvents()
@@ -70,6 +77,20 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
         base.Die();
         // TODO: 游戏结束
         RemoveEvents();
+
+        StartCoroutine(DieAnimCoroutine());
+    }
+
+    private IEnumerator DieAnimCoroutine()
+    {
+        Material material = playerImg.material;
+        float dieTime = dieAnimTime;
+        while (dieTime > 0)
+        {
+            material.SetFloat("_Progress", dieTime / dieAnimTime);
+            dieTime -= Time.deltaTime;
+            yield return null;
+        }
         BattleManager.Instance.PlayerDie();
     }
 

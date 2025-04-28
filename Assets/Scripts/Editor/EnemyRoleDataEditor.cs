@@ -21,7 +21,8 @@ public class EnemyRoleDataEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        DrawDefaultInspector();
+        //DrawDefaultInspector();
+        DrawBaseProp();
         EditorGUILayout.Space(20);
         GUILayout.Label("EDIT ACTIONS ======================");
 
@@ -33,6 +34,25 @@ public class EnemyRoleDataEditor : Editor
         DrawActionProperties();
         AddActionBtn();
 
+        //serializedObject.ApplyModifiedProperties();
+    }
+
+    private void DrawBaseProp()
+    {
+        EditorGUI.BeginChangeCheck();
+        serializedObject.UpdateIfRequiredOrScript();
+        SerializedProperty iterator = serializedObject.GetIterator();
+        bool enterChildren = true;
+        while (iterator.NextVisible(enterChildren))
+        {
+            using (new EditorGUI.DisabledScope("m_Script" == iterator.propertyPath))
+            {
+                if (iterator.name == "EditAction") { continue; }
+                EditorGUILayout.PropertyField(iterator, true);
+            }
+
+            enterChildren = false;
+        }
 
         serializedObject.ApplyModifiedProperties();
     }
@@ -64,7 +84,11 @@ public class EnemyRoleDataEditor : Editor
 
         while (iterator.NextVisible(enterChildren))
         {
-            if (iterator.name == "ActionType") continue; // 跳过类型字段
+            if (iterator.name == "actionName")
+            {
+                GUILayout.Label(iterator.stringValue);
+                continue; // 跳过类型字段
+            };
             EditorGUILayout.PropertyField(iterator, true);
             enterChildren = false;
         }

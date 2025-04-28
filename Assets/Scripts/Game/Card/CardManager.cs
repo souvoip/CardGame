@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class CardManager : MonoBehaviour
 {
@@ -184,7 +185,7 @@ public class CardManager : MonoBehaviour
         //SelectItemDetection();
         CardUseEffect();
 
-        if(drawRegionCards != null)
+        if (drawRegionCards != null)
         {
             drawCountTxt.text = drawRegionCards.Count.ToString();
             discardCountTxt.text = discardRegionCards.Count.ToString();
@@ -198,11 +199,12 @@ public class CardManager : MonoBehaviour
     public void InitBattleCardData()
     {
         CardMaxCount = BattleManager.Instance.Player.RoleData.MaxCardCount;
-        if(cardList != null && cardList.Count > 0)
+        if (cardList != null && cardList.Count > 0)
         {
-            for(int i = cardList.Count - 1; i >= 0; i--)
+            for (int i = cardList.Count - 1; i >= 0; i--)
             {
                 RemoveCard(cardList[i]);
+                Destroy(cardList[i].gameObject);
             }
         }
 
@@ -265,6 +267,7 @@ public class CardManager : MonoBehaviour
                 discardRegionCards.Add(cardList[i].CardData);
             }
             handRegionCards.Remove(cardList[i].CardData);
+            cardList[i].PlayMoveToDiscardAnim(cardList[i].transform.position, (item) => { Destroy(item.gameObject); });
             RemoveCard(cardList[i]);
         }
     }
@@ -276,7 +279,7 @@ public class CardManager : MonoBehaviour
     /// <param name="cardType"></param>
     private void DrawCards(EExtractMode mode, EExtractCardType cardType)
     {
-        if(cardList.Count > CardMaxCount) { return; }
+        if (cardList.Count > CardMaxCount) { return; }
         if (drawRegionCards.Count == 0)
         {
             if (!ShuffleCards()) { return; }
@@ -318,7 +321,7 @@ public class CardManager : MonoBehaviour
                 handRegionCards.Add(cardTemp);
                 AddCard(cardTemp);
                 count++;
-                if(count >= BattleManager.Instance.Player.RoleData.DrawCardCount)
+                if (count >= BattleManager.Instance.Player.RoleData.DrawCardCount)
                 {
                     break;
                 }
@@ -423,7 +426,7 @@ public class CardManager : MonoBehaviour
             return;
         }
         cardList.Remove(item);
-        Destroy(item.gameObject);
+        //Destroy(item.gameObject);
     }
 
     /// <summary>
@@ -447,6 +450,7 @@ public class CardManager : MonoBehaviour
                     }
                     UseCardOver(nowTaskItem);
                     RemoveCard(nowTaskItem);
+                    nowTaskItem = null;
                 }
                 else
                 {
@@ -678,19 +682,22 @@ public class CardManager : MonoBehaviour
     private void UseCardOver(CardItem cardItem)
     {
         handRegionCards.Remove(cardItem.CardData);
-        if(cardItem.CardData.CardType == ECardType.Ability)
+        if (cardItem.CardData.CardType == ECardType.Ability)
         {
             removeRegionCards.Add(cardItem.CardData);
+            cardItem.PlayDissolveAnim(temporaryCard.transform.position, (item) => { Destroy(item.gameObject); });
         }
-        if ((cardItem.CardData.Features & ECardFeatures.Cost) == ECardFeatures.Cost)
+        else if ((cardItem.CardData.Features & ECardFeatures.Cost) == ECardFeatures.Cost)
         {
             // 移动到消耗堆
             costRegionCards.Add(cardItem.CardData);
+            cardItem.PlayDissolveAnim(temporaryCard.transform.position, (item) => { Destroy(item.gameObject); });
         }
         else
         {
             // 移动到弃牌堆
             discardRegionCards.Add(cardItem.CardData);
+            cardItem.PlayMoveToDiscardAnim(temporaryCard.transform.position, (item) => { Destroy(item.gameObject); });
         }
     }
 

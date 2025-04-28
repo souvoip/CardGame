@@ -41,6 +41,7 @@ public class SelectCardUI : MonoBehaviour
     {
         hideAction?.Invoke();
         gameObject.SetActive(false);
+        UIManager.Instance.holdDetailUI.Hide();
     }
 
     private void JumpCardSelect()

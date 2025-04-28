@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandler
 {
@@ -15,6 +16,12 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
     private EnemyIntention intention;
     [SerializeField]
     private Vector2 tempInfoOffset;
+    [SerializeField]
+    private Image enemyImg;
+    [SerializeField]
+    private Material dissolveMat;
+
+    private float dieAnimTime = 1.2f;
 
 
     /// <summary>
@@ -27,6 +34,7 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
     protected override void Init()
     {
         AddEvents();
+        enemyImg.material = Instantiate(dissolveMat);
     }
 
     public void SetEnemyData(int enemyID)
@@ -66,6 +74,7 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if(isDie) { return; }
         BattleManager.Instance.CardManager.SelectEnemy(this);
 
         Vector3 pos = Camera.main.WorldToScreenPoint(transform.position);
@@ -79,6 +88,7 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        if (isDie) { return; }
         BattleManager.Instance.CardManager.SelectEnemy(null);
 
         UIManager.Instance.holdDetailUI.Hide();
@@ -105,11 +115,15 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
     public override void Die()
     {
         Debug.Log($"敌人{roleData.Name}死亡");
+        if (isDie) { return; }
+        isDie = true;
         base.Die();
         // 移除相关事件
         RemoveEvents();
-        // 移除敌人
-        BattleManager.Instance.EnemyDie(this);
+        // 播放死亡动画
+        StartCoroutine(DieAnimCoroutine());
+        //// 移除敌人
+        //BattleManager.Instance.EnemyDie(this);
     }
 
     private void ChangeHealth(int value)
@@ -160,5 +174,19 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
     {
         Debug.Log($"敌人{roleData.Name}行动, 行动类型：{currentRoundAction.ActionType}");
         currentRoundAction.DoAction();
+    }
+
+    private IEnumerator DieAnimCoroutine()
+    {
+        Material material = enemyImg.material;
+        float dieTime = dieAnimTime;
+        while(dieTime > 0)
+        {
+            material.SetFloat("_Progress", dieTime / dieAnimTime);
+            dieTime -= Time.deltaTime;
+            yield return null;
+        }
+        // 移除敌人
+        BattleManager.Instance.EnemyDie(this);
     }
 }

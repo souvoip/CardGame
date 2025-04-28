@@ -34,7 +34,7 @@ MonoBehaviour:
   - rid: 5035967051556978754
   - rid: 5035967051556978756
   EditAction:
-    rid: 5035967051556978757
+    rid: 5035967051556978761
   references:
     version: 2
     RefIds:
@@ -44,6 +44,7 @@ MonoBehaviour:
         actionAnim:
           path: NormalAtk
           time: 1
+        actionName: "\u653B\u51FB"
         BaseDamage:
           DamageValue: 8
           DamageRate: 1
@@ -68,12 +69,13 @@ MonoBehaviour:
           Stacks: 1
           Target: 0
           AddBuffTime: 0
-    - rid: 5035967051556978757
+    - rid: 5035967051556978761
       type: {class: EnemyAttackAction, ns: , asm: Assembly-CSharp}
       data:
         actionAnim:
           path: 
           time: 0
+        actionName: "\u653B\u51FB"
         BaseDamage:
           DamageValue: 0
           DamageRate: 0

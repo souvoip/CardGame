@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -23,6 +24,12 @@ public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler,
     [SerializeField]
     private TMP_Text descTxt;
     #endregion
+    [SerializeField]
+    private Material dissolveMat;
+
+    private static float dissolveTime = 1.2f;
+
+    private bool isPlayAnim = false;
 
     private CardBase cardData;
     public CardBase CardData { get => cardData; }
@@ -73,6 +80,7 @@ public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler,
     // Update is called once per frame  
     void Update()
     {
+        if(isPlayAnim) { return; }
         SetPos();
     }
 
@@ -142,6 +150,28 @@ public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler,
         descTxt.text = cardData.GetDesc();
     }
 
+    /// <summary>
+    /// 播放卡牌消失动画
+    /// </summary>
+    /// <param name="overAction"></param>
+    public void PlayDissolveAnim(Vector3 pos, Action<CardItem> overAction = null)
+    {
+        transform.position = pos;
+
+        gameObject.SetActive(true);
+        StartCoroutine(DissolveAnimCoroutine(overAction));
+    }
+    /// <summary>
+    /// 播放卡牌移动到弃牌库动画
+    /// </summary>
+    public void PlayMoveToDiscardAnim(Vector3 pos, Action<CardItem> overAction = null)
+    {
+        transform.position = pos;
+        //transform.localScale = Vector3.one;
+        gameObject.SetActive(true);
+        StartCoroutine(MoveToDiscardAnimCoroutine(overAction));
+    }
+
     public void OnPointerMove(PointerEventData eventData)
     {
         onMouseMoveIn?.Invoke(this);
@@ -152,17 +182,20 @@ public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler,
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if(isPlayAnim) { return; }
         StartCoroutine(ShowCardDetailInfoCoroutine());
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        if (isPlayAnim) { return; }
         onMouseMoveOut?.Invoke();
         UIManager.Instance.holdDetailUI.Hide();
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (isPlayAnim) { return; }
         onMouseDown?.Invoke(this);
         UIManager.Instance.holdDetailUI.Hide();
     }
@@ -174,5 +207,37 @@ public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler,
         Vector3 spos = Camera.main.WorldToScreenPoint(transform.position);
         UIManager.Instance.holdDetailUI.ShowInfos(spos, tempOffset, cardData.GetDetailInfos());
     }
+
+    private IEnumerator DissolveAnimCoroutine(Action<CardItem> overAction)
+    {
+        isPlayAnim = true;
+        var imgs = transform.GetComponentsInChildren<Image>();
+        var dissolves = Instantiate(dissolveMat);
+        foreach (var img in imgs)
+        {
+            img.material = dissolves;
+        }
+        yield return null;
+        nameTxt.enabled = false;
+        feeTxt.enabled = false;
+        typeTxt.enabled = false;
+        descTxt.enabled = false;
+        float dt = dissolveTime;
+        while (dt > 0)
+        {
+            dt -= Time.deltaTime;
+            dissolves.SetFloat("_Progress", dt / dissolveTime);
+            yield return null;
+        }
+        overAction?.Invoke(this);
+    }
+
+    private IEnumerator MoveToDiscardAnimCoroutine(Action<CardItem> overAction)
+    {
+        isPlayAnim = true;
+        yield return new WaitForSeconds(0.5f);
+        overAction?.Invoke(this);
+    }
+
 }
 

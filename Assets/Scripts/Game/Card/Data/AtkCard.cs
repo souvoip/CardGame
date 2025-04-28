@@ -26,6 +26,7 @@ public class AtkCard : CardBase
         int damageValue = GameTools.CalculateDamage(BattleManager.Instance.Player, target, BaseDamage);
         for (int i = 0; i < HitCount; i++)
         {
+            if(target.IsDie) { break; }
             target.ChangeAttribute(ERoleAttribute.HP, -damageValue);
             BattleAnimManager.Instance.PlayAnim(target.transform.position, cardAnimData);
         }
@@ -46,6 +47,7 @@ public class AtkCard : CardBase
         damage = BattleManager.Instance.Player.CalculateAtkDamage(damage);
         for (int i = BattleManager.Instance.EnemyRoles.Count - 1; i >= 0; i--)
         {
+            if(BattleManager.Instance.EnemyRoles[i].IsDie) { continue; }
             var tempDamage = new Damage(damage);
             tempDamage = BattleManager.Instance.EnemyRoles[i].CalculateAtkDamage(tempDamage);
             for (int j = 0; j < HitCount; j++)
