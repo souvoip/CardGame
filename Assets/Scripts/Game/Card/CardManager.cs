@@ -203,8 +203,9 @@ public class CardManager : MonoBehaviour
         {
             for (int i = cardList.Count - 1; i >= 0; i--)
             {
+                var temp = cardList[i];
                 RemoveCard(cardList[i]);
-                Destroy(cardList[i].gameObject);
+                Destroy(temp);
             }
         }
 

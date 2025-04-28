@@ -1791,6 +1791,10 @@ PrefabInstance:
       propertyPath: m_ActiveFontFeatures.Array.size
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4265833813209334000, guid: 19b337535fe93c540af0ca8275a8b668, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5976695060677771369, guid: 19b337535fe93c540af0ca8275a8b668, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.25
@@ -1850,6 +1854,14 @@ PrefabInstance:
     - target: {fileID: 6617842043450249779, guid: 19b337535fe93c540af0ca8275a8b668, type: 3}
       propertyPath: m_Name
       value: CardItem
+      objectReference: {fileID: 0}
+    - target: {fileID: 6620215047432619010, guid: 19b337535fe93c540af0ca8275a8b668, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: -8458698557176220305, guid: 9f8b2151e08d9bb40acd808d797d9715, type: 2}
+    - target: {fileID: 7496205916378689042, guid: 19b337535fe93c540af0ca8275a8b668, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 8462504707805555747, guid: 19b337535fe93c540af0ca8275a8b668, type: 3}
       propertyPath: m_ActiveFontFeatures.Array.size

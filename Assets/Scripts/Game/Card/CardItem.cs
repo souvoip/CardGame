@@ -173,7 +173,7 @@ public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler,
         //transform.localScale = Vector3.one;
         gameObject.SetActive(true);
         isPlayAnim = true;
-        transform.DOMove(discardPos, 1f).OnComplete(() =>
+        transform.DOMove(discardPos, 0.5f).OnComplete(() =>
         {
             overAction?.Invoke(this);
         });
@@ -224,10 +224,6 @@ public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler,
             img.material = dissolves;
         }
         yield return null;
-        nameTxt.enabled = false;
-        feeTxt.enabled = false;
-        typeTxt.enabled = false;
-        descTxt.enabled = false;
         float dt = dissolveTime;
         float value;
         while (dt > 0)
