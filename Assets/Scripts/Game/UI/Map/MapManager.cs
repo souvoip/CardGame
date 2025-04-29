@@ -42,6 +42,7 @@ public class MapManager : MonoBehaviour
     {
         gameObject.SetActive(true);
         UpdateMapStateInfo();
+        ResetMapShowRegion();
     }
 
     public void Hide()

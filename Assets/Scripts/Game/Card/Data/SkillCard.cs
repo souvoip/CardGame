@@ -56,9 +56,10 @@ public class SkillCard : CardBase
     {
         string desc = GetFeaturesDesc();
         // 计算实际防护值
+        var tempBlock = new Block(BaseBlock);
         int baseBlockValue = BaseBlock.GetBlockValue();
-        //int damageValue = GameTools.CalculateDamage(BattleManager.Instance.Player, BattleManager.Instance.CardManager.NowSelectEnemy, BaseDamage);
-        //string damageStr = baseDamageValue > damageValue ? $"</color=#FF0000>{damageValue}</color>" : baseDamageValue == damageValue ? $"{damageValue}" : $"<color=#00FF00>{damageValue}</color>";
+        int blockValue = BattleManager.Instance.Player.CalculateBlock(tempBlock).GetBlockValue();
+        string damageStr = baseBlockValue > blockValue ? $"</color=#FF0000>{blockValue}</color>" : baseBlockValue == blockValue ? $"{blockValue}" : $"<color=#00FF00>{blockValue}</color>";
         if(baseBlockValue != 0)
         {
             if (SkillCount == 1)

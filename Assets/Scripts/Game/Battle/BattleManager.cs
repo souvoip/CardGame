@@ -65,7 +65,7 @@ public class BattleManager : MonoBehaviour
             var enemy = Instantiate(enemyPrefab, EnemySpawnPoint[i]).GetComponent<EnemyRole>();
             EnemyRoles.Add(enemy);
             enemy.transform.localPosition = Vector3.zero;
-            enemy.SetEnemyData(101);
+            enemy.SetEnemyData(Random.Range(101, 104));
         }
         CardManager.InitBattleCardData();
 

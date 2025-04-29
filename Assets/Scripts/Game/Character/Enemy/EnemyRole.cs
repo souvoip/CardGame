@@ -44,6 +44,7 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
 
         hpBar.SetMaxHealth(roleData.MaxHP);
         roleData.InitActions(this);
+        enemyImg.sprite = Resources.Load<Sprite>(BaseRolePath + roleData.RoleImgPath);
     }
 
     private void AddEvents()

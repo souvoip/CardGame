@@ -26,6 +26,10 @@ public class RoleData : ScriptableObject
     /// 经验
     /// </summary>
     public int Exp;
+    /// <summary>
+    /// 角色图片路径
+    /// </summary>
+    public string RoleImgPath;
     #endregion
 
     #region Battle

@@ -33,6 +33,7 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
         hpBar.SetMaxHealth(roleData.MaxHP);
         AddEvents();
         playerImg.material = dissolveMat;
+        playerImg.sprite = Resources.Load<Sprite>(BaseRolePath + roleData.RoleImgPath);
     }
 
     private void AddEvents()
