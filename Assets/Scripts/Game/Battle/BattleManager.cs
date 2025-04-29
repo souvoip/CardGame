@@ -18,6 +18,8 @@ public class BattleManager : MonoBehaviour
 
     [SerializeField]
     private GameObject enemyPrefab;
+    [SerializeField]
+    private GameObject damageNumberPrefab;
 
     private void Awake()
     {
@@ -112,5 +114,12 @@ public class BattleManager : MonoBehaviour
             // 先直接退出游戏 TODO：功能未完成
             Application.Quit();
         }
+    }
+
+    public void ShowDamageNumber(int damage, Vector3 position)
+    {
+        var damageNumber = Instantiate(damageNumberPrefab, transform).GetComponent<DamageNumber>();
+        damageNumber.transform.position = position;
+        damageNumber.Init(damage);
     }
 }

@@ -12,7 +12,9 @@ public static class CardDataManager
     /// 临时测试数据，可以在战斗中获取的卡牌ID TODO：完善
     /// </summary>
     public readonly static int[] getCardIds = new int[] {
-        2, 3, 4, 102, 103, 201, 202
+        2, 3, 4, 
+        102, 103, 104,
+        201, 202, 203, 204,
     };
 
     /// <summary>

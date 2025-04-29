@@ -27,7 +27,8 @@ public class AtkCard : CardBase
         for (int i = 0; i < HitCount; i++)
         {
             if(target.IsDie) { break; }
-            target.ChangeAttribute(ERoleAttribute.HP, -damageValue);
+            BattleManager.Instance.Player.AtkTarget(target, damageValue);
+            //target.ChangeAttribute(ERoleAttribute.HP, -damageValue);
             BattleAnimManager.Instance.PlayAnim(target.transform.position, cardAnimData);
         }
 
@@ -49,10 +50,11 @@ public class AtkCard : CardBase
         {
             if(BattleManager.Instance.EnemyRoles[i].IsDie) { continue; }
             var tempDamage = new Damage(damage);
-            tempDamage = BattleManager.Instance.EnemyRoles[i].CalculateAtkDamage(tempDamage);
+            tempDamage = BattleManager.Instance.EnemyRoles[i].CalculateHitDamage(tempDamage);
             for (int j = 0; j < HitCount; j++)
             {
-                BattleManager.Instance.EnemyRoles[i].ChangeAttribute(ERoleAttribute.HP, -tempDamage.GetDamageValue());
+                BattleManager.Instance.Player.AtkTarget(BattleManager.Instance.EnemyRoles[i], tempDamage.GetDamageValue());
+                //BattleManager.Instance.EnemyRoles[i].ChangeAttribute(ERoleAttribute.HP, -tempDamage.GetDamageValue());
                 BattleAnimManager.Instance.PlayAnim(BattleManager.Instance.EnemyRoles[i].transform.position, cardAnimData);
             }
         }

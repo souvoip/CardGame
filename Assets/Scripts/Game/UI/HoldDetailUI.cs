@@ -20,9 +20,12 @@ public class HoldDetailUI : MonoBehaviour
     [SerializeField]
     private float maxHeight = 400;
 
+    private bool isShow = false;
+
     public void ShowInfos(Vector2 pos, Vector2 offset, List<DetailInfo> infos)
     {
         if(infos == null || infos.Count == 0) { return; }
+        isShow = true;
         //gameObject.SetActive(true);
         float scale = Screen.width / 1920f;
         offset *= scale;
@@ -88,12 +91,16 @@ public class HoldDetailUI : MonoBehaviour
             newPos.y -= pos.y - rHeight + offset.y;
         }
         transform.position = newPos;
-        cg.alpha = 1;
+        if (isShow)
+        {
+            cg.alpha = 1;
+        }
     }
 
     public void Hide()
     {
         //gameObject.SetActive(false);
+        isShow = false;
         cg.alpha = 0;
     }
 

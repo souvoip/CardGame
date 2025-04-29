@@ -15,6 +15,7 @@ public class BattleAnimManager : MonoBehaviour
 
     public void PlayAnim(Vector3 position, BattleAnimData animData)
     {
+        if(string.IsNullOrEmpty(animData.path)) { return; }
         BattleAnimItem anim = Instantiate(animPrefab, transform).GetComponent<BattleAnimItem>();
         anim.PlayAnim(position, animData);
     }

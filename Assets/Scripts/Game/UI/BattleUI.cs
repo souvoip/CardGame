@@ -17,6 +17,8 @@ public class BattleUI : MonoBehaviour
     private Button costCardBtn;
     [SerializeField]
     private TMP_Text apTxt;
+    [SerializeField]
+    private TMP_Text turnTxt;
 
     private void Awake()
     {
@@ -81,5 +83,10 @@ public class BattleUI : MonoBehaviour
                 }
                 break;
         }
+    }
+
+    public void SetTurnNumber(int currentTurnCount)
+    {
+        turnTxt.text = currentTurnCount.ToString();
     }
 }

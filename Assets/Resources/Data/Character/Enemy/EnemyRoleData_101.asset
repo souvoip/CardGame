@@ -48,6 +48,7 @@ MonoBehaviour:
         BaseDamage:
           DamageValue: 8
           DamageRate: 1
+          isNext: 1
         AtkCount: 1
     - rid: 5035967051556978754
       type: {class: EnemyGetAesistAction, ns: , asm: Assembly-CSharp}
@@ -79,4 +80,5 @@ MonoBehaviour:
         BaseDamage:
           DamageValue: 0
           DamageRate: 0
+          isNext: 0
         AtkCount: 0

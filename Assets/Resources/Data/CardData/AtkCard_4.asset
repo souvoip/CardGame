@@ -34,4 +34,5 @@ MonoBehaviour:
   BaseDamage:
     DamageValue: 7
     DamageRate: 1
+    isNext: 1
   HitCount: 1

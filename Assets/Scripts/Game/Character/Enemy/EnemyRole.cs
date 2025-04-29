@@ -23,6 +23,7 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
 
     private float dieAnimTime = 1.2f;
 
+    public override bool IsPlayer => false;
 
     /// <summary>
     /// 敌人数据 (需要完善)

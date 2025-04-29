@@ -197,7 +197,10 @@ public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler,
     {
         if (isPlayAnim) { return; }
         onMouseMoveOut?.Invoke();
-        UIManager.Instance.holdDetailUI.Hide();
+        TimerTools.Timer.FrameOnce(1, () =>
+        {
+            UIManager.Instance.holdDetailUI.Hide();
+        });
     }
 
     public void OnPointerDown(PointerEventData eventData)

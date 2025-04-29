@@ -21,7 +21,8 @@ public class EnemyAttackAction : EnemyDoAction
         int damageValue = GameTools.CalculateDamage(self, BattleManager.Instance.Player, BaseDamage);
         for (int i = 0; i < AtkCount; i++)
         {
-            BattleManager.Instance.Player.ChangeAttribute(ERoleAttribute.HP, -damageValue);
+            self.AtkTarget(BattleManager.Instance.Player, damageValue);
+            //BattleManager.Instance.Player.ChangeAttribute(ERoleAttribute.HP, -damageValue);
             BattleAnimManager.Instance.PlayAnim(BattleManager.Instance.Player.transform.position, actionAnim);
         }
     }

@@ -11,8 +11,19 @@ public class TurnManager : MonoBehaviour
     public static event Action OnEnemyTurnEnd;
     public static ETurnType TurnType;
     public static TurnManager Instance;
-
-    public static int CurrentTurnCount = 0;
+    private static int currentTurnCount = 0;
+    public static int CurrentTurnCount
+    {
+        get
+        {
+            return currentTurnCount;
+        }
+        set
+        {
+            currentTurnCount = value;
+            UIManager.Instance.battleUI.SetTurnNumber(currentTurnCount);
+        }
+    }
 
     private void Awake()
     {
@@ -24,19 +35,20 @@ public class TurnManager : MonoBehaviour
 
     public void StartBattle()
     {
+        TurnType = ETurnType.Player;
         CurrentTurnCount = 0;
         OnStartBattle?.Invoke();
     }
 
     public void PlayerTurnStart()
     {
-        CurrentTurnCount++;
         Debug.Log("Player Turn Start");
+        CurrentTurnCount++;
         TurnType = ETurnType.Player;
         OnPlayerTurnStart?.Invoke();
     }
 
-    // 示例回合流程
+    // 敌人回合流程
     public void PlayerTurnEnd()
     {
         Debug.Log("Player Turn End");

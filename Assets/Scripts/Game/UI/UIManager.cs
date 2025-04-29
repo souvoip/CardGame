@@ -6,6 +6,8 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
 
+    public BattleUI battleUI;
+
     public CardViewUI cardView;
 
     public HoldDetailUI holdDetailUI;

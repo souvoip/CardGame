@@ -16,7 +16,7 @@ public abstract class BuffBase : ScriptableObject
     public bool isDebuff;          // 是否为负面效果
 
     [Header("持续时间")]
-    public int duration = -1;      // -1表示永久
+    public int duration = -1;      // -1表示永久, 0表示立即触发后移除
 
     // 运行时数据
     [HideInInspector]
@@ -71,12 +71,26 @@ public abstract class BuffBase : ScriptableObject
 
     public virtual void AddEvents()
     {
-        TurnManager.OnEnemyTurnEnd += OnTurnEnd;
+        if(TurnManager.TurnType == ETurnType.Player)
+        {
+            TurnManager.OnEnemyTurnEnd += OnTurnEnd;
+        }
+        else
+        {
+            TurnManager.OnPlayerTurnEnd += OnTurnEnd;
+        }
     }
 
     public virtual void RemoveEvents()
     {
-        TurnManager.OnEnemyTurnEnd -= OnTurnEnd;
+        if (TurnManager.TurnType == ETurnType.Player)
+        {
+            TurnManager.OnEnemyTurnEnd -= OnTurnEnd;
+        }
+        else
+        {
+            TurnManager.OnPlayerTurnEnd -= OnTurnEnd;
+        }
     }
 
     // 获取描述文本（用于UI显示）

@@ -9,6 +9,10 @@ public class Damage
 {
     public int DamageValue;
     public float DamageRate;
+    /// <summary>
+    /// 是否需要继续计算buff伤害
+    /// </summary>
+    public bool isNext = true;
 
     public Damage(int damageValue, float damageRate)
     {
@@ -20,6 +24,7 @@ public class Damage
     {
         DamageValue = damage.DamageValue;
         DamageRate = damage.DamageRate;
+        isNext = damage.isNext;
     }
 
     public int GetDamageValue()

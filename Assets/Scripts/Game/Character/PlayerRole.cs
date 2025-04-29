@@ -23,6 +23,8 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
 
     public PlayerRoleData RoleData { get { return roleData; } }
 
+    public override bool IsPlayer => true;
+
     protected override void Init()
     {
         // 获取玩家数据

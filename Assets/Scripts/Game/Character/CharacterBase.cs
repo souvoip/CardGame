@@ -37,6 +37,8 @@ public class CharacterBase : MonoBehaviour
     protected bool isDie = false;
     public bool IsDie { get { return isDie; } }
 
+    public virtual bool IsPlayer { get; }
+
     protected virtual void Init() { }
 
     private void Start()
@@ -68,6 +70,10 @@ public class CharacterBase : MonoBehaviour
     {
         foreach (var i in ChangeAtkDamageEvent.Keys)
         {
+            if (!damage.isNext)
+            {
+                break;
+            }
             ChangeAtkDamageEvent[i].Invoke(damage);
         }
         return damage;
@@ -77,6 +83,10 @@ public class CharacterBase : MonoBehaviour
     {
         foreach (var i in ChangeHitDamageEvent.Keys)
         {
+            if (!damage.isNext)
+            {
+                break;
+            }
             ChangeHitDamageEvent[i].Invoke(damage);
         }
         return damage;
@@ -89,6 +99,30 @@ public class CharacterBase : MonoBehaviour
             ChangeBlockEvent[i].Invoke(block);
         }
         return block;
+    }
+
+    /// <summary>
+    /// 攻击目标
+    /// </summary>
+    /// <param name="target"> 目标 </param>
+    /// <param name="damage"> 伤害值 </param>
+    public void AtkTarget(CharacterBase target, int damage)
+    {
+        target.GetHit(this, damage);
+        AttackEvent?.Invoke(target, damage);
+    }
+
+    /// <summary>
+    /// 受到伤害
+    /// </summary>
+    /// <param name="from"> 伤害来原 </param>
+    /// <param name="damage"> 数值 </param>
+    public void GetHit(CharacterBase from, int damage)
+    {
+        ChangeAttribute(ERoleAttribute.HP, -damage);
+        GetHitEvent?.Invoke(from, damage);
+        // 显示伤害数值
+        BattleManager.Instance.ShowDamageNumber(damage, transform.position);
     }
 
     public virtual void ChangeAttribute(ERoleAttribute attribute, int value) { }
