@@ -8,7 +8,7 @@ public class BuffItem
 {
     public int BuffID;
     public int Stacks;
-    public EBuffTarget Target;
+    public ETargetRole Target;
     public EAddBuffTime AddBuffTime;
 
     public DetailInfo GetDetailInfo()
@@ -20,7 +20,7 @@ public class BuffItem
 /// <summary>
 /// buff对象
 /// </summary>
-public enum EBuffTarget
+public enum ETargetRole
 {
     Self,
     Enemy,

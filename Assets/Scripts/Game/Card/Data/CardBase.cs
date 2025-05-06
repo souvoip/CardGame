@@ -97,17 +97,17 @@ public abstract class CardBase : ScriptableObject
         {
             if (Buffs[i].AddBuffTime == addTime)
             {
-                if (Buffs[i].Target == EBuffTarget.Self)
+                if (Buffs[i].Target == ETargetRole.Self)
                 {
                     BattleManager.Instance.Player.AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
                 }
-                else if (Buffs[i].Target == EBuffTarget.Enemy)
+                else if (Buffs[i].Target == ETargetRole.Enemy)
                 {
                     if (characterTarget == null) { return; }
                     if (characterTarget.IsDie) { return; }
                     characterTarget.AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
                 }
-                else if (Buffs[i].Target == EBuffTarget.AllEnemy)
+                else if (Buffs[i].Target == ETargetRole.AllEnemy)
                 {
                     for (int j = 0; j < BattleManager.Instance.EnemyRoles.Count; j++)
                     {
@@ -115,7 +115,7 @@ public abstract class CardBase : ScriptableObject
                         BattleManager.Instance.EnemyRoles[j].AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
                     }
                 }
-                else if (Buffs[i].Target == EBuffTarget.All)
+                else if (Buffs[i].Target == ETargetRole.All)
                 {
                     BattleManager.Instance.Player.AddBuff(BuffDataManager.GetBuff(Buffs[i].BuffID), Buffs[i].Stacks);
                     for (int j = 0; j < BattleManager.Instance.EnemyRoles.Count; j++)
@@ -164,16 +164,16 @@ public abstract class CardBase : ScriptableObject
         {
             switch (item.Target)
             {
-                case EBuffTarget.Self:
+                case ETargetRole.Self:
                     str += $"给予自身{item.Stacks}层<color=#FFDA00>{BuffDataManager.GetBuffName(item.BuffID)}</color>\n";
                     break;
-                case EBuffTarget.Enemy:
+                case ETargetRole.Enemy:
                     str += $"给予目标{item.Stacks}层<color=#FFDA00>{BuffDataManager.GetBuffName(item.BuffID)}</color>\n";
                     break;
-                case EBuffTarget.AllEnemy:
+                case ETargetRole.AllEnemy:
                     str += $"给予所有敌人{item.Stacks}层<color=#FFDA00>{BuffDataManager.GetBuffName(item.BuffID)}</color>\n";
                     break;
-                case EBuffTarget.All:
+                case ETargetRole.All:
                     str += $"给予所有单位{item.Stacks}层<color=#FFDA00>{BuffDataManager.GetBuffName(item.BuffID)}</color>\n";
                     break;
             }

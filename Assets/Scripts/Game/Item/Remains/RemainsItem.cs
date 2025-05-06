@@ -16,6 +16,10 @@ public class RemainsItem : ItemBase
     {
 
     }
+    /// <summary>
+    /// 战斗开始时调用
+    /// </summary>
+    public virtual void OnBattleStart() { }
 
     public virtual DetailInfo GetDetailinfo()
     {

@@ -6,6 +6,7 @@ using UnityEngine;
 /// <summary>
 /// 添加buff的遗物
 /// </summary>
+[CreateAssetMenu(fileName = "Remains_AddBuff", menuName = "Data/Remains/AddBuffRemains")]
 public class RemainsItemAddBuff : RemainsItem
 {
     public List<RemainsBuffItem> Buffs;
@@ -49,7 +50,7 @@ public class RemainsItemAddBuff : RemainsItem
 
     private void AddBuff(RemainsBuffItem buffItem)
     {
-        if(buffItem.Target == EBuffTarget.Self)
+        if(buffItem.Target == ETargetRole.Self)
         {
             BattleManager.Instance.Player.AddBuff(BuffDataManager.GetBuff(buffItem.BuffID), buffItem.Stacks);
         }
