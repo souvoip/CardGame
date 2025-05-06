@@ -11,22 +11,6 @@ public class BuffItem
     public EBuffTarget Target;
     public EAddBuffTime AddBuffTime;
 
-    public BuffItem(int buffID, int stacks, EBuffTarget target, EAddBuffTime addBuffTime)
-    {
-        BuffID = buffID;
-        Stacks = stacks;
-        Target = target;
-        AddBuffTime = addBuffTime;
-    }
-
-    public BuffItem(JSONObject jSONObject)
-    {
-        BuffID = (int)jSONObject.GetField("BuffID").i;
-        Stacks = (int)jSONObject.GetField("Stacks").i;
-        Target = (EBuffTarget)jSONObject.GetField("Target").i;
-        AddBuffTime = (EAddBuffTime)jSONObject.GetField("AddBuffTime").i;
-    }
-
     public DetailInfo GetDetailInfo()
     {
         return BuffDataManager.GetBuff(BuffID).GetDetailInfo();

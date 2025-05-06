@@ -77,11 +77,6 @@ public class BattleManager : MonoBehaviour
         });
     }
 
-    public void TestBattle()
-    {
-        TurnManager.PlayerTurnStart();
-    }
-
     public void EnemyDie(EnemyRole role)
     {
         EnemyRoles.Remove(role);
@@ -104,9 +99,15 @@ public class BattleManager : MonoBehaviour
             // 清理玩家在战斗中获取的buff
             Player.ClearBattleBuff();
             // 胜利
+            TurnManager.BattleVictory();
             UIManager.Instance.selectCardUI.Show(CardDataManager.GetRandomCardIds(3), () =>
             {
                 UIManager.Instance.mapUI.Show();
+                // 判断是否是最后一场战斗，TODO：功能未完成（先直接退出）
+                if(UIManager.Instance.mapUI.CurrentMapItem.Type == EMapItemType.Boss)
+                {
+                    Application.Quit();
+                }
             });
         }
         else

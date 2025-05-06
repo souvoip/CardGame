@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e88fa94cf21ac04ebd00c30325b57ac, type: 3}
   m_Name: EnemyRoleData_102
   m_EditorClassIdentifier: 
-  ID: 101
+  ID: 102
   Name: "\u6D4B\u8BD52"
   Sex: 0
   Age: 20
   Level: 1
   Exp: 20
+  RoleImgPath: 102
   MaxHP: 65
   HP: 65
   MaxMP: 50
@@ -31,10 +32,9 @@ MonoBehaviour:
     AddBuffTime: 0
   Actions:
   - rid: 5035967028884406340
-  - rid: 5035967051556978754
-  - rid: 5035967051556978761
+  - rid: 5035967323595604043
   EditAction:
-    rid: 8579191933927161917
+    rid: 5035967323595604044
   references:
     version: 2
     RefIds:
@@ -50,28 +50,18 @@ MonoBehaviour:
           DamageRate: 1
           isNext: 1
         AtkCount: 1
-    - rid: 5035967051556978754
-      type: {class: EnemyGetAesistAction, ns: , asm: Assembly-CSharp}
+    - rid: 5035967323595604043
+      type: {class: EnemyGiveBuffAction, ns: , asm: Assembly-CSharp}
       data:
         actionAnim:
           path: NormalSkill
           time: 1
-        baseBlock:
-          Value: 10
-          Rate: 1
-    - rid: 5035967051556978761
-      type: {class: EnemyAttackAction, ns: , asm: Assembly-CSharp}
-      data:
-        actionAnim:
-          path: NormalAtk
-          time: 0
-        actionName: "\u653B\u51FB"
-        BaseDamage:
-          DamageValue: 12
-          DamageRate: 1
-          isNext: 1
-        AtkCount: 1
-    - rid: 8579191933927161917
+        buffs:
+        - BuffID: 4
+          Stacks: 1
+          Target: 0
+          AddBuffTime: 0
+    - rid: 5035967323595604044
       type: {class: EnemyAttackAction, ns: , asm: Assembly-CSharp}
       data:
         actionAnim:

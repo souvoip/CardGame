@@ -78,9 +78,13 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
     public override void Die()
     {
         base.Die();
+        // TODO: 判断是否有复活
+        if (roleData.HP >= 0)
+        {
+            return;
+        }
         // TODO: 游戏结束
         RemoveEvents();
-
         StartCoroutine(DieAnimCoroutine());
     }
 

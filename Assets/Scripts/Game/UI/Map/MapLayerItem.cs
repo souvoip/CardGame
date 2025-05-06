@@ -80,7 +80,7 @@ public class MapLayerItem
         }
         else
         {
-            EMapItemType type = MapManager.instance.GetRandomMapItemType();
+            EMapItemType type = MapManager.Instance.GetRandomMapItemType();
             if(LayerType == ELayerType.Start)
             {
                 type = Random.Range(0, 100) < 60 ? EMapItemType.Battle : EMapItemType.Event;
@@ -131,7 +131,7 @@ public class MapLayerItem
     }
 
     /// <summary>
-    /// Ë¢ĞÂÉÏ²ãÊı¾İÁĞ±í
+    /// åˆ·æ–°ä¸Šå±‚æ•°æ®åˆ—è¡¨
     /// </summary>
     /// <param name="ComparelayerDic"></param>
     public void RefreshTopLineData(Dictionary<int, MapItemBase> ComparelayerDic)
@@ -141,7 +141,7 @@ public class MapLayerItem
         {
             MapItemBase nowItem = item.Value;
             nowItem.NextItemList.Clear();
-            //»ñÈ¡¾àÀë´Ë½Úµã×î½üµÄ¶ÔÏó
+            //è·å–è·ç¦»æ­¤èŠ‚ç‚¹æœ€è¿‘çš„å¯¹è±¡
             MapItemBase topItem = nowItem.GetNearestDistanceItem(ComparelayerDic);
             if (topItem != null)
             {
@@ -153,7 +153,7 @@ public class MapLayerItem
     }
 
     /// <summary>
-    /// ¶ÏÂ·¼ìË÷
+    /// æ–­è·¯æ£€ç´¢
     /// </summary>
     /// <param name="ComparelayerDic"></param>
     public void TopLineAdditional(Dictionary<int, MapItemBase> ComparelayerDic)
@@ -164,7 +164,7 @@ public class MapLayerItem
             MapItemBase nowItem = item.Value;
             if (nowItem.PrevItems == null || nowItem.PrevItems.Count == 0)
             {
-                //»ñÈ¡¾àÀë´Ë½Úµã×î½üµÄ¶ÔÏó
+                //è·å–è·ç¦»æ­¤èŠ‚ç‚¹æœ€è¿‘çš„å¯¹è±¡
                 MapItemBase downItem = nowItem.GetNearestDistanceItem(ComparelayerDic);
                 if (downItem != null)
                 {

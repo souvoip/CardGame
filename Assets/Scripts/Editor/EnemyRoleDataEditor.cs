@@ -34,7 +34,7 @@ public class EnemyRoleDataEditor : Editor
         DrawActionProperties();
         AddActionBtn();
 
-        //serializedObject.ApplyModifiedProperties();
+        serializedObject.ApplyModifiedProperties();
     }
 
     private void DrawBaseProp()

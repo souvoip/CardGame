@@ -49,8 +49,9 @@ public class MapItemBase : MonoBehaviour
         if (State == EMapState.Enable)
         {
             OnEnterEffect();
-            MapManager.instance.UpdateMapStateInfo();
-            MapManager.instance.CurrentLayer = Layer;
+            MapManager.Instance.UpdateMapStateInfo();
+            MapManager.Instance.CurrentLayer = Layer;
+            MapManager.Instance.CurrentMapItem = this;
             EnterEvent();
         }
     }
@@ -63,7 +64,7 @@ public class MapItemBase : MonoBehaviour
 
     public virtual void OnEnterEffect()
     {
-        MapManager.instance.DisableLayerNode(Layer);
+        MapManager.Instance.DisableLayerNode(Layer);
         State = EMapState.Current;
         foreach (var item in PrevItems)
         {

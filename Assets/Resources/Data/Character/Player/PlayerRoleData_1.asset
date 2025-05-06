@@ -18,6 +18,7 @@ MonoBehaviour:
   Age: 20
   Level: 1
   Exp: 0
+  RoleImgPath: 001
   MaxHP: 100
   HP: 100
   MaxMP: 100

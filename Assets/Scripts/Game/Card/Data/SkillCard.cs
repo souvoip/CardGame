@@ -64,11 +64,11 @@ public class SkillCard : CardBase
         {
             if (SkillCount == 1)
             {
-                desc += "获取" + baseBlockValue + "抵抗\n";
+                desc += "获取" + damageStr + "抵抗\n";
             }
             else
             {
-                desc += "获取" + baseBlockValue + "抵抗" + SkillCount + "次\n";
+                desc += "获取" + damageStr + "抵抗" + SkillCount + "次\n";
             }
         }
         desc += GetBuffsDesc() + Desc;

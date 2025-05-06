@@ -18,6 +18,7 @@ MonoBehaviour:
   Age: 20
   Level: 1
   Exp: 20
+  RoleImgPath: 101
   MaxHP: 50
   HP: 50
   MaxMP: 50
@@ -34,7 +35,7 @@ MonoBehaviour:
   - rid: 5035967051556978754
   - rid: 5035967051556978756
   EditAction:
-    rid: 5035967051556978761
+    rid: 5035967323595604042
   references:
     version: 2
     RefIds:
@@ -70,15 +71,10 @@ MonoBehaviour:
           Stacks: 1
           Target: 0
           AddBuffTime: 0
-    - rid: 5035967051556978761
-      type: {class: EnemyAttackAction, ns: , asm: Assembly-CSharp}
+    - rid: 5035967323595604042
+      type: {class: EnemyGiveBuffAction, ns: , asm: Assembly-CSharp}
       data:
         actionAnim:
           path: 
           time: 0
-        actionName: "\u653B\u51FB"
-        BaseDamage:
-          DamageValue: 0
-          DamageRate: 0
-          isNext: 0
-        AtkCount: 0
+        buffs: []

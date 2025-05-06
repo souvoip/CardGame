@@ -12,14 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e88fa94cf21ac04ebd00c30325b57ac, type: 3}
   m_Name: EnemyRoleData_103
   m_EditorClassIdentifier: 
-  ID: 101
-  Name: "\u6D4B\u8BD52"
+  ID: 103
+  Name: "\u6D4B\u8BD53"
   Sex: 0
   Age: 20
   Level: 1
   Exp: 20
-  MaxHP: 65
-  HP: 65
+  RoleImgPath: 103
+  MaxHP: 45
+  HP: 45
   MaxMP: 50
   MP: 50
   Aesist: 0
@@ -31,7 +32,6 @@ MonoBehaviour:
     AddBuffTime: 0
   Actions:
   - rid: 5035967028884406340
-  - rid: 5035967051556978754
   - rid: 5035967051556978761
   EditAction:
     rid: 8579191933927161917
@@ -50,15 +50,6 @@ MonoBehaviour:
           DamageRate: 1
           isNext: 1
         AtkCount: 1
-    - rid: 5035967051556978754
-      type: {class: EnemyGetAesistAction, ns: , asm: Assembly-CSharp}
-      data:
-        actionAnim:
-          path: NormalSkill
-          time: 1
-        baseBlock:
-          Value: 10
-          Rate: 1
     - rid: 5035967051556978761
       type: {class: EnemyAttackAction, ns: , asm: Assembly-CSharp}
       data:

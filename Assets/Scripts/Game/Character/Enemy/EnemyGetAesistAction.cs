@@ -4,6 +4,8 @@ using UnityEngine;
 [Serializable]
 public class EnemyGetAesistAction : EnemyDoAction
 {
+    [SerializeField, DisplayOnly]
+    private string actionName = "获取抵抗";
     public override EEnemyActionType ActionType => EEnemyActionType.GetAesist;
 
     public Block baseBlock;

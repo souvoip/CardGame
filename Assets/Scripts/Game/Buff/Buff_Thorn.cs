@@ -24,6 +24,9 @@ public class Buff_Thorn : BuffBase
 
     private void ThornDamage(CharacterBase target, int damage)
     {
-        target.ChangeAttribute(ERoleAttribute.HP, -currentStacks);
+        if(target != null)
+        {
+            target.GetHit(null, currentStacks);
+        }
     }
 }

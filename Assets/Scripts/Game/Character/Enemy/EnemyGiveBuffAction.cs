@@ -5,6 +5,8 @@ using UnityEngine;
 [Serializable]
 public class EnemyGiveBuffAction : EnemyDoAction
 {
+    [SerializeField, DisplayOnly]
+    private string actionName = "给予玩家buff";
     public override EEnemyActionType ActionType => EEnemyActionType.GiveBuff;
     public List<BuffItem> buffs;
     private ActionInfo actionInfo;

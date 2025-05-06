@@ -3,7 +3,9 @@ using UnityEngine;
 
 public class MapManager : MonoBehaviour
 {
-    public static MapManager instance;
+    public static MapManager Instance;
+    public int CurrentLayer = 0;
+    public MapItemBase CurrentMapItem;
     [SerializeField]
     private int MaxLayer = 15;
 
@@ -20,12 +22,10 @@ public class MapManager : MonoBehaviour
 
     private DrawLineManager dlm;
 
-    public int CurrentLayer = 0;
-
     private void Awake()
     {
         dlm = new DrawLineManager();
-        instance = this;
+        Instance = this;
         nodeRegion = transform.Find("Map/Viewport/NodeRegion");
         mapItemPrefab = nodeRegion.Find("MapItemBase");
         linePrefab = nodeRegion.Find("Line");

@@ -5,6 +5,8 @@ using UnityEngine;
 [Serializable]
 public class EnemyGiveCardAction : EnemyDoAction
 {
+    [SerializeField, DisplayOnly]
+    private string actionName = "给予玩家卡牌";
     public override EEnemyActionType ActionType => EEnemyActionType.Mix;
     public List<int> cardIDs;
     private ActionInfo actionInfo;

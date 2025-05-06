@@ -9,6 +9,7 @@ public class TurnManager : MonoBehaviour
     public static event Action OnPlayerTurnEnd;
     public static event Action OnEnemyTurnStart;
     public static event Action OnEnemyTurnEnd;
+    public static event Action OnBattleVictory;
     public static ETurnType TurnType;
     public static TurnManager Instance;
     private static int currentTurnCount = 0;
@@ -72,6 +73,11 @@ public class TurnManager : MonoBehaviour
         Debug.Log("Enemy Turn End");
         yield return new WaitForSeconds(1);
         PlayerTurnStart(); // 回到玩家回合
+    }
+
+    public void BattleVictory()
+    {
+        OnBattleVictory?.Invoke();
     }
 }
 
