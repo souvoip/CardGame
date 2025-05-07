@@ -30,3 +30,4 @@ MonoBehaviour:
   AP: 3
   DrawCardCount: 5
   MaxCardCount: 8
+  FixedRemainsItemIDs: 01000000

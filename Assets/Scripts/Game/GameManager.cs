@@ -11,5 +11,6 @@ public class GameManager : MonoBehaviour
         BuffDataManager.Init();
         CardDataManager.Init();
         CharacterDataManager.Init();
+        ItemDataManager.Init();
     }
 }

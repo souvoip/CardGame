@@ -32,6 +32,20 @@ public class HoldDetailUI : MonoBehaviour
         StartCoroutine(ShowInfosCoroutine(pos, offset, infos));
     }
 
+    public void ShowInfos(Vector2 pos, Vector2 offset, DetailInfo info)
+    {
+        if (info == null) { return; }
+        isShow = true;
+        //gameObject.SetActive(true);
+        float scale = Screen.width / 1920f;
+        offset *= scale;
+        List<DetailInfo> infos = new List<DetailInfo>()
+        {
+            info
+        };
+        StartCoroutine(ShowInfosCoroutine(pos, offset, infos));
+    }
+
     private IEnumerator ShowInfosCoroutine(Vector2 pos, Vector2 offset, List<DetailInfo> infos)
     {
         transform.localScale = Vector3.one;

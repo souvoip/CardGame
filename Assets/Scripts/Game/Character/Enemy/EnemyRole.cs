@@ -130,11 +130,16 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
 
     private void ChangeHealth(int value)
     {
-        // 抵抗伤害
-        value = ChangeAesist(value);
+        if(value < 0)
+        {
+            // 抵抗伤害
+            value = ChangeAesist(value);
+        }
 
         roleData.HP += value;
         hpBar.SetHealth(roleData.HP);
+        // 显示伤害数字
+        BattleManager.Instance.ShowDamageNumber(value, transform.position);
     }
 
     private int ChangeAesist(int value)

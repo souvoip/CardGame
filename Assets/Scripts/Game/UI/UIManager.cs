@@ -16,6 +16,8 @@ public class UIManager : MonoBehaviour
 
     public SelectCardUI selectCardUI;
 
+    public GameTopUI gameTopUI;
+
     private void Awake()
     {
         if (Instance == null) { Instance = this; }

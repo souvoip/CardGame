@@ -123,8 +123,6 @@ public class CharacterBase : MonoBehaviour
     {
         ChangeAttribute(ERoleAttribute.HP, -damage);
         GetHitEvent?.Invoke(from, damage);
-        // 显示伤害数值
-        BattleManager.Instance.ShowDamageNumber(damage, transform.position);
     }
 
     public virtual void ChangeAttribute(ERoleAttribute attribute, int value) { }

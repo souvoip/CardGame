@@ -34,6 +34,15 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
         AddEvents();
         playerImg.material = dissolveMat;
         playerImg.sprite = Resources.Load<Sprite>(BaseRolePath + roleData.RoleImgPath);
+
+        // 添加固定道具
+        for (int i = 0; i < roleData.FixedRemainsItemIDs.Count; i++)
+        {
+            var remainsItem = ItemDataManager.GetRemainsItem(roleData.FixedRemainsItemIDs[i]);
+            roleData.RemainsItems.Add(remainsItem);
+            remainsItem.OnAcquire();
+        }
+        UIManager.Instance.gameTopUI.UpdatePlayerRemainsItemInfo();
     }
 
     private void AddEvents()
@@ -71,6 +80,11 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
         for (int i = 0; i < roleData.FixedBattleBuffs.Count; i++)
         {
             AddBuff(BuffDataManager.GetBuff(roleData.FixedBattleBuffs[i].BuffID), roleData.FixedBattleBuffs[i].Stacks);
+        }
+        // 触发道具效果
+        for (int i = 0; i < roleData.RemainsItems.Count; i++)
+        {
+            roleData.RemainsItems[i].OnBattleStart();
         }
     }
 
@@ -117,11 +131,16 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
 
     private void ChangeHealth(int value)
     {
-        // 抵抗伤害
-        value = ChangeAesist(value);
+        if (value < 0)
+        {
+            // 抵抗伤害
+            value = ChangeAesist(value);
+        }
 
         roleData.HP += value;
         hpBar.SetHealth(roleData.HP);
+        // 显示伤害数字
+        BattleManager.Instance.ShowDamageNumber(value, transform.position);
     }
 
     private int ChangeAesist(int value)

@@ -119,6 +119,7 @@ public class BattleManager : MonoBehaviour
 
     public void ShowDamageNumber(int damage, Vector3 position)
     {
+        if (damage == 0) { return; }
         var damageNumber = Instantiate(damageNumberPrefab, transform).GetComponent<DamageNumber>();
         damageNumber.transform.position = position;
         damageNumber.Init(damage);
