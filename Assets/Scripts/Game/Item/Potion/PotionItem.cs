@@ -3,20 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PotionItem : MonoBehaviour, IPointerExitHandler, IPointerDownHandler, IPointerEnterHandler
+public class PotionItem : MonoBehaviour
 {
+    private PotionItemData potionItemData;
 
-
-
-    public void OnPointerDown(PointerEventData eventData)
+    public void Use()
     {
-    }
 
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
     }
 }

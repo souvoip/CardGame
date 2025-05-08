@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameTopUI : MonoBehaviour
 {
     [SerializeField]
-    private RemainsItemManager remainsItemManager;
+    private RemainsItemControl remainsItemManager;
 
 
 

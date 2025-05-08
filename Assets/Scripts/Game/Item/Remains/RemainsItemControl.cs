@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RemainsItemManager : MonoBehaviour
+public class RemainsItemControl : MonoBehaviour
 {
     [SerializeField]
     private GameObject remainsItemPrefab;

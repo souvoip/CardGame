@@ -6,7 +6,7 @@ using UnityEngine;
 /// <summary>
 /// 添加buff的遗物
 /// </summary>
-[CreateAssetMenu(fileName = "Remains_AddBuff", menuName = "Data/Remains/AddBuffRemains")]
+[CreateAssetMenu(fileName = "Remains_AddBuff", menuName = "Data/Item/Remains/AddBuffRemains")]
 public class RemainsItemData_AddBuff : RemainsItemData
 {
     public List<RemainsBuffItem> Buffs;

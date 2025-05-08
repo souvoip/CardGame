@@ -10,6 +10,8 @@ public class PotionItemData : ItemDataBase
 
     public EUseType UseType;
 
+    public EPotionType PotionType;
+
     /// <summary>
     /// 非指向性
     /// </summary>
@@ -68,4 +70,10 @@ public class PotionItemData : ItemDataBase
         info.Description = Description;
         return info;
     }
+}
+
+public enum EPotionType
+{
+    Drink,
+    Throw
 }

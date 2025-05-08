@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Remains_ChangeAttribute", menuName = "Data/Remains/ChangeAttributeRemains")]
+[CreateAssetMenu(fileName = "Remains_ChangeAttribute", menuName = "Data/Item/Remains/ChangeAttributeRemains")]
 public class RemainsItemData_ChangeAttribute : RemainsItemData
 {
     public ETriggerTime TriggerTime;
