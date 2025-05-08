@@ -19,13 +19,13 @@ public class Buff_Weakness : BuffBase
     public override void AddEvents()
     {
         base.AddEvents();
-        target.ChangeAtkDamageEvent.Add(buffID, ChangeHitDamage);
+        target.ChangeCauseDamageEvent.Add(buffID, ChangeHitDamage);
     }
 
     public override void RemoveEvents()
     {
         base.RemoveEvents();
-        target.ChangeAtkDamageEvent.Remove(buffID);
+        target.ChangeCauseDamageEvent.Remove(buffID);
     }
 
     private void ChangeHitDamage(Damage damage)

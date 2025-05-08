@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class RemainsItemIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class RemainsItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     private static string remainsIconPath = "Image/Item/Remains/";
 
@@ -12,9 +12,9 @@ public class RemainsItemIcon : MonoBehaviour, IPointerEnterHandler, IPointerExit
     [SerializeField]
     private TMP_Text countTxt;
 
-    public RemainsItem itemData;
+    public RemainsItemData itemData;
 
-    public void SetData(RemainsItem item)
+    public void SetData(RemainsItemData item)
     {
         itemData = item;
         countTxt.gameObject.SetActive(false);

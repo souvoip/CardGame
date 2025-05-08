@@ -18,12 +18,10 @@ public class DamageNumber : MonoBehaviour
         {
             damage = -damage;
             damageTxt.color = Color.red;
-            fallAcceleration = Mathf.Abs(fallAcceleration);
         }
         else
         {
             damageTxt.color = Color.green;
-            fallAcceleration = -Mathf.Abs(fallAcceleration);
         }
         damageTxt.text = damage.ToString();
         transform.localScale = Vector3.zero;

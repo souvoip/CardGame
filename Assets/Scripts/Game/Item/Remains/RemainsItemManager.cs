@@ -7,9 +7,9 @@ public class RemainsItemManager : MonoBehaviour
     [SerializeField]
     private GameObject remainsItemPrefab;
 
-    private List<RemainsItemIcon> remainsItemIcons = new List<RemainsItemIcon>();
+    private List<RemainsItem> remainsItemIcons = new List<RemainsItem>();
 
-    public void AddRemainsItemIcon(RemainsItem itemData)
+    public void AddRemainsItemIcon(RemainsItemData itemData)
     {
         for(int i = 0; i < remainsItemIcons.Count; i++)
         {
@@ -20,7 +20,7 @@ public class RemainsItemManager : MonoBehaviour
             }
         }
         GameObject remainsItemIconObj = Instantiate(remainsItemPrefab, transform);
-        RemainsItemIcon remainsItemIcon = remainsItemIconObj.GetComponent<RemainsItemIcon>();
+        RemainsItem remainsItemIcon = remainsItemIconObj.GetComponent<RemainsItem>();
         remainsItemIcon.SetData(itemData);
         remainsItemIcons.Add(remainsItemIcon);
     }

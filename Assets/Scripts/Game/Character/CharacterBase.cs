@@ -15,19 +15,19 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     public event Action DieEvent;
 
-    public Dictionary<int, Action<Damage>> ChangeAtkDamageEvent = new Dictionary<int, Action<Damage>>();
+    public Dictionary<int, Action<Damage>> ChangeCauseDamageEvent = new Dictionary<int, Action<Damage>>();
 
-    public Dictionary<int, Action<Damage>> ChangeHitDamageEvent = new Dictionary<int, Action<Damage>>();
+    public Dictionary<int, Action<Damage>> ChangeTakeDamageEvent = new Dictionary<int, Action<Damage>>();
 
     public Dictionary<int, Action<Block>> ChangeBlockEvent = new Dictionary<int, Action<Block>>();
     /// <summary>
     /// 角色受伤事件, 造成伤害的来源,伤害值
     /// </summary>
-    public event Action<CharacterBase, int> GetHitEvent;
+    public event Action<CharacterBase, int> TakeDamageEvent;
     /// <summary>
     /// 角色攻击事件, 攻击的目标,伤害值
     /// </summary>
-    public event Action<CharacterBase, int> AttackEvent;
+    public event Action<CharacterBase, int> CauseDamageEvent;
     /// <summary>
     ///  角色获得buff事件，获得的buff
     /// </summary>
@@ -68,28 +68,28 @@ public class CharacterBase : MonoBehaviour
         buffControl.RemoveBuff(buffId);
     }
 
-    public Damage CalculateAtkDamage(Damage damage)
+    public Damage CalculateCauseDamage(Damage damage)
     {
-        foreach (var i in ChangeAtkDamageEvent.Keys)
+        foreach (var i in ChangeCauseDamageEvent.Keys)
         {
             if (!damage.isNext)
             {
                 break;
             }
-            ChangeAtkDamageEvent[i].Invoke(damage);
+            ChangeCauseDamageEvent[i].Invoke(damage);
         }
         return damage;
     }
 
-    public Damage CalculateHitDamage(Damage damage)
+    public Damage CalculateTakeDamage(Damage damage)
     {
-        foreach (var i in ChangeHitDamageEvent.Keys)
+        foreach (var i in ChangeTakeDamageEvent.Keys)
         {
             if (!damage.isNext)
             {
                 break;
             }
-            ChangeHitDamageEvent[i].Invoke(damage);
+            ChangeTakeDamageEvent[i].Invoke(damage);
         }
         return damage;
     }
@@ -110,8 +110,8 @@ public class CharacterBase : MonoBehaviour
     /// <param name="damage"> 伤害值 </param>
     public void AtkTarget(CharacterBase target, int damage)
     {
-        target.GetHit(this, damage);
-        AttackEvent?.Invoke(target, damage);
+        target.TakeDamage(this, damage);
+        CauseDamageEvent?.Invoke(target, damage);
     }
 
     /// <summary>
@@ -119,10 +119,10 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     /// <param name="from"> 伤害来原 </param>
     /// <param name="damage"> 数值 </param>
-    public void GetHit(CharacterBase from, int damage)
+    public void TakeDamage(CharacterBase from, int damage)
     {
         ChangeAttribute(ERoleAttribute.HP, -damage);
-        GetHitEvent?.Invoke(from, damage);
+        TakeDamageEvent?.Invoke(from, damage);
     }
 
     public virtual void ChangeAttribute(ERoleAttribute attribute, int value) { }

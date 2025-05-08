@@ -19,13 +19,13 @@ public class Buff_Vulnerable : BuffBase
     public override void AddEvents()
     {
         base.AddEvents();
-        target.ChangeHitDamageEvent.Add(buffID, ChangeHitDamage);
+        target.ChangeTakeDamageEvent.Add(buffID, ChangeHitDamage);
     }
 
     public override void RemoveEvents()
     {
         base.RemoveEvents();
-        target.ChangeHitDamageEvent.Remove(buffID);
+        target.ChangeTakeDamageEvent.Remove(buffID);
     }
 
     private void ChangeHitDamage(Damage damage)

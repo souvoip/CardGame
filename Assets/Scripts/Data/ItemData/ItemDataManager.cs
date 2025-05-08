@@ -6,15 +6,15 @@ public static class ItemDataManager
 {
     private static string remainsItemDataPath = "Data/Item/Remains";
 
-    public static List<RemainsItem> RemainsItems = new List<RemainsItem>();
+    public static List<RemainsItemData> RemainsItems = new List<RemainsItemData>();
 
     public static void Init()
     {
-        var remainsItems = Resources.LoadAll<RemainsItem>(remainsItemDataPath);
+        var remainsItems = Resources.LoadAll<RemainsItemData>(remainsItemDataPath);
         RemainsItems = remainsItems.ToList();
     }
 
-    public static RemainsItem GetRemainsItem(int id)
+    public static RemainsItemData GetRemainsItem(int id)
     {
         foreach (var item in RemainsItems)
         {

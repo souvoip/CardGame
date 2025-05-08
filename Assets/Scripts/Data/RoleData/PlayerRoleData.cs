@@ -23,5 +23,5 @@ public class PlayerRoleData : RoleData
     /// </summary>
     public List<int> FixedRemainsItemIDs = new List<int>();
     [NonSerialized]
-    public List<RemainsItem> RemainsItems = new List<RemainsItem>();
+    public List<RemainsItemData> RemainsItems = new List<RemainsItemData>();
 }

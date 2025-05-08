@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class ItemBase : ScriptableObject
+public class ItemDataBase : ScriptableObject
 {
     public int ID;
 
@@ -19,5 +19,6 @@ public class ItemBase : ScriptableObject
 
 public enum EItemType
 {
-    Remains
+    Remains,
+    Potion,
 }

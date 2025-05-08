@@ -11,13 +11,13 @@ public class Buff_Strength : BuffBase
     public override void AddEvents()
     {
         base.AddEvents();
-        target.ChangeAtkDamageEvent.Add(buffID, ChangeAtkDamage);
+        target.ChangeCauseDamageEvent.Add(buffID, ChangeAtkDamage);
     }
 
     public override void RemoveEvents()
     {
         base.RemoveEvents();
-        target.ChangeAtkDamageEvent.Remove(buffID);
+        target.ChangeCauseDamageEvent.Remove(buffID);
     }
 
     private void ChangeAtkDamage(Damage damage)

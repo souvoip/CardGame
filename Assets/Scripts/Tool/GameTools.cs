@@ -50,10 +50,10 @@ public static class GameTools
     public static int CalculateDamage(CharacterBase attacker, CharacterBase defender, Damage damage)
     {
         var tempDamage = new Damage(damage);
-        attacker.CalculateAtkDamage(tempDamage);
+        attacker.CalculateCauseDamage(tempDamage);
         if(defender != null)
         {
-            defender.CalculateHitDamage(tempDamage);
+            defender.CalculateTakeDamage(tempDamage);
         }
         return tempDamage.GetDamageValue();
     }

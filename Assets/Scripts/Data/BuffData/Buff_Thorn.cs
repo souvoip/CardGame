@@ -13,20 +13,20 @@ public class Buff_Thorn : BuffBase
     public override void AddEvents()
     {
         base.AddEvents();
-        target.GetHitEvent += ThornDamage;
+        target.TakeDamageEvent += ThornDamage;
     }
 
     public override void RemoveEvents()
     {
         base.RemoveEvents();
-        target.GetHitEvent -= ThornDamage;
+        target.TakeDamageEvent -= ThornDamage;
     }
 
     private void ThornDamage(CharacterBase target, int damage)
     {
         if(target != null)
         {
-            target.GetHit(null, currentStacks);
+            target.TakeDamage(null, currentStacks);
         }
     }
 }

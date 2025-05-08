@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Remains_ChangeAttribute", menuName = "Data/Remains/ChangeAttributeRemains")]
-public class RemainsItemChangeAttribute : RemainsItem
+public class RemainsItemData_ChangeAttribute : RemainsItemData
 {
     public ETriggerTime TriggerTime;
 
@@ -41,10 +41,10 @@ public class RemainsItemChangeAttribute : RemainsItem
             case ETriggerTime.EnemyDead:
                 break;
             case ETriggerTime.PlayerHit:
-                BattleManager.Instance.Player.GetHitEvent += OnChange;
+                BattleManager.Instance.Player.TakeDamageEvent += OnChange;
                 break;
             case ETriggerTime.PlayerAttack:
-                BattleManager.Instance.Player.AttackEvent += OnChange;
+                BattleManager.Instance.Player.CauseDamageEvent += OnChange;
                 break;
             default:
                 break;

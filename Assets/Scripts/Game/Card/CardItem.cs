@@ -7,7 +7,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler, IPointerDownHandler, IPointerEnterHandler
+public class CardItem : MonoBehaviour, IPointerExitHandler, IPointerDownHandler, IPointerEnterHandler
 {
     public static string baseCardImgPath = "Image/Card/";
 
@@ -179,10 +179,10 @@ public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler,
         });
     }
 
-    public void OnPointerMove(PointerEventData eventData)
-    {
-        onMouseMoveIn?.Invoke(this);
-    }
+    //public void OnPointerMove(PointerEventData eventData)
+    //{
+    //    onMouseMoveIn?.Invoke(this);
+    //}
 
     [SerializeField]
     private Vector2 tempOffset;
@@ -190,6 +190,7 @@ public class CardItem : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler,
     public void OnPointerEnter(PointerEventData eventData)
     {
         if(isPlayAnim) { return; }
+        onMouseMoveIn?.Invoke(this);
         StartCoroutine(ShowCardDetailInfoCoroutine());
     }
 

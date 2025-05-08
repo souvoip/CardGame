@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// 提供被动效果的道具
 /// </summary>
-public class RemainsItem : ItemBase
+public class RemainsItemData : ItemDataBase
 {
     public override EItemType ItemType => EItemType.Remains;
 
