@@ -36,13 +36,19 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
         playerImg.sprite = Resources.Load<Sprite>(BaseRolePath + roleData.RoleImgPath);
 
         // 添加固定道具
-        for (int i = 0; i < roleData.FixedRemainsItemIDs.Count; i++)
+        for (int i = 0; i < roleData.FixedItemIDs.Count; i++)
         {
-            var remainsItem = ItemDataManager.GetRemainsItem(roleData.FixedRemainsItemIDs[i]);
-            roleData.RemainsItems.Add(remainsItem);
-            remainsItem.OnAcquire();
+            var item = ItemDataManager.GetItem(roleData.FixedItemIDs[i]);
+
+            if (item == null) { continue; }
+            roleData.Items.Add(item);
+            if (item.ItemType == EItemType.Remains)
+            {
+                ((RemainsItemData)item).OnAcquire();
+            }
         }
         UIManager.Instance.gameTopUI.UpdatePlayerRemainsItemInfo();
+        UIManager.Instance.gameTopUI.UpdatePlayerPotionItemInfo();
     }
 
     private void AddEvents()
@@ -82,9 +88,12 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
             AddBuff(BuffDataManager.GetBuff(roleData.FixedBattleBuffs[i].BuffID), roleData.FixedBattleBuffs[i].Stacks);
         }
         // 触发道具效果
-        for (int i = 0; i < roleData.RemainsItems.Count; i++)
+        for (int i = 0; i < roleData.Items.Count; i++)
         {
-            roleData.RemainsItems[i].OnBattleStart();
+            if (roleData.Items[i].ItemType == EItemType.Remains)
+            {
+                ((RemainsItemData)roleData.Items[i]).OnBattleStart();
+            }
         }
     }
 

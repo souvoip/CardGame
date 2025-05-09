@@ -21,7 +21,7 @@ public class PlayerRoleData : RoleData
     /// <summary>
     /// 初始携带的物品, 开始游戏，读取时使用
     /// </summary>
-    public List<int> FixedRemainsItemIDs = new List<int>();
+    public List<int> FixedItemIDs = new List<int>();
     [NonSerialized]
-    public List<RemainsItemData> RemainsItems = new List<RemainsItemData>();
+    public List<ItemDataBase> Items = new List<ItemDataBase>();
 }

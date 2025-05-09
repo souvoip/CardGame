@@ -1,14 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class PotionItem : MonoBehaviour
 {
-    private PotionItemData potionItemData;
+    private static string IconBasePath = "Image/Item/Potion/";
+
+    public PotionItemData potionItemData;
+
+    private Action clearPotionAction;
+
+    public void Init(PotionItemData potion, Action clearPotionAction)
+    {
+        potionItemData = potion;
+        this.clearPotionAction = clearPotionAction;
+        GetComponent<Image>().sprite = Resources.Load<Sprite>(IconBasePath + potionItemData.IconPath);
+    }
 
     public void Use()
     {
+        potionItemData.UseItem();
+        clearPotionAction?.Invoke();
+        Destroy(gameObject);
+    }
 
+    public void Drop()
+    {
+        clearPotionAction?.Invoke();
+        Destroy(gameObject);
     }
 }

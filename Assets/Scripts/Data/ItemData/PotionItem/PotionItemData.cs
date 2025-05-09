@@ -13,6 +13,11 @@ public class PotionItemData : ItemDataBase
     public EPotionType PotionType;
 
     /// <summary>
+    /// 是否可以在战斗外使用，在战斗中只能在玩家回合使用
+    /// </summary>
+    public bool isMapUse;
+
+    /// <summary>
     /// 非指向性
     /// </summary>
     public virtual void UseItem()

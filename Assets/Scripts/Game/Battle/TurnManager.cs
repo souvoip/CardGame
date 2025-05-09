@@ -32,6 +32,7 @@ public class TurnManager : MonoBehaviour
         {
             Instance = this;
         }
+        TurnType = ETurnType.NonBattle;
     }
 
     public void StartBattle()
@@ -78,11 +79,13 @@ public class TurnManager : MonoBehaviour
     public void BattleVictory()
     {
         OnBattleVictory?.Invoke();
+        TurnType = ETurnType.NonBattle;
     }
 }
 
 public enum ETurnType
 {
     Player,
-    Enemy
+    Enemy,
+    NonBattle,
 }

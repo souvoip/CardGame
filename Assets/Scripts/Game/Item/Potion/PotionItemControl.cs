@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PotionItemControl : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject potionPrefab;
+
     public List<PotionSlot> potionSlots = new List<PotionSlot>();
 
     private void Awake()
@@ -15,13 +18,21 @@ public class PotionItemControl : MonoBehaviour
     }
 
     /// <summary>
-    /// 添加药剂
+    /// 娣诲姞鑽墏
     /// </summary>
-    /// <param name="potionID"> 要添加的药剂ID </param>
-    /// <returns> 如果成功添加了药水，则为True，如果库存已满，则为false </returns>
-    public bool AddPotion(int potionID)
+    /// <param name="potionID"> 瑕佹坊鍔犵殑鑽墏ID </param>
+    /// <returns> 濡傛灉鎴愬姛娣诲姞浜嗚嵂姘达紝鍒欎负True锛屽鏋滃簱瀛樺凡婊★紝鍒欎负false </returns>
+    public bool AddPotion(PotionItemData potion)
     {
-
+        for (int i = 0; i < potionSlots.Count; i++)
+        {
+            if (potionSlots[i].isEmpty)
+            {
+                // 娣诲姞鑽墏
+                potionSlots[i].AddPotion(potion, potionPrefab);
+                return true;
+            }
+        }
         return false;
     }
 }

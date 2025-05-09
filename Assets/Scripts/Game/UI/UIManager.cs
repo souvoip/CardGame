@@ -18,6 +18,7 @@ public class UIManager : MonoBehaviour
 
     public GameTopUI gameTopUI;
 
+    public PotionOptionUI potionOptionUI;
     private void Awake()
     {
         if (Instance == null) { Instance = this; }
