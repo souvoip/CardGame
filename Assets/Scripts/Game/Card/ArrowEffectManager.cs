@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ArrowEffectManager : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class ArrowEffectManager : MonoBehaviour
     private Vector3 controlPoint2; // 控制点2  
     private Vector3 endPoint; // 结束点  
     private List<GameObject> ArrowItemList;
-    private List<SpriteRenderer> RendererItemList;
+    private List<Image> RendererItemList;
     private Animator Arrow_anim;
     private bool isSelect;
 
@@ -38,7 +39,7 @@ public class ArrowEffectManager : MonoBehaviour
     private void InitData()
     {
         ArrowItemList = new List<GameObject>();
-        RendererItemList = new List<SpriteRenderer>();
+        RendererItemList = new List<Image>();
         for (int i = 0; i < MaxCount; i++)
         {
             GameObject Arrow = (i == MaxCount - 1) ? reticleArrow : reticleBlock;
@@ -48,7 +49,7 @@ public class ArrowEffectManager : MonoBehaviour
                 Arrow_anim = temp.GetComponent<Animator>();
             }
             ArrowItemList.Add(temp);
-            SpriteRenderer re = temp.transform.GetChild(0).GetComponent<SpriteRenderer>();
+            Image re = temp.transform.GetComponent<Image>();
             if (re != null)
             {
                 RendererItemList.Add(re);
@@ -92,7 +93,7 @@ public class ArrowEffectManager : MonoBehaviour
     {
         Vector3 mousePosition = Input.mousePosition; // 获取鼠标位置  
         mousePosition.z = Camera.main.nearClipPlane; // 设置z坐标为摄像机近裁剪平面的位置  
-        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        Vector3 worldPosition = mousePosition;//Camera.main.ScreenToWorldPoint(mousePosition);
         worldPosition.z = 2f;
         endPoint = worldPosition;
 

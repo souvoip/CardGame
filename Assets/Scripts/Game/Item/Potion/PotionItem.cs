@@ -24,6 +24,13 @@ public class PotionItem : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public void Use(CharacterBase target)
+    {
+        potionItemData.UseItem(target);
+        clearPotionAction?.Invoke();
+        Destroy(gameObject);
+    }
+
     public void Drop()
     {
         clearPotionAction?.Invoke();

@@ -72,7 +72,7 @@ public class AtkCard : CardBase
         else if(UseType == EUseType.NonDirectivity) { desc += "对所有敌人造成"; }
         // 计算实际伤害
         int baseDamageValue = BaseDamage.GetDamageValue();
-        int damageValue = GameTools.CalculateDamage(BattleManager.Instance.Player, BattleManager.Instance.CardManager.NowSelectEnemy, BaseDamage);
+        int damageValue = GameTools.CalculateDamage(BattleManager.Instance.Player, BattleManager.Instance.nowSelectEnemy, BaseDamage);
         string damageStr = baseDamageValue > damageValue ? $"<color=#FF0000>{damageValue}</color>" : baseDamageValue == damageValue ? $"{damageValue}" : $"<color=#00FF00>{damageValue}</color>";
         if(HitCount == 1)
         {

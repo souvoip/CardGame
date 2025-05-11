@@ -16,6 +16,8 @@ public class BattleManager : MonoBehaviour
 
     public TurnManager TurnManager;
 
+    public EnemyRole nowSelectEnemy;
+
     [SerializeField]
     private GameObject enemyPrefab;
     [SerializeField]

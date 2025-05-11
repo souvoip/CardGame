@@ -52,7 +52,7 @@ public class PotionSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     private void OnClick()
     {
-        //if (isEmpty) { return; }
+        if (isEmpty || potionItem.potionItemData.UseType == EUseType.CannotUse) { return; }
         UIManager.Instance.potionOptionUI.Show(potionItem, transform.position + Vector3.up * -80);
     }
 

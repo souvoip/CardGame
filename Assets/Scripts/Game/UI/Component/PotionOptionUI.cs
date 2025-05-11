@@ -15,6 +15,8 @@ public class PotionOptionUI : MonoBehaviour
     private Button useBtn;
     [SerializeField]
     private Button dropBtn;
+    [SerializeField]
+    private ArrowEffectManager lineEffect;
 
     private PotionItem potionItem;
 
@@ -26,8 +28,35 @@ public class PotionOptionUI : MonoBehaviour
 
         closeBtn.gameObject.SetActive(false);
         root.localScale = Vector3.zero;
+
+        lineEffect.gameObject.SetActive(false);
+
+        HoldCancel.cancelAction += CancelLineEffect;
     }
 
+    private void Update()
+    {
+        if (lineEffect.gameObject.activeSelf)
+        {
+            lineEffect.SetColor(BattleManager.Instance.nowSelectEnemy != null);
+        }
+        if(Input.GetMouseButtonDown(1) && lineEffect.gameObject.activeSelf)
+        {
+            lineEffect.gameObject.SetActive(false);
+            potionItem = null;
+        }
+        else if(Input.GetMouseButtonDown(0) && lineEffect.gameObject.activeSelf && BattleManager.Instance.nowSelectEnemy != null)
+        {
+            potionItem?.Use(BattleManager.Instance.nowSelectEnemy);
+            lineEffect.gameObject.SetActive(false);
+            potionItem = null;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        HoldCancel.cancelAction -= CancelLineEffect;
+    }
 
     public void Show(PotionItem potion, Vector2 pos)
     {
@@ -36,7 +65,7 @@ public class PotionOptionUI : MonoBehaviour
         // 显示按钮文本
         useBtn.GetComponentInChildren<TMP_Text>().text = potion.potionItemData.PotionType == EPotionType.Drink ? "饮用" : "投掷";
 
-        if(TurnManager.TurnType == ETurnType.Player || (TurnManager.TurnType == ETurnType.NonBattle && potion.potionItemData.isMapUse))
+        if (TurnManager.TurnType == ETurnType.Player || (TurnManager.TurnType == ETurnType.NonBattle && potion.potionItemData.isMapUse))
         {
             useBtn.interactable = true;
         }
@@ -61,7 +90,18 @@ public class PotionOptionUI : MonoBehaviour
     {
         if (potionItem != null)
         {
-            potionItem.Use();
+            if (potionItem.potionItemData.UseType == EUseType.NonDirectivity)
+            {
+                potionItem.Use();
+                potionItem = null;
+            }
+            else if (potionItem.potionItemData.UseType == EUseType.Directivity)
+            {
+                // 选择目标箭头
+                lineEffect.gameObject.SetActive(true);
+                //设置塞贝尔曲线起始点
+                lineEffect.SetStartPos(potionItem.transform.position);
+            }
         }
         Hide();
     }
@@ -73,5 +113,11 @@ public class PotionOptionUI : MonoBehaviour
             potionItem.Drop();
         }
         Hide();
+    }
+
+    private void CancelLineEffect()
+    {
+        lineEffect.gameObject.SetActive(false);
+        potionItem = null;
     }
 }

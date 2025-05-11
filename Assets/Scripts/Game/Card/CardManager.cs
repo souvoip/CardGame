@@ -105,8 +105,8 @@ public class CardManager : MonoBehaviour
     /// <summary>
     /// 当前选中敌人
     /// </summary>
-    private EnemyRole nowSelectEnemy;
-    public EnemyRole NowSelectEnemy { get => nowSelectEnemy; }
+    // private EnemyRole nowSelectEnemy;
+    // public EnemyRole NowSelectEnemy { get => nowSelectEnemy; }
 
     private Vector3 temporaryCardStartPos;
 
@@ -439,7 +439,7 @@ public class CardManager : MonoBehaviour
                 {
                     if (nowTaskItem.useType == EUseType.Directivity)
                     {
-                        nowTaskItem.CardData.UseCard(nowSelectEnemy);
+                        nowTaskItem.CardData.UseCard(BattleManager.Instance.nowSelectEnemy);
                     }
                     else
                     {
@@ -458,7 +458,7 @@ public class CardManager : MonoBehaviour
                     //nowTaskItem = null;
                 }
 
-                nowSelectEnemy = null;
+                //nowSelectEnemy = null;
                 nowCardState = ECardState.None;
             }
         }
@@ -477,7 +477,7 @@ public class CardManager : MonoBehaviour
         // 卡牌能否使用
         if (!nowTaskItem.CardData.IsCanUse()) { return false; }
 
-        if (nowSelectEnemy != null)
+        if (BattleManager.Instance.nowSelectEnemy != null)
         {
             return true;
         }
@@ -546,26 +546,27 @@ public class CardManager : MonoBehaviour
     /// <summary>
     /// 选中对象
     /// </summary>
-    public void SelectEnemy(EnemyRole enemy)
-    {
-        if (nowTaskItem == null)
-        {
-            nowSelectEnemy = null;
-            return;
-        }
+    //public void SelectEnemy(EnemyRole enemy)
+    //{
+    //    nowSelectEnemy = enemy;
+    //    return;
+    //    //if (nowTaskItem == null)
+    //    //{
+    //    //    nowSelectEnemy = null;
+    //    //    return;
+    //    //}
 
-        EUseType etype = nowTaskItem.useType;
-        switch (etype)
-        {
-            case EUseType.NonDirectivity:
-                break;
-            case EUseType.Directivity:
-                nowSelectEnemy = enemy;
-                break;
-        }
-        nowTaskItem.UpdateDesc();
-        temporaryCard.GetComponent<TempCardItem>().UpdateDesc(nowTaskItem.CardData);
-    }
+    //    //EUseType etype = nowTaskItem.useType;
+    //    //switch (etype)
+    //    //{
+    //    //    case EUseType.NonDirectivity:
+    //    //        break;
+    //    //    case EUseType.Directivity:
+    //    //        break;
+    //    //}
+    //    //nowTaskItem.UpdateDesc();
+    //    //temporaryCard.GetComponent<TempCardItem>().UpdateDesc(nowTaskItem.CardData);
+    //}
 
     /// <summary>
     /// 设置卡牌使用特效
@@ -577,6 +578,7 @@ public class CardManager : MonoBehaviour
         {
             temporaryCard.gameObject.SetActive(false);
             lineEffect.gameObject.SetActive(false);
+            UIManager.Instance.EnableUIInteraction();
             return;
         }
 
@@ -614,11 +616,12 @@ public class CardManager : MonoBehaviour
         temporaryCard.gameObject.transform.position = Vector3.Lerp(temporaryCard.gameObject.transform.position,
             isWaitAttack ? centPos : worldPosition, Time.deltaTime * 15);
         //设置塞贝尔曲线起始点
-        lineEffect.SetStartPos(isWaitAttack ? centPos : worldPosition);
+        lineEffect.SetStartPos(isWaitAttack ? Camera.main.WorldToScreenPoint(centPos) : worldPosition);
         //设置攻击引导箭头颜色
-        lineEffect.SetColor(nowSelectEnemy != null);
+        lineEffect.SetColor(BattleManager.Instance.nowSelectEnemy != null);
         //攻击引导箭头显示隐藏控制
         lineEffect.gameObject.SetActive(isWaitAttack);
+        UIManager.Instance.DisableUIInteraction();
     }
 
     private void OnMouseMoveIn(CardItem item)
@@ -705,7 +708,7 @@ public class CardManager : MonoBehaviour
             nowTaskItem.gameObject.SetActive(true);
             NowSelectItem = null;
             nowTaskItem = null;
-            nowSelectEnemy = null;
+            //nowSelectEnemy = null;
             nowCardState = ECardState.None;
         }
     }

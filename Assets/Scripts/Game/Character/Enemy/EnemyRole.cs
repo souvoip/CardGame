@@ -77,7 +77,8 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
     public void OnPointerEnter(PointerEventData eventData)
     {
         if(isDie) { return; }
-        BattleManager.Instance.CardManager.SelectEnemy(this);
+        //BattleManager.Instance.CardManager.SelectEnemy(this);
+        BattleManager.Instance.nowSelectEnemy = this;
 
         Vector3 pos = Camera.main.WorldToScreenPoint(transform.position);
         var infos = buffControl.GetBuffInfos();
@@ -91,8 +92,8 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
     public void OnPointerExit(PointerEventData eventData)
     {
         if (isDie) { return; }
-        BattleManager.Instance.CardManager.SelectEnemy(null);
-
+        //BattleManager.Instance.CardManager.SelectEnemy(null);
+        BattleManager.Instance.nowSelectEnemy = null;
         UIManager.Instance.holdDetailUI.Hide();
     }
 
