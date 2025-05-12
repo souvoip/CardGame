@@ -21,11 +21,6 @@ public class TMPPartialShake : MonoBehaviour
     {
         _textComponent = GetComponent<TMP_Text>();
         ProcessText(true);
-
-        TimerTools.Timer.Once(10, () =>
-        {
-            SetShakingText("Hello <color=red><shake>World</shake></color>!");
-        });
     }
 
     void Update()
@@ -57,7 +52,7 @@ public class TMPPartialShake : MonoBehaviour
 
                 string fullTag = originalText.Substring(i, tagEnd - i + 1);
 
-                // 处理shake标签
+                // 澶勭悊shake鏍囩
                 if (fullTag.StartsWith($"<{shakeTag}") && !fullTag.StartsWith("</"))
                 {
                     inShakeTag = true;
@@ -68,7 +63,7 @@ public class TMPPartialShake : MonoBehaviour
                 }
                 else
                 {
-                    // 保留其他标签
+                    // 淇濈暀鍏朵粬鏍囩
                     cleanText.Append(fullTag);
                 }
 
@@ -92,7 +87,7 @@ public class TMPPartialShake : MonoBehaviour
 
         _lastProcessedText = cleanText.ToString();
 
-        // 只有文本实际变化时才更新
+        // 鍙湁鏂囨湰瀹為檯鍙樺寲鏃舵墠鏇存柊
         if (forceUpdate || _textComponent.text != _lastProcessedText)
         {
             if (debugMode)
