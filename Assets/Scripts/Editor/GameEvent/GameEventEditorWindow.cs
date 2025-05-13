@@ -2,17 +2,53 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System;
+using DialogueEditor;
+using UnityEngine.TextCore.Text;
 
 public class GameEventEditorWindow : EditorWindow
 {
+    private static GUIStyle _wrappedStyle;
+    public static GUIStyle WrappedTextAreaStyle
+    {
+        get
+        {
+            if (_wrappedStyle == null)
+            {
+                _wrappedStyle = new GUIStyle(EditorStyles.textArea);
+                _wrappedStyle.normal.textColor = Color.white;
+                _wrappedStyle.wordWrap = true;
+                _wrappedStyle.stretchHeight = false;
+                _wrappedStyle.clipping = TextClipping.Clip;
+            }
+            return _wrappedStyle;
+        }
+    }
+
     private GameEventData currentData;
-    private List<EventEditorNode> nodes = new List<EventEditorNode>();
+    public GameEventData CurrentData
+    {
+        get { return currentData; }
+        set
+        {
+            if (value == currentData) { return; }
+            currentData = value;
+            LoadData();
+        }
+    }
+    private List<EditorEventNode> nodes = new List<EditorEventNode>();
     private List<Connection> connections = new List<Connection>();
 
-    private EventEditorNode selectedNode;
+    private EditorEventNode selectedNode;
+    public EditorEventElement selectedElement;
     private ConnectionPoint selectedOutPoint;
     private Vector2 offset;
     private Vector2 drag;
+
+    private Rect panelRect;
+    private GUIStyle panelStyle;
+    private GUIStyle panelTitleStyle;
+    private Rect panelResizerRect;
+    private GUIStyle resizerStyle;
 
     [MenuItem("Tools/Game Event Editor")]
     public static void ShowWindow()
@@ -33,6 +69,7 @@ public class GameEventEditorWindow : EditorWindow
         DrawGrid(100, 0.4f, Color.gray);
 
         DrawNodes();
+        DrawPanel();
         DrawConnections();
         DrawToolbar();
 
@@ -42,10 +79,68 @@ public class GameEventEditorWindow : EditorWindow
         if (GUI.changed) Repaint();
     }
 
+    private Vector2 panelVerticalScroll;
+    private void DrawPanel()
+    {
+        if(selectedElement == null) { return; }
+
+        panelRect = new Rect(position.width - 180, 17, 180, position.height - 17);
+        if (panelStyle.normal.background == null)
+        {
+            InitGUIStyles();
+        }
+        GUILayout.BeginArea(panelRect, panelStyle);
+        GUILayout.BeginVertical();
+        panelVerticalScroll = GUILayout.BeginScrollView(panelVerticalScroll);
+
+        GUILayout.Space(10);
+
+        if(selectedElement is EditorEventNode)
+        {
+            var eventNode = selectedElement as EditorEventNode;
+            // 节点描述编辑
+            EditorGUILayout.LabelField("事件描述", GUILayout.MinWidth(50), GUILayout.MaxWidth(60));
+            eventNode.NodeData.StoryText = GUILayout.TextArea(eventNode.NodeData.StoryText);
+            //eventNode.NodeData.StoryText = EditorGUILayout.TextArea(eventNode.NodeData.StoryText, GUILayout.MaxWidth(160), GUILayout.MinHeight(300));
+            GUILayout.Space(10);
+            EditorGUILayout.LabelField("图片路径", GUILayout.MinWidth(50), GUILayout.MaxWidth(60));
+            eventNode.NodeData.ImgPath = GUILayout.TextArea(eventNode.NodeData.ImgPath);
+            GUILayout.Space(10);
+            EditorGUILayout.LabelField("事件选择", GUILayout.MinWidth(50), GUILayout.MaxWidth(60));
+            for (int i = 0; i < eventNode.NodeData.Choices.Count; i++)
+            {
+                GUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField($"选择{i+1}", GUILayout.MinWidth(50), GUILayout.MaxWidth(60));
+                // 移除按钮
+                GUILayout.Space(40);
+                if (GUILayout.Button("移除", GUILayout.MaxWidth(60)))
+                {
+                    eventNode.NodeData.Choices.RemoveAt(i);
+                    GUILayout.EndHorizontal();
+                    break;
+                }
+                GUILayout.EndHorizontal();
+                eventNode.NodeData.Choices[i].ChoiceText = GUILayout.TextArea(eventNode.NodeData.Choices[i].ChoiceText);
+
+                GUILayout.Space(10);
+            }
+            // 添加按钮
+            GUILayout.Space(10);
+            if (GUILayout.Button("添加新选择", GUILayout.MaxWidth(160)))
+            {
+                eventNode.NodeData.Choices.Add(new GameEventChoice());
+            }
+        }
+
+        GUILayout.EndScrollView();
+        GUILayout.EndVertical();
+        GUILayout.EndArea();
+    }
+
     private void DrawToolbar()
     {
         GUILayout.BeginHorizontal(EditorStyles.toolbar);
-        currentData = (GameEventData)EditorGUILayout.ObjectField(currentData, typeof(GameEventData), false);
+        CurrentData = (GameEventData)EditorGUILayout.ObjectField(currentData, typeof(GameEventData), false);
         if (GUILayout.Button("新建", EditorStyles.toolbarButton))
         {
             CreateNewData();
@@ -54,7 +149,7 @@ public class GameEventEditorWindow : EditorWindow
         {
             SaveData();
         }
-        if(currentData != null)
+        if (currentData != null)
         {
             EditorGUILayout.LabelField("事件名字: ", GUILayout.MinWidth(50), GUILayout.MaxWidth(60));
             currentData.EventName = EditorGUILayout.TextField(currentData.EventName, GUILayout.MaxWidth(200));
@@ -126,7 +221,6 @@ public class GameEventEditorWindow : EditorWindow
                     ShowContextMenu(e.mousePosition);
                 }
                 break;
-
             case EventType.MouseDrag:
                 if (e.button == 2 || (e.button == 0 && selectedNode == null))
                 {
@@ -162,13 +256,13 @@ public class GameEventEditorWindow : EditorWindow
         menu.ShowAsContext();
     }
 
-    private EventEditorNode CreateNode(Vector2 position, bool isStartNode = false)
+    private EditorEventNode CreateNode(Vector2 position, bool isStartNode = false)
     {
         if (currentData == null) return null;
-
-        var newNode = new EventEditorNode(position, 200, 150,
+        Debug.Log(position);
+        var newNode = new EditorEventNode(position, 200, 150,
             new GameEventNode(),
-            OnClickOutPoint,
+            SelectElement,
             OnClickRemoveNode, isStartNode);
 
         nodes.Add(newNode);
@@ -177,13 +271,13 @@ public class GameEventEditorWindow : EditorWindow
         return newNode;
     }
 
-    private EventEditorNode CreateNode(Vector2 position, GameEventNode nodeData, bool isStartNode = false)
+    private EditorEventNode CreateNode(Vector2 position, GameEventNode nodeData, bool isStartNode = false)
     {
         if (currentData == null) return null;
-
-        var newNode = new EventEditorNode(position, 200, 150,
+        Debug.Log(position);
+        var newNode = new EditorEventNode(position, 200, 150,
             nodeData,
-            OnClickOutPoint,
+            SelectElement,
             OnClickRemoveNode, isStartNode);
 
         nodes.Add(newNode);
@@ -193,11 +287,15 @@ public class GameEventEditorWindow : EditorWindow
     }
 
 
-    private void OnClickRemoveNode(EventEditorNode node)
+    private void OnClickRemoveNode(EditorEventNode node)
     {
+        // 删除节点
+        // 如果节点是起始节点，则无法删除
+        if(node.isStartNode) { return; }
+        DeleteNode(node);
     }
 
-    private void DeleteNode(EventEditorNode node)
+    private void DeleteNode(EditorEventNode node)
     {
         if (nodes.Contains(node))
         {
@@ -207,7 +305,7 @@ public class GameEventEditorWindow : EditorWindow
         }
     }
 
-    private void RemoveConnections(EventEditorNode node)
+    private void RemoveConnections(EditorEventNode node)
     {
         List<Connection> connectionsToRemove = new List<Connection>();
 
@@ -290,10 +388,10 @@ public class GameEventEditorWindow : EditorWindow
     public class ConnectionPoint
     {
         public Rect rect;
-        public EventEditorNode node;
+        public EditorEventNode node;
         public ConnectionPointType Type;
 
-        public ConnectionPoint(EventEditorNode node, ConnectionPointType type)
+        public ConnectionPoint(EditorEventNode node, ConnectionPointType type)
         {
             this.node = node;
             this.Type = type;
@@ -371,16 +469,43 @@ public class GameEventEditorWindow : EditorWindow
 
     private void LoadData()
     {
-        if (currentData == null) { return; }
         nodes.Clear();
         connections.Clear();
+        if (currentData == null) { return; }
         if (currentData.StartNode != null)
         {
-            CreateNode(new Vector2(100, 100), currentData.StartNode, true);
+            CreateNode(new Vector2(78, 397), currentData.StartNode, true);
         }
         else
         {
-            currentData.StartNode = CreateNode(new Vector2(100, 100), true).NodeData;
+            currentData.StartNode = CreateNode(new Vector2(78, 397), true).NodeData;
         }
+    }
+
+    private void InitGUIStyles()
+    {
+        // Panel style
+        panelStyle = new GUIStyle();
+        panelStyle.normal.background = DialogueEditorUtil.MakeTexture(10, 10, DialogueEditorUtil.GetEditorColor());
+
+        // Panel title style
+        panelTitleStyle = new GUIStyle();
+        panelTitleStyle.alignment = TextAnchor.MiddleCenter;
+        panelTitleStyle.fontStyle = FontStyle.Bold;
+        panelTitleStyle.wordWrap = true;
+        if (EditorGUIUtility.isProSkin)
+        {
+            panelTitleStyle.normal.textColor = DialogueEditorUtil.ProSkinTextColour;
+        }
+
+
+        // Resizer style
+        resizerStyle = new GUIStyle();
+        resizerStyle.normal.background = EditorGUIUtility.Load("icons/d_AvatarBlendBackground.png") as Texture2D;
+    }
+
+    private void SelectElement(EditorEventElement element)
+    {
+        selectedElement = element;
     }
 }
