@@ -59,7 +59,7 @@ public class GameEventEditorWindow : EditorWindow
     private void OnEnable()
     {
         wantsMouseMove = true;
-
+        InitGUIStyles();
         LoadData();
     }
 
@@ -274,7 +274,6 @@ public class GameEventEditorWindow : EditorWindow
     private EditorEventNode CreateNode(Vector2 position, GameEventNode nodeData, bool isStartNode = false)
     {
         if (currentData == null) return null;
-        Debug.Log(position);
         var newNode = new EditorEventNode(position, 200, 150,
             nodeData,
             SelectElement,

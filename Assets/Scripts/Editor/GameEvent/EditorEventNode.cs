@@ -34,7 +34,7 @@ public class EditorEventNode : EditorEventElement
 
     // Static
     private static GUIStyle titleStyle;
-    protected static GUIStyle textStyle;
+    public static GUIStyle textStyle;
 
     protected static GUIStyle npcNameStyle;
     // Static styles
@@ -303,7 +303,7 @@ public class EditorChoiceItem : EditorEventElement
     {
         GUILayout.BeginHorizontal();
         //EditorGUILayout.LabelField("选择：" + ChoiceData.ChoiceText, GUILayout.MinWidth(180), GUILayout.MaxWidth(180));
-        GUI.Box(rect, "选择：" + ChoiceData.ChoiceText);
+        GUI.Box(rect, "选择：" + ChoiceData.ChoiceText, EditorEventNode.textStyle);
         GUILayout.EndHorizontal();
     }
 
