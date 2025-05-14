@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System;
-using System.Numerics;
+using UnityEngine;
 
 [Serializable]
 public class GameEventNode
@@ -25,7 +25,7 @@ public class GameEventNode
         }
     }
 
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
     public Vector2 EditorPos;
-#endif
+//#endif
 }

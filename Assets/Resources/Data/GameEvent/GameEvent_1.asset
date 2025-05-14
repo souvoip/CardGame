@@ -21,5 +21,4 @@ MonoBehaviour:
     Choices:
     - ChoiceText: "\u9009\u62E9\u6D4B\u8BD51"
       TriggerEffects: []
-    - ChoiceText: "\u9009\u62E9\u6D4B\u8BD52"
-      TriggerEffects: []
+    EditorPos: {x: 69, y: 161}

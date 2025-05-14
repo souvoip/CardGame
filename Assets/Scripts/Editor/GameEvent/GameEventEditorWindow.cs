@@ -4,6 +4,7 @@ using UnityEditor;
 using System;
 using DialogueEditor;
 using UnityEngine.TextCore.Text;
+using static PlasticPipe.Server.MonitorStats;
 
 public class GameEventEditorWindow : EditorWindow
 {
@@ -423,8 +424,7 @@ public class GameEventEditorWindow : EditorWindow
         currentData = CreateInstance<GameEventData>();
         AssetDatabase.CreateAsset(currentData, "Assets/Resources/Data/GameEvent/GameEvent.asset");
         AssetDatabase.SaveAssets();
-        nodes.Clear();
-        connectionLines.Clear();
+        LoadData();
     }
 
     private void SaveData()
@@ -440,19 +440,17 @@ public class GameEventEditorWindow : EditorWindow
     private void LoadData()
     {
         Vector2 start = new Vector2(78, 100);
-        Vector2 offset = new Vector2(300, 160);
-        
 
         nodes.Clear();
         connectionLines.Clear();
         if (currentData == null) { return; }
         if (currentData.StartNode != null)
         {
-            CreateNode(new Vector2(start.x, start.y), currentData.StartNode, true);
+            CreateNode(currentData.StartNode.EditorPos, currentData.StartNode, true);
         }
         else
         {
-            currentData.StartNode = CreateNode(new Vector2(start.x, start.y), true).NodeData;
+            currentData.StartNode = CreateNode(start, true).NodeData;
         }
         // 创建其他节点，item1 节点，item2 节点深度
         Queue<(EditorEventNode, int)> nodeQueue = new Queue<(EditorEventNode, int)>();
@@ -461,21 +459,11 @@ public class GameEventEditorWindow : EditorWindow
         while (nodeQueue.Count > 0)
         {
             var node = nodeQueue.Dequeue();
-            CreatorChildNode(node, start, offset, nodeQueue);
+            CreatorChildNode(node, nodeQueue);
         }
-        //for (int i = 0; i < currentData.StartNode.Choices.Count; i++)
-        //{
-        //    var choice = currentData.StartNode.Choices[i];
-        //    for (int j = 0; j < choice.NextNodes.Count; j++)
-        //    {
-        //        var nextNode = choice.NextNodes[j];
-        //        CreateNode(new Vector2(start.x + offset.x, start.y + (offset.y * (i + j))), nextNode.NextNode);
-        //    }
-        //}
-        // 创建连接线
     }
 
-    private void CreatorChildNode((EditorEventNode, int) node, Vector2 start, Vector2 offset, Queue<(EditorEventNode, int)> nodeQueue)
+    private void CreatorChildNode((EditorEventNode, int) node, Queue<(EditorEventNode, int)> nodeQueue)
     {
         for (int i = 0; i < node.Item1.NodeData.Choices.Count; i++)
         {
@@ -483,7 +471,7 @@ public class GameEventEditorWindow : EditorWindow
             for (int j = 0; j < choice.ChoiceData.NextNodes.Count; j++)
             {
                 var nextNode = choice.ChoiceData.NextNodes[j];
-                var newNode = CreateNode(new Vector2(start.x + offset.x * (node.Item2 + 1), start.y + (offset.y * (i + j))), nextNode.NextNode);
+                var newNode = CreateNode(nextNode.NextNode.EditorPos, nextNode.NextNode);
                 nodeQueue.Enqueue((newNode, node.Item2 + 1));
                 // 创建连接线
                 CreatorConnectLine(choice.outPoint, newNode.inPoint);

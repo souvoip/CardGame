@@ -105,6 +105,7 @@ public class EditorEventNode : EditorEventElement
 
         rect = new Rect(position.x, position.y, Width, Height);
         NodeData = data;
+        NodeData.EditorPos = position;
         this.OnSelectThisElement = OnSelectThisElement;
         this.OnClickRemoveNode = OnClickRemoveNode;
         inPoint = new EditorConnectionPoint(rect.position + new Vector2(3, 3), 14, 14, EConnectionPointType.In, this);
@@ -150,6 +151,7 @@ public class EditorEventNode : EditorEventElement
     public void Drag(Vector2 delta)
     {
         rect.position += delta;
+        NodeData.EditorPos = rect.position;
         for (int i = 0; i < EditorChoices.Count; i++)
         {
             EditorChoices[i].Drag(delta);
