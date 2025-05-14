@@ -1,3 +1,6 @@
+using System;
+
+[Serializable]
 public class GameEventTriggerEffectChangeAttribute : GameEventTriggerEffect
 {
     public override EEventEffectType EffectType => EEventEffectType.ChangeAttribute;

@@ -17,4 +17,5 @@ MonoBehaviour:
   StartNode:
     StoryText: 2222
     ImgPath: 001
+    EnterEffects: []
     Choices: []

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System;
+using System.Numerics;
 
 [Serializable]
 public class GameEventNode
@@ -23,4 +24,8 @@ public class GameEventNode
             EnterEffects[i].TriggerEffect();
         }
     }
+
+#if UNITY_EDITOR
+    public Vector2 EditorPos;
+#endif
 }

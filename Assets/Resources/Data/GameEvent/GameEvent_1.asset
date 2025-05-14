@@ -17,5 +17,9 @@ MonoBehaviour:
   StartNode:
     StoryText: "\u6D4B\u8BD5\u4E8B\u4EF61"
     ImgPath: 001
+    EnterEffects: []
     Choices:
-    - ChoiceText: "\u6D4B\u8BD5\u9009\u62E91"
+    - ChoiceText: "\u9009\u62E9\u6D4B\u8BD51"
+      TriggerEffects: []
+    - ChoiceText: "\u9009\u62E9\u6D4B\u8BD52"
+      TriggerEffects: []

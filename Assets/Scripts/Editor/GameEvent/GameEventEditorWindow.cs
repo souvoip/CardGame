@@ -7,6 +7,10 @@ using UnityEngine.TextCore.Text;
 
 public class GameEventEditorWindow : EditorWindow
 {
+    public static bool isCreatingLine = false;
+
+    public static EditorConnectionLine tempConnectionLine;
+
     private static GUIStyle _wrappedStyle;
     public static GUIStyle WrappedTextAreaStyle
     {
@@ -36,11 +40,10 @@ public class GameEventEditorWindow : EditorWindow
         }
     }
     private List<EditorEventNode> nodes = new List<EditorEventNode>();
-    private List<Connection> connections = new List<Connection>();
+    private List<EditorConnectionLine> connectionLines = new List<EditorConnectionLine>();
 
-    private EditorEventNode selectedNode;
+    //private EditorEventNode selectedNode;
     public EditorEventElement selectedElement;
-    private ConnectionPoint selectedOutPoint;
     private Vector2 offset;
     private Vector2 drag;
 
@@ -73,16 +76,66 @@ public class GameEventEditorWindow : EditorWindow
         DrawConnections();
         DrawToolbar();
 
-        ProcessNodeEvents(Event.current);
-        ProcessEvents(Event.current);
+        if (!isCreatingLine && tempConnectionLine != null)
+        {
+            // 判断临时链接线是否有效
+            var points = GetAllConnectionPoints();
+            for (int i = 0; i < points.Count; i++)
+            {
+                // 判断鼠标位置是否在连接点内
+                if (points[i].rect.Contains(Event.current.mousePosition))
+                {
+                    tempConnectionLine.ResePoint(points[i]);
+                    break;
+                }
+            }
+            if (tempConnectionLine.IsValid())
+            {
+                // 判断是否在同一个节点内
+                if (!IsSameNode(tempConnectionLine.inPoint, tempConnectionLine.outPoint))
+                {
+                    EditorConnectionLine newLine = new EditorConnectionLine(tempConnectionLine.outPoint, tempConnectionLine.inPoint);
+                    connectionLines.Add(newLine);
+                    (newLine.outPoint.parentElement as EditorChoiceItem).ChoiceData.NextNodes.Add(new GameEventChoiceNextNode() { RandomRatio = 1, NextNode = (newLine.inPoint.parentElement as EditorEventNode).NodeData });
+                }
+            }
+            // 删除临时连接线
+            tempConnectionLine = null;
+        }
+
+        if (isCreatingLine)
+        {
+            tempConnectionLine.ProcessEvents(Event.current);
+            Repaint();
+        }
+        else
+        {
+            ProcessNodeEvents(Event.current);
+            ProcessEvents(Event.current);
+        }
 
         if (GUI.changed) Repaint();
+    }
+
+    private void Update()
+    {
+
+    }
+
+    private void DrawConnections()
+    {
+        tempConnectionLine?.Draw();
+
+        for (int i = 0; i < connectionLines.Count; i++)
+        {
+            connectionLines[i].Draw();
+        }
     }
 
     private Vector2 panelVerticalScroll;
     private void DrawPanel()
     {
-        if(selectedElement == null) { return; }
+        if (selectedElement == null) { return; }
 
         panelRect = new Rect(position.width - 180, 17, 180, position.height - 17);
         if (panelStyle.normal.background == null)
@@ -95,7 +148,7 @@ public class GameEventEditorWindow : EditorWindow
 
         GUILayout.Space(10);
 
-        if(selectedElement is EditorEventNode)
+        if (selectedElement is EditorEventNode)
         {
             var eventNode = selectedElement as EditorEventNode;
             // 节点描述编辑
@@ -110,7 +163,7 @@ public class GameEventEditorWindow : EditorWindow
             for (int i = 0; i < eventNode.NodeData.Choices.Count; i++)
             {
                 GUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField($"选择{i+1}", GUILayout.MinWidth(50), GUILayout.MaxWidth(60));
+                EditorGUILayout.LabelField($"选择{i + 1}", GUILayout.MinWidth(50), GUILayout.MaxWidth(60));
                 // 移除按钮
                 GUILayout.Space(40);
                 if (GUILayout.Button("移除", GUILayout.MaxWidth(60)))
@@ -124,11 +177,73 @@ public class GameEventEditorWindow : EditorWindow
 
                 GUILayout.Space(10);
             }
-            // 添加按钮
+            // 添加新选择按钮
             GUILayout.Space(10);
             if (GUILayout.Button("添加新选择", GUILayout.MaxWidth(160)))
             {
                 eventNode.NodeData.Choices.Add(new GameEventChoice());
+            }
+        }
+        else if (selectedElement is EditorChoiceItem)
+        {
+            var choiceNode = selectedElement as EditorChoiceItem;
+            // 节点描述编辑
+            EditorGUILayout.LabelField("选择描述", GUILayout.MinWidth(50), GUILayout.MaxWidth(60));
+            choiceNode.ChoiceData.ChoiceText = GUILayout.TextArea(choiceNode.ChoiceData.ChoiceText);
+
+            // 选择效果编辑
+            GUILayout.Space(10);
+            EditorGUILayout.LabelField("选择效果", GUILayout.MinWidth(50), GUILayout.MaxWidth(60));
+            for (int i = 0; i < choiceNode.ChoiceData.TriggerEffects.Count; i++)
+            {
+                GUILayout.BeginHorizontal();
+
+                EditorGUILayout.LabelField("效果" + i + 1, GUILayout.MinWidth(50), GUILayout.MaxWidth(60));
+                // 移除按钮
+                GUILayout.Space(40);
+                if (GUILayout.Button("移除", GUILayout.MaxWidth(60)))
+                {
+                    choiceNode.ChoiceData.TriggerEffects.RemoveAt(i);
+                    GUILayout.EndHorizontal();
+                    break;
+                }
+                GUILayout.EndHorizontal();
+
+                EditorGUILayout.LabelField("效果类型", GUILayout.MinWidth(50), GUILayout.MaxWidth(60));
+                EditorGUI.BeginChangeCheck();
+                // 获取当前类型或默认值
+                var newType = (EEnemyActionType)EditorGUILayout.EnumPopup(
+                    "",
+                    choiceNode.ChoiceData.TriggerEffects[i].EffectType, GUILayout.MinWidth(160), GUILayout.MaxWidth(160)
+                );
+                if (EditorGUI.EndChangeCheck())
+                {
+                }
+
+                switch (choiceNode.ChoiceData.TriggerEffects[i].EffectType)
+                {
+                    case EEventEffectType.ChangeAttribute:
+                        EditorGUILayout.LabelField("要改变属性类型", GUILayout.MinWidth(50), GUILayout.MaxWidth(60));
+                        EditorGUI.BeginChangeCheck();
+                        // 获取当前类型或默认值
+                        var attributeType = (EEnemyActionType)EditorGUILayout.EnumPopup(
+                            "",
+                            (choiceNode.ChoiceData.TriggerEffects[i] as GameEventTriggerEffectChangeAttribute).Attribute, GUILayout.MinWidth(160), GUILayout.MaxWidth(160)
+                        );
+                        if (EditorGUI.EndChangeCheck())
+                        {
+                            (choiceNode.ChoiceData.TriggerEffects[i] as GameEventTriggerEffectChangeAttribute).Attribute = (ERoleAttribute)attributeType;
+                        }
+                        EditorGUILayout.LabelField("改变值", GUILayout.MinWidth(50), GUILayout.MaxWidth(60));
+                        (choiceNode.ChoiceData.TriggerEffects[i] as GameEventTriggerEffectChangeAttribute).ChangeValue = EditorGUILayout.IntField((choiceNode.ChoiceData.TriggerEffects[i] as GameEventTriggerEffectChangeAttribute).ChangeValue);
+                        break;
+                }
+            }
+            // 添加新选择效果按钮
+            GUILayout.Space(10);
+            if (GUILayout.Button("添加新选择", GUILayout.MaxWidth(160)))
+            {
+                choiceNode.ChoiceData.TriggerEffects.Add(new GameEventTriggerEffectChangeAttribute());
             }
         }
 
@@ -155,7 +270,7 @@ public class GameEventEditorWindow : EditorWindow
             currentData.EventName = EditorGUILayout.TextField(currentData.EventName, GUILayout.MaxWidth(200));
 
             EditorGUILayout.LabelField("事件ID: ", GUILayout.MinWidth(50), GUILayout.MaxWidth(50));
-            currentData.ID = int.Parse(EditorGUILayout.TextField(currentData.ID.ToString(), GUILayout.MaxWidth(40)));
+            currentData.ID = EditorGUILayout.IntField(currentData.ID, GUILayout.MaxWidth(40));
         }
         GUILayout.FlexibleSpace();
         GUILayout.EndHorizontal();
@@ -168,17 +283,6 @@ public class GameEventEditorWindow : EditorWindow
             for (int i = 0; i < nodes.Count; i++)
             {
                 nodes[i].Draw();
-            }
-        }
-    }
-
-    private void DrawConnections()
-    {
-        if (connections != null)
-        {
-            for (int i = 0; i < connections.Count; i++)
-            {
-                connections[i].Draw();
             }
         }
     }
@@ -222,7 +326,7 @@ public class GameEventEditorWindow : EditorWindow
                 }
                 break;
             case EventType.MouseDrag:
-                if (e.button == 2 || (e.button == 0 && selectedNode == null))
+                if (e.button == 2 || (e.button == 0 && selectedElement == null))
                 {
                     OnDrag(e.delta);
                 }
@@ -249,18 +353,14 @@ public class GameEventEditorWindow : EditorWindow
     {
         GenericMenu menu = new GenericMenu();
         menu.AddItem(new GUIContent("创建节点"), false, () => CreateNode(mousePosition));
-        if (selectedNode != null)
-        {
-            menu.AddItem(new GUIContent("删除节点"), false, () => DeleteNode(selectedNode));
-        }
+
         menu.ShowAsContext();
     }
 
     private EditorEventNode CreateNode(Vector2 position, bool isStartNode = false)
     {
         if (currentData == null) return null;
-        Debug.Log(position);
-        var newNode = new EditorEventNode(position, 200, 150,
+        var newNode = new EditorEventNode(position,
             new GameEventNode(),
             SelectElement,
             OnClickRemoveNode, isStartNode);
@@ -274,7 +374,7 @@ public class GameEventEditorWindow : EditorWindow
     private EditorEventNode CreateNode(Vector2 position, GameEventNode nodeData, bool isStartNode = false)
     {
         if (currentData == null) return null;
-        var newNode = new EditorEventNode(position, 200, 150,
+        var newNode = new EditorEventNode(position,
             nodeData,
             SelectElement,
             OnClickRemoveNode, isStartNode);
@@ -285,12 +385,11 @@ public class GameEventEditorWindow : EditorWindow
         return newNode;
     }
 
-
     private void OnClickRemoveNode(EditorEventNode node)
     {
         // 删除节点
         // 如果节点是起始节点，则无法删除
-        if(node.isStartNode) { return; }
+        if (node.isStartNode) { return; }
         DeleteNode(node);
     }
 
@@ -299,26 +398,7 @@ public class GameEventEditorWindow : EditorWindow
         if (nodes.Contains(node))
         {
             nodes.Remove(node);
-            RemoveConnections(node);
             SaveData();
-        }
-    }
-
-    private void RemoveConnections(EditorEventNode node)
-    {
-        List<Connection> connectionsToRemove = new List<Connection>();
-
-        foreach (var connection in connections)
-        {
-            if (connection.InNode == node.inPoint || connection.OutNode == node.outPoint)
-            {
-                connectionsToRemove.Add(connection);
-            }
-        }
-
-        foreach (var connection in connectionsToRemove)
-        {
-            connections.Remove(connection);
         }
     }
 
@@ -338,40 +418,13 @@ public class GameEventEditorWindow : EditorWindow
         GUI.changed = true;
     }
 
-    private void OnClickOutPoint(ConnectionPoint outPoint)
-    {
-        selectedOutPoint = outPoint;
-        if (selectedOutPoint != null && selectedOutPoint.Type == ConnectionPointType.Out)
-        {
-            CreateConnection();
-            selectedOutPoint = null;
-        }
-    }
-
-    private void CreateConnection()
-    {
-        if (connections == null)
-        {
-            connections = new List<Connection>();
-        }
-
-        connections.Add(new Connection(selectedOutPoint, selectedNode.inPoint, RemoveConnection));
-        SaveData();
-    }
-
-    private void RemoveConnection(Connection connection)
-    {
-        connections.Remove(connection);
-        SaveData();
-    }
-
     private void CreateNewData()
     {
         currentData = CreateInstance<GameEventData>();
         AssetDatabase.CreateAsset(currentData, "Assets/Resources/Data/GameEvent/GameEvent.asset");
         AssetDatabase.SaveAssets();
         nodes.Clear();
-        connections.Clear();
+        connectionLines.Clear();
     }
 
     private void SaveData()
@@ -384,101 +437,64 @@ public class GameEventEditorWindow : EditorWindow
         AssetDatabase.SaveAssets();
     }
 
-    public class ConnectionPoint
-    {
-        public Rect rect;
-        public EditorEventNode node;
-        public ConnectionPointType Type;
-
-        public ConnectionPoint(EditorEventNode node, ConnectionPointType type)
-        {
-            this.node = node;
-            this.Type = type;
-            rect = new Rect(0, 0, 20f, 20f);
-        }
-
-        public void Draw()
-        {
-            rect.y = node.rect.y + (node.rect.height * 0.5f) - rect.height * 0.5f;
-
-            switch (Type)
-            {
-                case ConnectionPointType.In:
-                    rect.x = node.rect.x - rect.width + 8f;
-                    break;
-                case ConnectionPointType.Out:
-                    rect.x = node.rect.x + node.rect.width - 8f;
-                    break;
-            }
-
-            if (GUI.Button(rect, ""))
-            {
-                ProcessEvents(Event.current);
-            }
-        }
-
-        public bool ProcessEvents(Event e)
-        {
-            if (rect.Contains(e.mousePosition))
-            {
-                return true;
-            }
-            return false;
-        }
-    }
-
-    public class Connection
-    {
-        public ConnectionPoint OutNode;
-        public ConnectionPoint InNode;
-        private Action<Connection> OnClickRemoveConnection;
-
-        public Connection(ConnectionPoint outPoint, ConnectionPoint inPoint, Action<Connection> OnClickRemoveConnection)
-        {
-            OutNode = outPoint;
-            InNode = inPoint;
-            this.OnClickRemoveConnection = OnClickRemoveConnection;
-        }
-
-        public void Draw()
-        {
-            Handles.DrawBezier(
-                OutNode.rect.center,
-                InNode.rect.center,
-                OutNode.rect.center + Vector2.right * 50f,
-                InNode.rect.center - Vector2.right * 50f,
-                Color.white,
-                null,
-                2f
-            );
-
-            if (Handles.Button((OutNode.rect.center + InNode.rect.center) * 0.5f,
-                Quaternion.identity, 4, 8, Handles.RectangleHandleCap))
-            {
-                OnClickRemoveConnection?.Invoke(this);
-            }
-        }
-    }
-
-    public enum ConnectionPointType
-    {
-        In,
-        Out
-    }
-
     private void LoadData()
     {
+        Vector2 start = new Vector2(78, 100);
+        Vector2 offset = new Vector2(300, 160);
+        
+
         nodes.Clear();
-        connections.Clear();
+        connectionLines.Clear();
         if (currentData == null) { return; }
         if (currentData.StartNode != null)
         {
-            CreateNode(new Vector2(78, 397), currentData.StartNode, true);
+            CreateNode(new Vector2(start.x, start.y), currentData.StartNode, true);
         }
         else
         {
-            currentData.StartNode = CreateNode(new Vector2(78, 397), true).NodeData;
+            currentData.StartNode = CreateNode(new Vector2(start.x, start.y), true).NodeData;
         }
+        // 创建其他节点，item1 节点，item2 节点深度
+        Queue<(EditorEventNode, int)> nodeQueue = new Queue<(EditorEventNode, int)>();
+        nodeQueue.Enqueue((nodes[0], 0));
+
+        while (nodeQueue.Count > 0)
+        {
+            var node = nodeQueue.Dequeue();
+            CreatorChildNode(node, start, offset, nodeQueue);
+        }
+        //for (int i = 0; i < currentData.StartNode.Choices.Count; i++)
+        //{
+        //    var choice = currentData.StartNode.Choices[i];
+        //    for (int j = 0; j < choice.NextNodes.Count; j++)
+        //    {
+        //        var nextNode = choice.NextNodes[j];
+        //        CreateNode(new Vector2(start.x + offset.x, start.y + (offset.y * (i + j))), nextNode.NextNode);
+        //    }
+        //}
+        // 创建连接线
+    }
+
+    private void CreatorChildNode((EditorEventNode, int) node, Vector2 start, Vector2 offset, Queue<(EditorEventNode, int)> nodeQueue)
+    {
+        for (int i = 0; i < node.Item1.NodeData.Choices.Count; i++)
+        {
+            var choice = node.Item1.EditorChoices[i];
+            for (int j = 0; j < choice.ChoiceData.NextNodes.Count; j++)
+            {
+                var nextNode = choice.ChoiceData.NextNodes[j];
+                var newNode = CreateNode(new Vector2(start.x + offset.x * (node.Item2 + 1), start.y + (offset.y * (i + j))), nextNode.NextNode);
+                nodeQueue.Enqueue((newNode, node.Item2 + 1));
+                // 创建连接线
+                CreatorConnectLine(choice.outPoint, newNode.inPoint);
+            }
+        }
+    }
+
+    private void CreatorConnectLine(EditorConnectionPoint outPoint, EditorConnectionPoint inPoint)
+    {
+        var line = new EditorConnectionLine(outPoint, inPoint);
+        connectionLines.Add(line);
     }
 
     private void InitGUIStyles()
@@ -506,5 +522,42 @@ public class GameEventEditorWindow : EditorWindow
     private void SelectElement(EditorEventElement element)
     {
         selectedElement = element;
+    }
+
+    private List<EditorConnectionPoint> GetAllConnectionPoints()
+    {
+        List<EditorConnectionPoint> points = new List<EditorConnectionPoint>();
+        foreach (var node in nodes)
+        {
+            points.Add(node.inPoint);
+            foreach (var outPoint in node.EditorChoices)
+            {
+                points.Add(outPoint.outPoint);
+            }
+        }
+        return points;
+    }
+
+    /// <summary>
+    /// 两个链接点是否在同一个节点
+    /// </summary>
+    private bool IsSameNode(EditorConnectionPoint inPoint, EditorConnectionPoint outPoint)
+    {
+        for (int i = 0; i < nodes.Count; i++)
+        {
+            if (nodes[i].inPoint == inPoint)
+            {
+                for (int j = 0; j < nodes[i].EditorChoices.Count; j++)
+                {
+                    if (nodes[i].EditorChoices[j].outPoint == outPoint)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+        Debug.LogError("存在异常节点");
+        return false;
     }
 }

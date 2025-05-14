@@ -1,4 +1,6 @@
+using System;
 
+[Serializable]
 public class GameEventTriggerEffect
 {
     public virtual EEventEffectType EffectType { get; }
