@@ -22,12 +22,17 @@ public class UIManager : MonoBehaviour
 
     public PotionOptionUI potionOptionUI;
 
+    public GameEventUI gameEventUI;
+
     private bool isDisableUIInteraction = false;
     private void Awake()
     {
         if (Instance == null) { Instance = this; }
     }
 
+    /// <summary>
+    /// 禁用UI交互
+    /// </summary>
     public void DisableUIInteraction()
     {
         if (isDisableUIInteraction) { return; }
@@ -36,7 +41,9 @@ public class UIManager : MonoBehaviour
         uiCanvasGroup.blocksRaycasts = false;
     }
 
-    // 启用UI交互
+    /// <summary>
+    /// 启用UI交互
+    /// </summary>
     public void EnableUIInteraction()
     {
         if (!isDisableUIInteraction) { return; }

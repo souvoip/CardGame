@@ -21,8 +21,41 @@ MonoBehaviour:
     Choices:
     - ChoiceText: "\u6D4B\u8BD5\u9009\u62E91"
       TriggerEffects: []
-      NextNodes: []
-    EditorPos: {x: 88, y: 281}
+      NextNodes:
+      - RandomRatio: 50
+        NextNode:
+          StoryText: "\u4F60\u9009\u62E9\u4E861"
+          ImgPath: 001
+          EnterEffects: []
+          Choices:
+          - ChoiceText: "\u79BB\u5F00"
+            TriggerEffects: []
+            NextNodes: []
+          EditorPos: {x: 464, y: 52}
+      - RandomRatio: 50
+        NextNode:
+          StoryText: "\u4F60\u9009\u62E9\u4E861\uFF0C\u4F46\u662F\u89E6\u53D1\u4E86<color=red><shake>\u7B2C\u4E8C\u79CD\u60C5\u51B5</shake></color>"
+          ImgPath: 001
+          EnterEffects: []
+          Choices:
+          - ChoiceText: "\u79BB\u5F00"
+            TriggerEffects: []
+            NextNodes: []
+          EditorPos: {x: 462, y: 218}
+    - ChoiceText: "\u6D4B\u8BD5\u9009\u62E92"
+      TriggerEffects: []
+      NextNodes:
+      - RandomRatio: 1
+        NextNode:
+          StoryText: "\u4F60\u9009\u62E9\u4E862"
+          ImgPath: 001
+          EnterEffects: []
+          Choices:
+          - ChoiceText: "\u79BB\u5F00"
+            TriggerEffects: []
+            NextNodes: []
+          EditorPos: {x: 459, y: 393}
+    EditorPos: {x: 96, y: 186}
   references:
     version: 2
     RefIds: []
