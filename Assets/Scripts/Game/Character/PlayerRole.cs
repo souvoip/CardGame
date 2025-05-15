@@ -80,6 +80,35 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
         }
     }
 
+    public override int GetAttributeValue(ERoleAttribute attribute)
+    {
+        switch (attribute)
+        {
+            case ERoleAttribute.MaxHP:
+                return roleData.MaxHP;
+            case ERoleAttribute.HP:
+                return roleData.HP;
+            case ERoleAttribute.MaxMP:
+                return roleData.MaxMP;
+            case ERoleAttribute.MP:
+                return roleData.MP;
+            case ERoleAttribute.MaxAP:
+                return roleData.MaxAP;
+            case ERoleAttribute.AP:
+                return roleData.AP;
+            case ERoleAttribute.Aesist:
+                return roleData.Aesist;
+            case ERoleAttribute.Shield:
+                return roleData.Shield;
+            case ERoleAttribute.DrawCardCount:
+                return roleData.DrawCardCount;
+            case ERoleAttribute.MaxCardCount:
+                return roleData.MaxCardCount;
+            default:
+                return 0;
+        }
+    }
+
     private void OnStartBattle()
     {
         // 添加战斗 Buff
@@ -96,7 +125,6 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
             }
         }
     }
-
 
     public override void Die()
     {

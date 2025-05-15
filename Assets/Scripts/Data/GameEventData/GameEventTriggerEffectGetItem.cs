@@ -1,4 +1,6 @@
+using System;
 
+[Serializable]
 public class GameEventTriggerEffectGetItem : GameEventTriggerEffect
 {
     public override EEventEffectType EffectType => EEventEffectType.GetItem;

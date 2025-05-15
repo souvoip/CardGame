@@ -19,6 +19,10 @@ MonoBehaviour:
     ImgPath: 001
     EnterEffects: []
     Choices:
-    - ChoiceText: "\u9009\u62E9\u6D4B\u8BD51"
+    - ChoiceText: "\u6D4B\u8BD5\u9009\u62E91"
       TriggerEffects: []
-    EditorPos: {x: 69, y: 161}
+      NextNodes: []
+    EditorPos: {x: 88, y: 281}
+  references:
+    version: 2
+    RefIds: []

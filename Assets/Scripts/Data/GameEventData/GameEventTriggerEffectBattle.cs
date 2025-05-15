@@ -1,5 +1,6 @@
+using System;
 
-
+[Serializable]
 public class GameEventTriggerEffectBattle : GameEventTriggerEffect
 {
     public override EEventEffectType EffectType => EEventEffectType.Battle;

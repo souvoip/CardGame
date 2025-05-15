@@ -125,6 +125,8 @@ public class CharacterBase : MonoBehaviour
         TakeDamageEvent?.Invoke(from, damage);
     }
 
+    public virtual int GetAttributeValue(ERoleAttribute attribute) { return 0; }
+
     public virtual void ChangeAttribute(ERoleAttribute attribute, int value) { }
 
     public virtual void Die()
@@ -136,7 +138,17 @@ public class CharacterBase : MonoBehaviour
 public enum ERoleAttribute
 {
     HP,
+    MaxHP,
     MP,
+    MaxMP,
     AP,
-    Aesist
+    MaxAP,
+    Aesist,
+    Shield,
+    DrawCardCount,
+    MaxCardCount,
+
+    Age,
+    Level,
+    Exp,
 }

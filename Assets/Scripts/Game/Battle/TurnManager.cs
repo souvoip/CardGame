@@ -13,6 +13,7 @@ public class TurnManager : MonoBehaviour
     public static ETurnType TurnType;
     public static TurnManager Instance;
     private static int currentTurnCount = 0;
+
     public static int CurrentTurnCount
     {
         get

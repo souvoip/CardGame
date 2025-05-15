@@ -12,6 +12,7 @@ public class GameEventNode
     /// <summary>
     /// 进入节点时触发
     /// </summary>
+    [SerializeReference]
     public List<GameEventTriggerEffect> EnterEffects = new List<GameEventTriggerEffect>();
 
     public List<GameEventChoice> Choices = new List<GameEventChoice>();

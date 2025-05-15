@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using System;
+using UnityEngine;
 
 [Serializable]
 public class GameEventChoice
 {
     public string ChoiceText;
 
+    [SerializeReference]
     public List<GameEventTriggerEffect> TriggerEffects = new List<GameEventTriggerEffect>();
 
     public List<GameEventChoiceNextNode> NextNodes = new List<GameEventChoiceNextNode>();
@@ -52,7 +54,7 @@ public class GameEventChoice
     }
 }
 
-
+[Serializable]
 public class GameEventChoiceNextNode
 {
     public int RandomRatio = 1;

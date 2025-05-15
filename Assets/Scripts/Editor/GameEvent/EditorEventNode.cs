@@ -8,6 +8,10 @@ using System.Collections.Generic;
 public abstract class EditorEventElement
 {
     public abstract EEditorEventElementType Type { get; }
+
+    public bool isSelected;
+
+    public abstract void RemoveNode();
 }
 
 public enum EEditorEventElementType
@@ -34,7 +38,7 @@ public class EditorEventNode : EditorEventElement
     private static GUIStyle titleStyle;
     public static GUIStyle textStyle;
 
-    protected static GUIStyle npcNameStyle;
+    protected static GUIStyle nameStyle;
     // Static styles
     protected static GUIStyle defaultNodeStyle;
     protected static GUIStyle selectedNodeStyle;
@@ -47,7 +51,6 @@ public class EditorEventNode : EditorEventElement
 
     protected GUIStyle currentBoxStyle;
 
-
     public bool isStartNode;
 
     public Rect rect;
@@ -55,10 +58,6 @@ public class EditorEventNode : EditorEventElement
     public List<EditorChoiceItem> EditorChoices = new List<EditorChoiceItem>();
 
     public EditorConnectionPoint inPoint;
-
-    //public ConnectionPoint inPoint;
-    //public ConnectionPoint outPoint;
-    public bool isSelected;
 
     private Action<EditorEventElement> OnSelectThisElement;
     private Action<EditorEventNode> OnClickRemoveNode;
@@ -93,14 +92,14 @@ public class EditorEventNode : EditorEventElement
             selectedNodeStyle = new GUIStyle();
             selectedNodeStyle.normal.background = EventEditorUtility.MakeTextureForNode(Width, Height, SelectedColor);
         }
-        if (npcNameStyle == null)
+        if (nameStyle == null)
         {
-            npcNameStyle = new GUIStyle();
-            npcNameStyle.normal.textColor = new Color(0.8f, 0.8f, 0.8f, 1);
-            npcNameStyle.wordWrap = true;
-            npcNameStyle.stretchHeight = false;
-            npcNameStyle.alignment = TextAnchor.MiddleCenter;
-            npcNameStyle.clipping = TextClipping.Clip;
+            nameStyle = new GUIStyle();
+            nameStyle.normal.textColor = new Color(0.8f, 0.8f, 0.8f, 1);
+            nameStyle.wordWrap = true;
+            nameStyle.stretchHeight = false;
+            nameStyle.alignment = TextAnchor.MiddleCenter;
+            nameStyle.clipping = TextClipping.Clip;
         }
 
         rect = new Rect(position.x, position.y, Width, Height);
@@ -118,7 +117,7 @@ public class EditorEventNode : EditorEventElement
         for (int i = 0; i < NodeData.Choices.Count; i++)
         {
             // 创建新的选项
-            EditorChoices.Add(new EditorChoiceItem(new Vector2(rect.x, rect.y + TITLE_HEIGHT + TITLE_GAP + NAME_HEIGHT + TEXT_BOX_HEIGHT + 10 + i * 20), rect.width, 20, NodeData.Choices[i], OnSelectThisElement));
+            EditorChoices.Add(new EditorChoiceItem(new Vector2(rect.x, rect.y + TITLE_HEIGHT + TITLE_GAP + NAME_HEIGHT + TEXT_BOX_HEIGHT + 10 + i * 20), rect.width, 20, NodeData.Choices[i], OnSelectThisElement, OnClickRemoveChoice));
         }
 
         // 调节自己的尺寸
@@ -146,6 +145,21 @@ public class EditorEventNode : EditorEventElement
                 currentBoxStyle = defaultNodeStyle;
             }
         }
+    }
+
+    private void OnClickRemoveChoice(EditorChoiceItem item)
+    {
+        NodeData.Choices.Remove(item.ChoiceData);
+    }
+
+    public override void RemoveNode()
+    {
+        inPoint?.RemoveNode();
+        for(int i = 0; i < EditorChoices.Count; i++)
+        {
+            EditorChoices[i].RemoveNode();
+        }
+        OnClickRemoveNode(this);
     }
 
     public void Drag(Vector2 delta)
@@ -176,7 +190,7 @@ public class EditorEventNode : EditorEventElement
             if (EditorChoices.Count <= i)
             {
                 // 创建新的选项
-                EditorChoices.Add(new EditorChoiceItem(new Vector2(rect.x, rect.y + TITLE_HEIGHT + TITLE_GAP + NAME_HEIGHT + TEXT_BOX_HEIGHT + 10 + i * 20), rect.width, 20, NodeData.Choices[i], OnSelectThisElement));
+                EditorChoices.Add(new EditorChoiceItem(new Vector2(rect.x, rect.y + TITLE_HEIGHT + TITLE_GAP + NAME_HEIGHT + TEXT_BOX_HEIGHT + 10 + i * 20), rect.width, 20, NodeData.Choices[i], OnSelectThisElement, OnClickRemoveChoice));
             }
             EditorChoices[i].UppdateData(NodeData.Choices[i]);
         }
@@ -235,16 +249,17 @@ public class EditorEventNode : EditorEventElement
         switch (e.type)
         {
             case EventType.MouseDown:
-                if (e.button == 0 && rect.Contains(e.mousePosition))
+                if (rect.Contains(e.mousePosition))
                 {
                     isSelected = true;
                     currentBoxStyle = selectedNodeStyle;
                     GUI.changed = true;
                     OnSelectThisElement(this);
+                    IsSelectElement = true;
+                    return true;
                 }
                 else if (!rect.Contains(e.mousePosition))
                 {
-                    isSelected = false;
                     currentBoxStyle = defaultNodeStyle;
                     GUI.changed = true;
                     //OnSelectThisElement(null);
@@ -253,7 +268,7 @@ public class EditorEventNode : EditorEventElement
             case EventType.MouseUp:
                 if (e.button == 0 && rect.Contains(e.mousePosition))
                 {
-                    
+
                 }
                 break;
             case EventType.MouseDrag:
@@ -288,7 +303,7 @@ public class EditorEventNode : EditorEventElement
 
         const int NAME_PADDING = 1;
         Rect imgPath = new Rect(rect.x + TEXT_BORDER * 0.5f, rect.y + NAME_PADDING + TITLE_HEIGHT, rect.width - TEXT_BORDER * 0.5f, NAME_HEIGHT);
-        GUI.Box(imgPath, "图片路径: " + NodeData.ImgPath, npcNameStyle);
+        GUI.Box(imgPath, "图片路径: " + NodeData.ImgPath, nameStyle);
         // Icon
         Rect icon = new Rect(rect.x + TEXT_BORDER * 0.5f, rect.y + TITLE_HEIGHT + TITLE_GAP + NAME_HEIGHT, SPRITE_SZ, SPRITE_SZ);
         if (NodeData.ImgPath != null)
@@ -331,16 +346,23 @@ public class EditorChoiceItem : EditorEventElement
 
     public EditorConnectionPoint outPoint;
 
-    public static GUIStyle boxStyle = new GUIStyle();
+    public static GUIStyle boxSelectedStyle;
+    public static GUIStyle boxUnselectedStyle;
 
     private Action<EditorEventElement> OnSelectThisElement;
+    private Action<EditorChoiceItem> OnClickRemoveNode;
 
-    public EditorChoiceItem(Vector2 position, float width, float height, GameEventChoice data, Action<EditorEventElement> onSelectThisElement)
+    public EditorChoiceItem(Vector2 position, float width, float height, GameEventChoice data, Action<EditorEventElement> onSelectThisElement, Action<EditorChoiceItem> onClickRemoveNode)
     {
-        if (boxStyle == null || boxStyle.normal.background == null)
+        if (boxSelectedStyle == null || boxSelectedStyle.normal.background == null)
         {
-            boxStyle = new GUIStyle();
-            boxStyle.normal.background = EventEditorUtility.MakeTextureForBox((int)width, (int)height, Color.blue);
+            boxSelectedStyle = new GUIStyle();
+            boxSelectedStyle.normal.background = EventEditorUtility.MakeTextureForBox((int)width, (int)height, Color.red);
+        }
+        if (boxUnselectedStyle == null || boxUnselectedStyle.normal.background == null)
+        {
+            boxUnselectedStyle = new GUIStyle();
+            boxUnselectedStyle.normal.background = EventEditorUtility.MakeTextureForBox((int)width, (int)height, Color.blue);
         }
 
         rect = new Rect(position.x, position.y, width, height);
@@ -349,6 +371,13 @@ public class EditorChoiceItem : EditorEventElement
 
         outPoint = new EditorConnectionPoint(new Vector2(rect.x + rect.width - 17, rect.y + 3), 14, 14, EConnectionPointType.Out, this);
         OnSelectThisElement = onSelectThisElement;
+        OnClickRemoveNode = onClickRemoveNode;
+    }
+
+    public override void RemoveNode()
+    {
+        outPoint.RemoveNode();
+        OnClickRemoveNode(this);
     }
 
     public void UppdateData(GameEventChoice data)
@@ -359,7 +388,7 @@ public class EditorChoiceItem : EditorEventElement
     public void Draw()
     {
         // Box
-        GUI.Box(rect, "", boxStyle);
+        GUI.Box(rect, "", isSelected ? boxSelectedStyle : boxUnselectedStyle);
         OnDraw();
         outPoint.Draw();
     }
@@ -379,9 +408,11 @@ public class EditorChoiceItem : EditorEventElement
         switch (e.type)
         {
             case EventType.MouseDown:
-                if (e.button == 0 && rect.Contains(e.mousePosition))
+                if (rect.Contains(e.mousePosition))
                 {
                     OnSelectThisElement(this);
+                    IsSelectElement = true;
+                    isSelected = true;
                     return true;
                 }
                 break;
@@ -417,6 +448,8 @@ public class EditorConnectionPoint : EditorEventElement
 
     private Action<EditorEventElement> OnSelectThisElement;
 
+    public bool IsValid = true;
+
     public EditorConnectionPoint(Vector2 position, float width, float height, EConnectionPointType pType, EditorEventElement parent)
     {
         if (inPointStyle == null || inPointStyle.normal.background == null)
@@ -432,6 +465,11 @@ public class EditorConnectionPoint : EditorEventElement
         ConnectionPointType = pType;
         parentElement = parent;
         rect = new Rect(position.x, position.y, width, height);
+    }
+
+    public override void RemoveNode()
+    {
+        IsValid = false;
     }
 
     public void Draw()
@@ -463,17 +501,17 @@ public class EditorConnectionPoint : EditorEventElement
         switch (e.type)
         {
             case EventType.MouseDown:
-                if (e.button == 0 && rect.Contains(e.mousePosition))
+                if (rect.Contains(e.mousePosition))
                 {
                     // 创建链接线
                     GameEventEditorWindow.isCreatingLine = true;
                     if (ConnectionPointType == EConnectionPointType.Out)
                     {
-                        tempConnectionLine = new EditorConnectionLine(this, null);
+                        tempConnectionLine = new EditorConnectionLine(this, null, null, null, null);
                     }
                     else
                     {
-                        tempConnectionLine = new EditorConnectionLine(null, this);
+                        tempConnectionLine = new EditorConnectionLine(null, this, null, null, null);
                     }
                     tempConnectionLine.isCreating = true;
                     return true;
@@ -508,7 +546,11 @@ public class EditorConnectionLine : EditorEventElement
 
     private Action<EditorEventElement> OnSelectThisElement;
 
-    public EditorConnectionLine(EditorConnectionPoint outPos, EditorConnectionPoint inPos)
+    private Action<EditorConnectionLine> OnRemoveThisLine;
+
+    public GameEventChoiceNextNode choiceNextNode;
+
+    public EditorConnectionLine(EditorConnectionPoint outPos, EditorConnectionPoint inPos, Action<EditorEventElement> OnSelectThisElement, GameEventChoiceNextNode choiceNext, Action<EditorConnectionLine> OnRemoveThisLine)
     {
         this.outPoint = outPos;
         this.inPoint = inPos;
@@ -524,6 +566,19 @@ public class EditorConnectionLine : EditorEventElement
         {
             mousePos = inPos.rect.center;
         }
+        this.OnSelectThisElement = OnSelectThisElement;
+        choiceNextNode = choiceNext;
+        this.OnRemoveThisLine = OnRemoveThisLine;
+    }
+
+    public override void RemoveNode()
+    {
+        // 移除连接关系
+        if (outPoint != null)
+        {
+            (outPoint.parentElement as EditorChoiceItem).ChoiceData.NextNodes.Remove(choiceNextNode);
+        }
+        OnRemoveThisLine?.Invoke(this);
     }
 
     public void ResetOutPoint(EditorConnectionPoint outPos)
@@ -555,6 +610,10 @@ public class EditorConnectionLine : EditorEventElement
             Debug.LogError("错误创建");
             return;
         }
+        if (!isCreating)
+        {
+            if (!IsValid()) { RemoveNode(); }
+        }
         Vector2 start;
         Vector2 end;
         if (outPoint != null) { start = outPoint.rect.center; }
@@ -564,7 +623,7 @@ public class EditorConnectionLine : EditorEventElement
         if (Vector2.Distance(start, end) < 10) { return; }
         Vector2 toStart = (start - end).normalized;
         Vector2 toEnd = (end - start).normalized;
-        Handles.DrawBezier(start, end, start + toStart, end + toEnd, Color.yellow, null, 10);
+        Handles.DrawBezier(start, end, start + toStart, end + toEnd, isSelected ? Color.red : Color.yellow, null, 10);
     }
 
     public bool IsMouseOnLine(Vector2 mousePos)
@@ -646,18 +705,35 @@ public class EditorConnectionLine : EditorEventElement
                     mousePos = e.mousePosition;
                     break;
             }
-            return false;
         }
         else
         {
-
-            return false;
+            switch (e.type)
+            {
+                case EventType.MouseDown:
+                    if (IsMouseOnLine(e.mousePosition))
+                    {
+                        OnSelectThisElement.Invoke(this);
+                        isSelected = true;
+                        IsSelectElement = true;
+                        return true;
+                    }
+                    break;
+            }
         }
+        return false;
     }
 
     // 是否有效
     public bool IsValid()
     {
-        return outPoint != null && inPoint != null;
+        if(outPoint != null && inPoint != null)
+        {
+            if(outPoint.IsValid && inPoint.IsValid)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

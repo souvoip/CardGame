@@ -3,8 +3,6 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using DialogueEditor;
-using UnityEngine.TextCore.Text;
-using static PlasticPipe.Server.MonitorStats;
 
 public class GameEventEditorWindow : EditorWindow
 {
@@ -29,6 +27,8 @@ public class GameEventEditorWindow : EditorWindow
         }
     }
 
+    public static bool IsSelectElement = false;
+
     private GameEventData currentData;
     public GameEventData CurrentData
     {
@@ -51,7 +51,6 @@ public class GameEventEditorWindow : EditorWindow
     private Rect panelRect;
     private GUIStyle panelStyle;
     private GUIStyle panelTitleStyle;
-    private Rect panelResizerRect;
     private GUIStyle resizerStyle;
 
     [MenuItem("Tools/Game Event Editor")]
@@ -95,9 +94,12 @@ public class GameEventEditorWindow : EditorWindow
                 // 判断是否在同一个节点内
                 if (!IsSameNode(tempConnectionLine.inPoint, tempConnectionLine.outPoint))
                 {
-                    EditorConnectionLine newLine = new EditorConnectionLine(tempConnectionLine.outPoint, tempConnectionLine.inPoint);
+                    var nextNode = new GameEventChoiceNextNode();
+                    EditorConnectionLine newLine = new EditorConnectionLine(tempConnectionLine.outPoint, tempConnectionLine.inPoint, SelectElement, nextNode, OnClickRemoveLine);
+                    nextNode.RandomRatio = 1;
+                    nextNode.NextNode = (newLine.inPoint.parentElement as EditorEventNode).NodeData;
+                    (newLine.outPoint.parentElement as EditorChoiceItem).ChoiceData.NextNodes.Add(nextNode);
                     connectionLines.Add(newLine);
-                    (newLine.outPoint.parentElement as EditorChoiceItem).ChoiceData.NextNodes.Add(new GameEventChoiceNextNode() { RandomRatio = 1, NextNode = (newLine.inPoint.parentElement as EditorEventNode).NodeData });
                 }
             }
             // 删除临时连接线
@@ -111,16 +113,20 @@ public class GameEventEditorWindow : EditorWindow
         }
         else
         {
-            ProcessNodeEvents(Event.current);
+            ClearSelectState();
+            
+            if (!ProcessNodeEvents(Event.current))
+            {
+                ProcessConnectLineEvents(Event.current);
+            }
+            if (!IsSelectElement)
+            {
+                selectedElement = null;
+            }
             ProcessEvents(Event.current);
         }
 
         if (GUI.changed) Repaint();
-    }
-
-    private void Update()
-    {
-
     }
 
     private void DrawConnections()
@@ -169,7 +175,7 @@ public class GameEventEditorWindow : EditorWindow
                 GUILayout.Space(40);
                 if (GUILayout.Button("移除", GUILayout.MaxWidth(60)))
                 {
-                    eventNode.NodeData.Choices.RemoveAt(i);
+                    eventNode.EditorChoices[i].RemoveNode();
                     GUILayout.EndHorizontal();
                     break;
                 }
@@ -229,11 +235,11 @@ public class GameEventEditorWindow : EditorWindow
                         // 获取当前类型或默认值
                         var attributeType = (EEnemyActionType)EditorGUILayout.EnumPopup(
                             "",
-                            (choiceNode.ChoiceData.TriggerEffects[i] as GameEventTriggerEffectChangeAttribute).Attribute, GUILayout.MinWidth(160), GUILayout.MaxWidth(160)
+                            (choiceNode.ChoiceData.TriggerEffects[i] as GameEventTriggerEffectChangeAttribute).ChangeAttribute, GUILayout.MinWidth(160), GUILayout.MaxWidth(160)
                         );
                         if (EditorGUI.EndChangeCheck())
                         {
-                            (choiceNode.ChoiceData.TriggerEffects[i] as GameEventTriggerEffectChangeAttribute).Attribute = (ERoleAttribute)attributeType;
+                            (choiceNode.ChoiceData.TriggerEffects[i] as GameEventTriggerEffectChangeAttribute).ChangeAttribute = (ERoleAttribute)attributeType;
                         }
                         EditorGUILayout.LabelField("改变值", GUILayout.MinWidth(50), GUILayout.MaxWidth(60));
                         (choiceNode.ChoiceData.TriggerEffects[i] as GameEventTriggerEffectChangeAttribute).ChangeValue = EditorGUILayout.IntField((choiceNode.ChoiceData.TriggerEffects[i] as GameEventTriggerEffectChangeAttribute).ChangeValue);
@@ -247,7 +253,14 @@ public class GameEventEditorWindow : EditorWindow
                 choiceNode.ChoiceData.TriggerEffects.Add(new GameEventTriggerEffectChangeAttribute());
             }
         }
-
+        else if (selectedElement is EditorConnectionLine)
+        {
+            var connectionLine = selectedElement as EditorConnectionLine;
+            // 节点描述编辑
+            EditorGUILayout.LabelField("进入该节点的概率", GUILayout.MinWidth(100), GUILayout.MaxWidth(100));
+            connectionLine.choiceNextNode.RandomRatio = EditorGUILayout.IntField(connectionLine.choiceNextNode.RandomRatio);
+        }
+        
         GUILayout.EndScrollView();
         GUILayout.EndVertical();
         GUILayout.EndArea();
@@ -335,27 +348,72 @@ public class GameEventEditorWindow : EditorWindow
         }
     }
 
-    private void ProcessNodeEvents(Event e)
+    private bool ProcessNodeEvents(Event e)
     {
+        bool temp = false;
         if (nodes != null)
         {
             for (int i = nodes.Count - 1; i >= 0; i--)
             {
-                bool guiChanged = nodes[i].ProcessEvents(e);
-                if (guiChanged)
+                if (nodes[i].ProcessEvents(e))
                 {
                     GUI.changed = true;
+                    temp = true;
+                    break;
                 }
             }
         }
+        return temp;
+    }
+
+    private bool ProcessConnectLineEvents(Event e)
+    {
+        bool temp = false;
+        if (connectionLines != null)
+        {
+            for (int i = connectionLines.Count - 1; i >= 0; i--)
+            {
+                if (connectionLines[i].ProcessEvents(e))
+                {
+                    GUI.changed = true;
+                    temp = true;
+                    break;
+                }
+            }
+        }
+        return temp;
     }
 
     private void ShowContextMenu(Vector2 mousePosition)
     {
         GenericMenu menu = new GenericMenu();
         menu.AddItem(new GUIContent("创建节点"), false, () => CreateNode(mousePosition));
-
+        if (selectedElement != null)
+        {
+            menu.AddItem(new GUIContent("删除选择的节点"), false, RemoveSelectElement);
+        }
         menu.ShowAsContext();
+    }
+
+    private void RemoveSelectElement()
+    {
+        if (selectedElement == null) return;
+        selectedElement.RemoveNode();
+        //if (selectedElement is EditorEventNode)
+        //{
+        //    OnClickRemoveNode(selectedElement as EditorEventNode);
+        //}
+        if( selectedElement is EditorChoiceItem)
+        {
+            (selectedElement as EditorChoiceItem).RemoveNode();
+        }
+        else if (selectedElement is EditorConnectionLine)
+        {
+            (selectedElement as EditorConnectionLine).RemoveNode();
+            connectionLines.Remove(selectedElement as EditorConnectionLine);
+        }
+
+        selectedElement = null;
     }
 
     private EditorEventNode CreateNode(Vector2 position, bool isStartNode = false)
@@ -390,8 +448,17 @@ public class GameEventEditorWindow : EditorWindow
     {
         // 删除节点
         // 如果节点是起始节点，则无法删除
-        if (node.isStartNode) { return; }
+        if (node.isStartNode)
+        {
+            Debug.LogError("起始节点无法删除");
+            return;
+        }
         DeleteNode(node);
+    }
+
+    private void OnClickRemoveLine(EditorConnectionLine line)
+    {
+        connectionLines.Remove(line);
     }
 
     private void DeleteNode(EditorEventNode node)
@@ -474,14 +541,14 @@ public class GameEventEditorWindow : EditorWindow
                 var newNode = CreateNode(nextNode.NextNode.EditorPos, nextNode.NextNode);
                 nodeQueue.Enqueue((newNode, node.Item2 + 1));
                 // 创建连接线
-                CreatorConnectLine(choice.outPoint, newNode.inPoint);
+                CreatorConnectLine(choice.outPoint, newNode.inPoint, nextNode);
             }
         }
     }
 
-    private void CreatorConnectLine(EditorConnectionPoint outPoint, EditorConnectionPoint inPoint)
+    private void CreatorConnectLine(EditorConnectionPoint outPoint, EditorConnectionPoint inPoint, GameEventChoiceNextNode data)
     {
-        var line = new EditorConnectionLine(outPoint, inPoint);
+        var line = new EditorConnectionLine(outPoint, inPoint, SelectElement, data, OnClickRemoveLine);
         connectionLines.Add(line);
     }
 
@@ -547,5 +614,17 @@ public class GameEventEditorWindow : EditorWindow
         }
         Debug.LogError("存在异常节点");
         return false;
+    }
+
+    private void ClearSelectState()
+    {
+        if (Event.current.type == EventType.MouseDown)
+        {
+            IsSelectElement = false;
+            if (selectedElement != null)
+            {
+                selectedElement.isSelected = false;
+            }
+        }
     }
 }
