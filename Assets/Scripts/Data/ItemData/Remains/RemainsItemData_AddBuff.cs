@@ -39,8 +39,25 @@ public class RemainsItemData_AddBuff : RemainsItemData
                 case ETriggerTime.EnemyDead:
                     break;
                 case ETriggerTime.PlayerHit:
+                    BattleManager.Instance.Player.TakeDamageEvent += (enemy, _) => { AddBuff(enemy, buff); };
                     break;
                 case ETriggerTime.PlayerAttack:
+                    BattleManager.Instance.Player.CauseDamageEvent += (enemy, _) => { AddBuff(enemy, buff); };
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    public override void OnBattleStart()
+    {
+        foreach (var buff in Buffs)
+        {
+            switch (buff.TriggerTime)
+            {
+                case ETriggerTime.EnemyDead:
+                    BattleManager.Instance.EnemyRoles.ForEach(enemy => enemy.DieEvent += () => { AddBuff(enemy, buff); });
                     break;
                 default:
                     break;
@@ -50,9 +67,36 @@ public class RemainsItemData_AddBuff : RemainsItemData
 
     private void AddBuff(RemainsBuffItem buffItem)
     {
-        if(buffItem.Target == ETargetRole.Self)
+        switch (buffItem.Target)
         {
-            BattleManager.Instance.Player.AddBuff(BuffDataManager.GetBuff(buffItem.BuffID), buffItem.Stacks);
+            case ETargetRole.Self:
+                AddBuff(buffItem);
+                break;
+            case ETargetRole.AllEnemy:
+                BattleManager.Instance.EnemyRoles.ForEach(enemy => enemy.AddBuff(BuffDataManager.GetBuff(buffItem.BuffID), buffItem.Stacks));
+                break;
+            case ETargetRole.All:
+                AddBuff(buffItem);
+                break;
+        }
+    }
+
+    private void AddBuff(CharacterBase targetEnemy, RemainsBuffItem buffItem)
+    {
+        switch (buffItem.Target)
+        {
+            case ETargetRole.Self:
+                AddBuff(buffItem);
+                break;
+            case ETargetRole.Enemy:
+                targetEnemy.AddBuff(BuffDataManager.GetBuff(buffItem.BuffID), buffItem.Stacks);
+                break;
+            case ETargetRole.AllEnemy:
+                AddBuff(buffItem);
+                break;
+            case ETargetRole.All:
+                AddBuff(buffItem);
+                break;
         }
     }
 }
@@ -65,6 +109,7 @@ public class RemainsBuffItem : BuffItem
 
 public enum ETriggerTime
 {
+    GetThis,          // 获得此遗物时
     StartBattle,      // 战斗开始
     PlayerTurnStart,  // 玩家回合开始
     PlayerTurnEnd,    // 玩家回合结束

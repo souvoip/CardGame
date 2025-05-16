@@ -17,6 +17,13 @@ public class RemainsItemData_ChangeAttribute : RemainsItemData
     {
         switch (TriggerTime)
         {
+            case ETriggerTime.GetThis:
+                if (IsFirstAcquire)
+                {
+                    OnChange();
+                    IsFirstAcquire = false;
+                }
+                break;
             case ETriggerTime.StartBattle:
                 TurnManager.OnStartBattle += OnChange;
                 break;

@@ -35,7 +35,7 @@ public class GameEventUI : MonoBehaviour
 
     private void Start()
     {
-        // ²âÊÔ
+        // æµ‹è¯•
         Show(tempData);
     }
 
@@ -56,26 +56,31 @@ public class GameEventUI : MonoBehaviour
     {
         if(story == null)
         {
-            // ÊÂ¼ş½áÊø£¬¹Ø±ÕÒ³Ãæ
+            // äº‹ä»¶ç»“æŸï¼Œå…³é—­é¡µé¢
             Hide();
             return;
         }
 
         contentTxt.SetShakingText(story.StoryText);
         eventImg.sprite = Resources.Load<Sprite>(ImgPath + story.ImgPath);
-        //Çå³ıËùÓĞÑ¡Ïî
+        //æ¸…é™¤æ‰€æœ‰é€‰é¡¹
         for (int i = choiceItemParent.childCount - 1; i >= 0; i--)
         {
             Destroy(choiceItemParent.GetChild(i).gameObject);
         }
-        //Ìí¼ÓÑ¡Ïî
+        //æ·»åŠ é€‰é¡¹
         foreach (var choice in story.Choices)
         {
             var choiceItem = Instantiate(choiceItemPrefab, choiceItemParent);
             choiceItem.GetComponent<EventChoiceItem>().Init(choice, NextStory);
             choiceItem.gameObject.SetActive(true);
         }
-        // ´¥·¢½øÈë½ÚµãÊÂ¼ş
+        // è§¦å‘è¿›å…¥èŠ‚ç‚¹äº‹ä»¶
         story.EnterThisNode();
+    }
+
+    public void NextStory(int storyIndex)
+    {
+        NextStory(eventData.AllNodes.Find(node => node.NodeIndex == storyIndex));
     }
 }

@@ -16,6 +16,7 @@ MonoBehaviour:
   Name: "\u4F24\u5BB3\u836F\u6C34"
   Description: "\u9020\u621020\u70B9\u4F24\u5BB3"
   IconPath: 102
+  IsUnique: 0
   useAnimData:
     path: 
     time: 0

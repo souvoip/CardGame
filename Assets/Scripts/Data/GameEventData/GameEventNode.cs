@@ -5,6 +5,11 @@ using UnityEngine;
 [Serializable]
 public class GameEventNode
 {
+    /// <summary>
+    /// 节点索引
+    /// </summary>
+    public int NodeIndex;
+
     public string StoryText;
 
     public string ImgPath;
@@ -26,7 +31,7 @@ public class GameEventNode
         }
     }
 
-//#if UNITY_EDITOR
+#if UNITY_EDITOR
     public Vector2 EditorPos;
-//#endif
+#endif
 }

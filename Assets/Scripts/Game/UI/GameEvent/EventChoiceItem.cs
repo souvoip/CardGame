@@ -14,14 +14,14 @@ public class EventChoiceItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     private GameEventChoice choiceData;
 
-    private Action<GameEventNode> clickAction;
+    private Action<int> clickAction;
 
     private void Awake()
     {
         GetComponent<Button>().onClick.AddListener(OnClick);
     }
 
-    public void Init(GameEventChoice data, Action<GameEventNode> action)
+    public void Init(GameEventChoice data, Action<int> action)
     {
         choiceData = data;
         choiceTxt.text = choiceData.ChoiceText;
@@ -35,7 +35,7 @@ public class EventChoiceItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
         // 执行点击事件
         if(choiceData.NextNodes == null || choiceData.NextNodes.Count == 0)
         {
-            clickAction(null);
+            clickAction(-1);
             return;
         }
         int allRatio = 0;
@@ -50,7 +50,7 @@ public class EventChoiceItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
         {
             if(randomValue < choiceData.NextNodes[i].RandomRatio + addRatio)
             {
-                clickAction(choiceData.NextNodes[i].NextNode);
+                clickAction(choiceData.NextNodes[i].NextNodeIndex);
                 break;
             }
             addRatio += choiceData.NextNodes[i].RandomRatio;

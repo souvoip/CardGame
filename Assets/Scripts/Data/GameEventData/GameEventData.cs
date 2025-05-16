@@ -11,5 +11,7 @@ public class GameEventData : ScriptableObject
     public string EventName;
 
     public GameEventNode StartNode;
+
+    public List<GameEventNode> AllNodes = new List<GameEventNode>();
 }
 

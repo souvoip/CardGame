@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static UnityEditor.Timeline.Actions.MenuPriority;
 
 public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandler
 {
@@ -38,14 +39,15 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
         // 添加固定道具
         for (int i = 0; i < roleData.FixedItemIDs.Count; i++)
         {
-            var item = ItemDataManager.GetItem(roleData.FixedItemIDs[i]);
+            AddItem(roleData.FixedItemIDs[i]);
+            //var item = ItemDataManager.GetItem(roleData.FixedItemIDs[i]);
 
-            if (item == null) { continue; }
-            roleData.Items.Add(item);
-            if (item.ItemType == EItemType.Remains)
-            {
-                ((RemainsItemData)item).OnAcquire();
-            }
+            //if (item == null) { continue; }
+            //roleData.Items.Add(item);
+            //if (item.ItemType == EItemType.Remains)
+            //{
+            //    ((RemainsItemData)item).OnAcquire();
+            //}
         }
         UIManager.Instance.gameTopUI.UpdatePlayerRemainsItemInfo();
         UIManager.Instance.gameTopUI.UpdatePlayerPotionItemInfo();
@@ -224,5 +226,61 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
     public void ClearBattleBuff()
     {
         buffControl.ClearBuff();
+    }
+
+    /// <summary>
+    /// 添加道具
+    /// </summary>
+    /// <param name="itemID"> 需要添加的道具ID </param>
+    /// <returns> 是否添加成功 </returns>
+    public bool AddItem(int itemID)
+    {
+        ItemDataBase temp;
+        return AddItem(itemID, out temp);
+    }
+
+    /// <summary>
+    /// 添加道具
+    /// </summary>
+    /// <param name="itemID"> 需要添加的道具ID </param>
+    /// <returns> 是否添加成功 </returns>
+    public bool AddItem(int itemID, out ItemDataBase outItem)
+    {
+        var item = ItemDataManager.GetItem(itemID);
+
+        if (item == null)
+        {
+            Debug.LogError("未找到对应物品，物品ID: " + itemID);
+            outItem = null;
+            return false;
+        }
+        // 判断是否已经拥有该物品
+        if (roleData.Items.Exists(x => x.ID == itemID))
+        {
+            // 判断是否可以重复获取
+            if(roleData.Items.Find(x => x.ID == itemID).IsUnique)
+            {
+                Debug.LogError("该物品不可重复获取，物品ID: " + itemID);
+                outItem = null;
+                return false;
+            }
+        }
+
+        roleData.Items.Add(item);
+        if (item.ItemType == EItemType.Remains)
+        {
+            ((RemainsItemData)item).OnAcquire();
+        }
+        outItem = item;
+        return true;
+    }
+
+    public void AddRandomItem(List<int> itemIDs, int count)
+    {
+        // TODO: 随机获取物品, 需要保证物品的唯一性，并且当数量足够时，要满足添加的需求
+        for (int i = 0; i < count; i++)
+        {
+            AddItem(itemIDs[UnityEngine.Random.Range(0, itemIDs.Count)]);
+        }
     }
 }

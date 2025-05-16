@@ -298,7 +298,7 @@ public class EditorEventNode : EditorEventElement
         }
         else
         {
-            DrawTitle(isSelected ? "Node (selected)." : "Node");
+            DrawTitle(isSelected ? $"Node {NodeData.NodeIndex} (selected)." : $"Node {NodeData.NodeIndex}");
         }
 
         const int NAME_PADDING = 1;

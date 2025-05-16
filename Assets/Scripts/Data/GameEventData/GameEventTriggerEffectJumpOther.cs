@@ -1,7 +1,7 @@
 using System;
 
 [Serializable]
-public class GameEventTriggerEffectBattle : GameEventTriggerEffect
+public class GameEventTriggerEffectJumpOther : GameEventTriggerEffect
 {
     public override EEventEffectType EffectType => EEventEffectType.JumpOtherRoom;
 

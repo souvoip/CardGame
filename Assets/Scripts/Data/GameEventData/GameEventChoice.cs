@@ -26,5 +26,6 @@ public class GameEventChoice
 public class GameEventChoiceNextNode
 {
     public int RandomRatio = 1;
-    public GameEventNode NextNode;
+    public int NextNodeIndex;
+    //public GameEventNode NextNode;
 }

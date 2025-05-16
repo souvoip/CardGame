@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: GameEvent_1
   m_EditorClassIdentifier: 
   ID: 1
-  EventName: "\u6D4B\u8BD5\u4E8B\u4EF6"
+  EventName: "\u6D4B\u8BD5\u4E8B\u4EF61"
   StartNode:
+    NodeIndex: 0
     StoryText: "\u6D4B\u8BD5\u4E8B\u4EF61"
     ImgPath: 001
     EnterEffects: []
@@ -23,61 +24,95 @@ MonoBehaviour:
       TriggerEffects: []
       NextNodes:
       - RandomRatio: 50
-        NextNode:
-          StoryText: "\u4F60\u9009\u62E9\u4E861"
-          ImgPath: 001
-          EnterEffects: []
-          Choices:
-          - ChoiceText: "\u79BB\u5F00"
-            TriggerEffects: []
-            NextNodes: []
-          EditorPos: {x: 260, y: 119}
+        NextNodeIndex: 1
       - RandomRatio: 50
-        NextNode:
-          StoryText: "\u4F60\u9009\u62E9\u4E861\uFF0C\u4F46\u662F\u89E6\u53D1\u4E86<color=red><shake>\u7B2C\u4E8C\u79CD\u60C5\u51B5</shake></color>"
-          ImgPath: 001
-          EnterEffects: []
-          Choices:
-          - ChoiceText: "\u79BB\u5F00"
-            TriggerEffects: []
-            NextNodes: []
-          EditorPos: {x: 268, y: 301}
+        NextNodeIndex: 4
     - ChoiceText: "\u6D4B\u8BD5\u9009\u62E92"
       TriggerEffects: []
       NextNodes:
       - RandomRatio: 1
-        NextNode:
-          StoryText: "\u4F60\u9009\u62E9\u4E862"
-          ImgPath: 001
-          EnterEffects: []
-          Choices:
-          - ChoiceText: "\u8FDB\u5165\u5FAA\u73AF"
-            TriggerEffects: []
-            NextNodes:
-            - RandomRatio: 1
-              NextNode:
-                StoryText: "\u5FAA\u73AF\u8282\u70B91"
-                ImgPath: 001
-                EnterEffects: []
-                Choices:
-                - ChoiceText: "\u7EE7\u7EED\u5FAA\u73AF"
-                  TriggerEffects: []
-                  NextNodes:
-                  - RandomRatio: 1
-                    NextNode:
-                      StoryText: "\u5FAA\u73AF\u8282\u70B92"
-                      ImgPath: 001
-                      EnterEffects: []
-                      Choices:
-                      - ChoiceText: "\u7EE7\u7EED\u5FAA\u73AF"
-                      - ChoiceText: "\u79BB\u5F00\u5FAA\u73AF"
-                      EditorPos: {x: 728, y: 485}
-                - ChoiceText: "\u79BB\u5F00\u5FAA\u73AF"
-                  TriggerEffects: []
-                  NextNodes: []
-                EditorPos: {x: 504, y: 475}
-          EditorPos: {x: 266, y: 492}
-    EditorPos: {x: 33, y: 296}
+        NextNodeIndex: 2
+    EditorPos: {x: 49.960205, y: 282.0808}
+  AllNodes:
+  - NodeIndex: 0
+    StoryText: "\u6D4B\u8BD5\u4E8B\u4EF61"
+    ImgPath: 001
+    EnterEffects: []
+    Choices:
+    - ChoiceText: "\u6D4B\u8BD5\u9009\u62E91"
+      TriggerEffects: []
+      NextNodes:
+      - RandomRatio: 1
+        NextNodeIndex: 1
+    - ChoiceText: "\u6D4B\u8BD5\u9009\u62E92"
+      TriggerEffects: []
+      NextNodes: []
+    EditorPos: {x: 69, y: 202}
+  - NodeIndex: 1
+    StoryText: "\u4F60\u9009\u62E9\u4E861"
+    ImgPath: 001
+    EnterEffects: []
+    Choices:
+    - ChoiceText: "\u79BB\u5F00"
+      TriggerEffects: []
+      NextNodes: []
+    EditorPos: {x: 308.96027, y: 87.08081}
+  - NodeIndex: 2
+    StoryText: "\u4F60\u9009\u62E9\u4E862"
+    ImgPath: 001
+    EnterEffects: []
+    Choices:
+    - ChoiceText: "\u5F00\u59CB\u5FAA\u73AF\u4E8B\u4EF6"
+      TriggerEffects: []
+      NextNodes:
+      - RandomRatio: 1
+        NextNodeIndex: 5
+    EditorPos: {x: 44.960205, y: 506.08105}
+  - NodeIndex: 4
+    StoryText: "\u4F60\u9009\u62E9\u4E861\uFF0C\u4F46\u662F\u89E6\u53D1\u4E86<color=red><shake>\u7B2C\u4E8C\u79CD\u60C5\u51B5</shake></color>"
+    ImgPath: 001
+    EnterEffects: []
+    Choices:
+    - ChoiceText: "\u79BB\u5F00"
+      TriggerEffects:
+      - rid: 8894976865612595263
+      NextNodes: []
+    EditorPos: {x: 360.96027, y: 260.0808}
+  - NodeIndex: 5
+    StoryText: "\u5FAA\u73AF\u8282\u70B91"
+    ImgPath: 001
+    EnterEffects: []
+    Choices:
+    - ChoiceText: "\u7EE7\u7EED\u5FAA\u73AF"
+      TriggerEffects: []
+      NextNodes:
+      - RandomRatio: 1
+        NextNodeIndex: 6
+    - ChoiceText: "\u7ED3\u675F\u5FAA\u73AF"
+      TriggerEffects: []
+      NextNodes: []
+    EditorPos: {x: 334.96027, y: 496.08118}
+  - NodeIndex: 6
+    StoryText: "\u5FAA\u73AF\u8282\u70B92"
+    ImgPath: 001
+    EnterEffects: []
+    Choices:
+    - ChoiceText: "\u7EE7\u7EED\u5FAA\u73AF"
+      TriggerEffects: []
+      NextNodes:
+      - RandomRatio: 1
+        NextNodeIndex: 5
+    - ChoiceText: "\u7ED3\u675F\u5FAA\u73AF"
+      TriggerEffects: []
+      NextNodes: []
+    EditorPos: {x: 600.7492, y: 483.55786}
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 8894976865612595263
+      type: {class: GameEventTriggerEffectChangeAttribute, ns: , asm: Assembly-CSharp}
+      data:
+        ChangeAttribute: 0
+        ChangeValue: 0
+        CalculateAttribute: 1
+        Rate: 0

@@ -6,6 +6,8 @@ using DialogueEditor;
 
 public class GameEventEditorWindow : EditorWindow
 {
+    public int NodeIndexCounter = 0;
+
     public static bool isCreatingLine = false;
 
     public static EditorConnectionLine tempConnectionLine;
@@ -96,7 +98,7 @@ public class GameEventEditorWindow : EditorWindow
                     var nextNode = new GameEventChoiceNextNode();
                     EditorConnectionLine newLine = new EditorConnectionLine(tempConnectionLine.outPoint, tempConnectionLine.inPoint, SelectElement, nextNode, OnClickRemoveLine);
                     nextNode.RandomRatio = 1;
-                    nextNode.NextNode = (newLine.inPoint.parentElement as EditorEventNode).NodeData;
+                    nextNode.NextNodeIndex = (newLine.inPoint.parentElement as EditorEventNode).NodeData.NodeIndex;
                     (newLine.outPoint.parentElement as EditorChoiceItem).ChoiceData.NextNodes.Add(nextNode);
                     connectionLines.Add(newLine);
                 }
@@ -112,8 +114,9 @@ public class GameEventEditorWindow : EditorWindow
         }
         else
         {
+            if (isShowPanel && panelRect.Contains(Event.current.mousePosition)) { return; }
             ClearSelectState();
-            
+
             if (!ProcessNodeEvents(Event.current))
             {
                 ProcessConnectLineEvents(Event.current);
@@ -139,10 +142,16 @@ public class GameEventEditorWindow : EditorWindow
     }
 
     private Vector2 panelVerticalScroll;
+    private bool isShowPanel = false;
+
     private void DrawPanel()
     {
-        if (selectedElement == null) { return; }
-
+        if (selectedElement == null)
+        {
+            isShowPanel = false;
+            return;
+        }
+        isShowPanel = true;
         panelRect = new Rect(position.width - 180, 17, 180, position.height - 17);
         if (panelStyle.normal.background == null)
         {
@@ -189,6 +198,17 @@ public class GameEventEditorWindow : EditorWindow
             {
                 eventNode.NodeData.Choices.Add(new GameEventChoice());
             }
+            // 进入节点触发效果
+            GUILayout.Space(10);
+            EditorGUILayout.LabelField("进入节点触发效果", GUILayout.MinWidth(120), GUILayout.MaxWidth(120));
+            DrawSelectEffect(eventNode.NodeData.EnterEffects);
+
+            // 添加新选择效果按钮
+            GUILayout.Space(10);
+            if (GUILayout.Button("添加新选择", GUILayout.MaxWidth(160)))
+            {
+                eventNode.NodeData.EnterEffects.Add(new GameEventTriggerEffectChangeAttribute());
+            }
         }
         else if (selectedElement is EditorChoiceItem)
         {
@@ -200,51 +220,8 @@ public class GameEventEditorWindow : EditorWindow
             // 选择效果编辑
             GUILayout.Space(10);
             EditorGUILayout.LabelField("选择效果", GUILayout.MinWidth(50), GUILayout.MaxWidth(60));
-            for (int i = 0; i < choiceNode.ChoiceData.TriggerEffects.Count; i++)
-            {
-                GUILayout.BeginHorizontal();
+            DrawSelectEffect(choiceNode.ChoiceData.TriggerEffects);
 
-                EditorGUILayout.LabelField("效果" + i + 1, GUILayout.MinWidth(50), GUILayout.MaxWidth(60));
-                // 移除按钮
-                GUILayout.Space(40);
-                if (GUILayout.Button("移除", GUILayout.MaxWidth(60)))
-                {
-                    choiceNode.ChoiceData.TriggerEffects.RemoveAt(i);
-                    GUILayout.EndHorizontal();
-                    break;
-                }
-                GUILayout.EndHorizontal();
-
-                EditorGUILayout.LabelField("效果类型", GUILayout.MinWidth(50), GUILayout.MaxWidth(60));
-                EditorGUI.BeginChangeCheck();
-                // 获取当前类型或默认值
-                var newType = (EEnemyActionType)EditorGUILayout.EnumPopup(
-                    "",
-                    choiceNode.ChoiceData.TriggerEffects[i].EffectType, GUILayout.MinWidth(160), GUILayout.MaxWidth(160)
-                );
-                if (EditorGUI.EndChangeCheck())
-                {
-                }
-
-                switch (choiceNode.ChoiceData.TriggerEffects[i].EffectType)
-                {
-                    case EEventEffectType.ChangeAttribute:
-                        EditorGUILayout.LabelField("要改变属性类型", GUILayout.MinWidth(50), GUILayout.MaxWidth(60));
-                        EditorGUI.BeginChangeCheck();
-                        // 获取当前类型或默认值
-                        var attributeType = (EEnemyActionType)EditorGUILayout.EnumPopup(
-                            "",
-                            (choiceNode.ChoiceData.TriggerEffects[i] as GameEventTriggerEffectChangeAttribute).ChangeAttribute, GUILayout.MinWidth(160), GUILayout.MaxWidth(160)
-                        );
-                        if (EditorGUI.EndChangeCheck())
-                        {
-                            (choiceNode.ChoiceData.TriggerEffects[i] as GameEventTriggerEffectChangeAttribute).ChangeAttribute = (ERoleAttribute)attributeType;
-                        }
-                        EditorGUILayout.LabelField("改变值", GUILayout.MinWidth(50), GUILayout.MaxWidth(60));
-                        (choiceNode.ChoiceData.TriggerEffects[i] as GameEventTriggerEffectChangeAttribute).ChangeValue = EditorGUILayout.IntField((choiceNode.ChoiceData.TriggerEffects[i] as GameEventTriggerEffectChangeAttribute).ChangeValue);
-                        break;
-                }
-            }
             // 添加新选择效果按钮
             GUILayout.Space(10);
             if (GUILayout.Button("添加新选择", GUILayout.MaxWidth(160)))
@@ -255,14 +232,121 @@ public class GameEventEditorWindow : EditorWindow
         else if (selectedElement is EditorConnectionLine)
         {
             var connectionLine = selectedElement as EditorConnectionLine;
+            EditorGUILayout.LabelField($"链接的节点索引: {connectionLine.choiceNextNode.NextNodeIndex}", GUILayout.MinWidth(100), GUILayout.MaxWidth(100));
             // 节点描述编辑
             EditorGUILayout.LabelField("进入该节点的概率", GUILayout.MinWidth(100), GUILayout.MaxWidth(100));
             connectionLine.choiceNextNode.RandomRatio = EditorGUILayout.IntField(connectionLine.choiceNextNode.RandomRatio);
         }
-        
+
         GUILayout.EndScrollView();
         GUILayout.EndVertical();
         GUILayout.EndArea();
+    }
+
+    private void DrawSelectEffect(List<GameEventTriggerEffect> effects)
+    {
+        for (int i = 0; i < effects.Count; i++)
+        {
+            GUILayout.BeginHorizontal();
+
+            EditorGUILayout.LabelField("效果" + (i + 1), GUILayout.MinWidth(50), GUILayout.MaxWidth(60));
+            // 移除按钮
+            GUILayout.Space(40);
+            if (GUILayout.Button("移除", GUILayout.MaxWidth(60)))
+            {
+                effects.RemoveAt(i);
+                GUILayout.EndHorizontal();
+                break;
+            }
+            GUILayout.EndHorizontal();
+
+            EditorGUILayout.LabelField("效果类型", GUILayout.MinWidth(50), GUILayout.MaxWidth(60));
+            EditorGUI.BeginChangeCheck();
+            // 获取当前类型或默认值
+            var newType = (EEventEffectType)EditorGUILayout.EnumPopup(
+                "",
+                effects[i].EffectType, GUILayout.MinWidth(160), GUILayout.MaxWidth(160)
+            );
+            if (EditorGUI.EndChangeCheck())
+            {
+                effects[i] = newType switch
+                {
+                    EEventEffectType.ChangeAttribute => new GameEventTriggerEffectChangeAttribute(),
+                    EEventEffectType.ChangeCard => new GameEventTriggerEffectChangeCard(),
+                    EEventEffectType.JumpOtherRoom => new GameEventTriggerEffectJumpOther(),
+                    EEventEffectType.GetItem => new GameEventTriggerEffectGetItem(),
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+            }
+
+            switch (effects[i].EffectType)
+            {
+                case EEventEffectType.ChangeAttribute:
+                    var ca = (effects[i] as GameEventTriggerEffectChangeAttribute);
+                    EditorGUILayout.LabelField("要改变属性类型", GUILayout.MinWidth(50), GUILayout.MaxWidth(60));
+                    // 获取当前类型或默认值
+                    ca.ChangeAttribute = (ERoleAttribute)EditorGUILayout.EnumPopup(ca.ChangeAttribute);
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.LabelField("改变值", GUILayout.MinWidth(50), GUILayout.MaxWidth(60));
+                    ca.ChangeValue = EditorGUILayout.IntField(ca.ChangeValue);
+                    EditorGUILayout.EndHorizontal();
+                    // 按照百分比来改变
+                    EditorGUILayout.LabelField("按百分比进行改变", GUILayout.MinWidth(100), GUILayout.MaxWidth(100));
+                    //EditorGUI.BeginChangeCheck();
+                    EditorGUILayout.BeginHorizontal();
+                    ca.CalculateAttribute = (ERoleAttribute)EditorGUILayout.EnumPopup(ca.CalculateAttribute);
+                    EditorGUILayout.LabelField("改变比率", GUILayout.MinWidth(60), GUILayout.MaxWidth(60));
+                    ca.Rate = EditorGUILayout.FloatField(ca.Rate);
+                    EditorGUILayout.EndHorizontal();
+                    break;
+                case EEventEffectType.ChangeCard:
+                    var cc = (effects[i] as GameEventTriggerEffectChangeCard);
+                    EditorGUILayout.LabelField("卡牌相关效果", GUILayout.MinWidth(100), GUILayout.MaxWidth(100));
+                    break;
+                case EEventEffectType.JumpOtherRoom:
+                    var jo = (effects[i] as GameEventTriggerEffectJumpOther);
+                    EditorGUILayout.LabelField("跳转其他功能", GUILayout.MinWidth(100), GUILayout.MaxWidth(100));
+                    break;
+                case EEventEffectType.GetItem:
+                    var gi = (effects[i] as GameEventTriggerEffectGetItem);
+                    EditorGUILayout.LabelField("获取物品的ID，-1为随机获取", GUILayout.MinWidth(160), GUILayout.MaxWidth(160));
+                    gi.itemID = EditorGUILayout.IntField(gi.itemID);
+                    if (gi.itemID == -1)
+                    {
+                        // 随机物品相关设置
+                        GUILayout.BeginHorizontal();
+
+                        EditorGUILayout.LabelField("随机数量", GUILayout.MinWidth(50), GUILayout.MaxWidth(60));
+                        gi.randomCount = EditorGUILayout.IntField(gi.randomCount);
+                        GUILayout.EndHorizontal();
+                        if(gi.randomItemIDs == null)
+                        {
+                            gi.randomItemIDs = new List<int>();
+                        }
+                        EditorGUILayout.LabelField("随机物品库", GUILayout.MinWidth(50), GUILayout.MaxWidth(60));
+                        for (int j = 0; j < gi.randomItemIDs.Count; j++)
+                        {
+                            GUILayout.BeginHorizontal();
+                            gi.randomItemIDs[j] = EditorGUILayout.IntField(gi.randomItemIDs[j]);
+                            if (GUILayout.Button("移除"))
+                            {
+                                gi.randomItemIDs.RemoveAt(j);
+                                GUILayout.EndHorizontal();
+                                break;
+                            }
+                            GUILayout.EndHorizontal();
+                        }
+                        // 添加
+                        if (GUILayout.Button("添加"))
+                        {
+                            gi.randomItemIDs.Add(gi.randomItemIDs.Count + 1);
+                        }
+                    }
+                    break;
+            }
+            EditorGUILayout.LabelField($"=== 效果{i + 1} 结束标记 ===", GUILayout.MinWidth(180), GUILayout.MaxWidth(180));
+            GUILayout.Space(10);
+        }
     }
 
     private void DrawToolbar()
@@ -400,7 +484,7 @@ public class GameEventEditorWindow : EditorWindow
         //{
         //    OnClickRemoveNode(selectedElement as EditorEventNode);
         //}
-        if( selectedElement is EditorChoiceItem)
+        if (selectedElement is EditorChoiceItem)
         {
             (selectedElement as EditorChoiceItem).RemoveNode();
         }
@@ -416,11 +500,15 @@ public class GameEventEditorWindow : EditorWindow
     private EditorEventNode CreateNode(Vector2 position, bool isStartNode = false)
     {
         if (currentData == null) return null;
+        var nodeData = new GameEventNode() { NodeIndex = ++NodeIndexCounter };
         var newNode = new EditorEventNode(position,
-            new GameEventNode(),
+            nodeData,
             SelectElement,
             OnClickRemoveNode, isStartNode);
-
+        if (!currentData.AllNodes.Exists(x => x.NodeIndex == nodeData.NodeIndex))
+        {
+            currentData.AllNodes.Add(nodeData);
+        }
         nodes.Add(newNode);
         currentData.StartNode = nodes[0].NodeData; // 第一个节点作为起始节点
         SaveData();
@@ -434,7 +522,10 @@ public class GameEventEditorWindow : EditorWindow
             nodeData,
             SelectElement,
             OnClickRemoveNode, isStartNode);
-
+        if (!currentData.AllNodes.Exists(x => x.NodeIndex == nodeData.NodeIndex))
+        {
+            currentData.AllNodes.Add(nodeData);
+        }
         nodes.Add(newNode);
         currentData.StartNode = nodes[0].NodeData; // 第一个节点作为起始节点
         SaveData();
@@ -463,6 +554,7 @@ public class GameEventEditorWindow : EditorWindow
         if (nodes.Contains(node))
         {
             nodes.Remove(node);
+            currentData.AllNodes.Remove(node.NodeData);
             SaveData();
         }
     }
@@ -515,37 +607,51 @@ public class GameEventEditorWindow : EditorWindow
         {
             currentData.StartNode = CreateNode(start, true).NodeData;
         }
+        for (int i = 0; i < currentData.AllNodes.Count; i++)
+        {
+            if (currentData.AllNodes[i].NodeIndex != currentData.StartNode.NodeIndex)
+            {
+                CreateNode(currentData.AllNodes[i].EditorPos, currentData.AllNodes[i]);
+            }
+        }
         // 创建其他节点，item1 节点，item2 节点深度
-        Queue<(EditorEventNode, int)> nodeQueue = new Queue<(EditorEventNode, int)>();
-        nodeQueue.Enqueue((nodes[0], 0));
+        Queue<EditorEventNode> nodeQueue = new Queue<EditorEventNode>();
+        for (int i = 0; i < nodes.Count; i++)
+        {
+            nodeQueue.Enqueue(nodes[i]);
+        }
 
         CreatorChildNodes(nodeQueue);
     }
 
-    private void CreatorChildNodes(Queue<(EditorEventNode, int)> nodeQueue)
+    private void CreatorChildNodes(Queue<EditorEventNode> nodeQueue)
     {
         while (nodeQueue.Count > 0)
         {
             var node = nodeQueue.Dequeue();
-            
-            for (int i = 0; i < node.Item1.NodeData.Choices.Count; i++)
+
+            for (int i = 0; i < node.NodeData.Choices.Count; i++)
             {
-                var choice = node.Item1.EditorChoices[i];
+                var choice = node.EditorChoices[i];
                 for (int j = 0; j < choice.ChoiceData.NextNodes.Count; j++)
                 {
                     var nextNode = choice.ChoiceData.NextNodes[j];
                     // 判断节点是否已经存在
-                    if (!nodes.Exists(x => x.NodeData == nextNode.NextNode))
+                    if (!nodes.Exists(x => x.NodeData.NodeIndex == nextNode.NextNodeIndex))
                     {
-                        var newNode = CreateNode(nextNode.NextNode.EditorPos, nextNode.NextNode);
-                        nodeQueue.Enqueue((newNode, node.Item2 + 1));
+                        var tempNode = currentData.AllNodes.Find(x => x.NodeIndex == nextNode.NextNodeIndex);
+
+                        var newNode = CreateNode(tempNode.EditorPos, tempNode);
+                        nodeQueue.Enqueue(newNode);
                         // 创建连接线
                         CreatorConnectLine(choice.outPoint, newNode.inPoint, nextNode);
+
+                        NodeIndexCounter = Mathf.Max(NodeIndexCounter, newNode.NodeData.NodeIndex);
                     }
                     else
                     {
                         // 创建连接线
-                        CreatorConnectLine(choice.outPoint, nodes.Find(x => x.NodeData == nextNode.NextNode).inPoint, nextNode);
+                        CreatorConnectLine(choice.outPoint, nodes.Find(x => x.NodeData.NodeIndex == nextNode.NextNodeIndex).inPoint, nextNode);
                     }
 
                 }

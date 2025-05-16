@@ -13,6 +13,11 @@ public class ItemDataBase : ScriptableObject
 
     public string IconPath;
 
+    /// <summary>
+    /// 物品是否独一无二
+    /// </summary>
+    public bool IsUnique = true;
+
     public virtual EItemType ItemType { get; }
 }
 
