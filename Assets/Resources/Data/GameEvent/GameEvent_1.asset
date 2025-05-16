@@ -31,7 +31,7 @@ MonoBehaviour:
           - ChoiceText: "\u79BB\u5F00"
             TriggerEffects: []
             NextNodes: []
-          EditorPos: {x: 464, y: 52}
+          EditorPos: {x: 260, y: 119}
       - RandomRatio: 50
         NextNode:
           StoryText: "\u4F60\u9009\u62E9\u4E861\uFF0C\u4F46\u662F\u89E6\u53D1\u4E86<color=red><shake>\u7B2C\u4E8C\u79CD\u60C5\u51B5</shake></color>"
@@ -41,7 +41,7 @@ MonoBehaviour:
           - ChoiceText: "\u79BB\u5F00"
             TriggerEffects: []
             NextNodes: []
-          EditorPos: {x: 462, y: 218}
+          EditorPos: {x: 268, y: 301}
     - ChoiceText: "\u6D4B\u8BD5\u9009\u62E92"
       TriggerEffects: []
       NextNodes:
@@ -51,11 +51,33 @@ MonoBehaviour:
           ImgPath: 001
           EnterEffects: []
           Choices:
-          - ChoiceText: "\u79BB\u5F00"
+          - ChoiceText: "\u8FDB\u5165\u5FAA\u73AF"
             TriggerEffects: []
-            NextNodes: []
-          EditorPos: {x: 459, y: 393}
-    EditorPos: {x: 96, y: 186}
+            NextNodes:
+            - RandomRatio: 1
+              NextNode:
+                StoryText: "\u5FAA\u73AF\u8282\u70B91"
+                ImgPath: 001
+                EnterEffects: []
+                Choices:
+                - ChoiceText: "\u7EE7\u7EED\u5FAA\u73AF"
+                  TriggerEffects: []
+                  NextNodes:
+                  - RandomRatio: 1
+                    NextNode:
+                      StoryText: "\u5FAA\u73AF\u8282\u70B92"
+                      ImgPath: 001
+                      EnterEffects: []
+                      Choices:
+                      - ChoiceText: "\u7EE7\u7EED\u5FAA\u73AF"
+                      - ChoiceText: "\u79BB\u5F00\u5FAA\u73AF"
+                      EditorPos: {x: 728, y: 485}
+                - ChoiceText: "\u79BB\u5F00\u5FAA\u73AF"
+                  TriggerEffects: []
+                  NextNodes: []
+                EditorPos: {x: 504, y: 475}
+          EditorPos: {x: 266, y: 492}
+    EditorPos: {x: 33, y: 296}
   references:
     version: 2
     RefIds: []

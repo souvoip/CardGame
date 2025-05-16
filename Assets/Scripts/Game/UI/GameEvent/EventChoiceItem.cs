@@ -30,12 +30,13 @@ public class EventChoiceItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     private void OnClick()
     {
-        // ´¥·¢µã»÷Ğ§¹û
+        // è§¦å‘ç‚¹å‡»æ•ˆæœ
         choiceData.SelectThisChoice();
-        // Ö´ĞĞµã»÷ÊÂ¼ş
+        // æ‰§è¡Œç‚¹å‡»äº‹ä»¶
         if(choiceData.NextNodes == null || choiceData.NextNodes.Count == 0)
         {
             clickAction(null);
+            return;
         }
         int allRatio = 0;
         for(int i = 0; i < choiceData.NextNodes.Count; i++)
@@ -43,8 +44,7 @@ public class EventChoiceItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
             allRatio += choiceData.NextNodes[i].RandomRatio;
         }
         int randomValue = UnityEngine.Random.Range(0, allRatio);
-        Debug.Log(randomValue);
-        // Ëæ»úÑ¡ÔñÏÂÒ»¸ö½Úµã
+        // éšæœºé€‰æ‹©ä¸‹ä¸€ä¸ªèŠ‚ç‚¹
         int addRatio = 0;
         for(int i = 0; i < choiceData.NextNodes.Count; i++)
         {

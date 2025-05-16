@@ -46,7 +46,6 @@ public class GameEventEditorWindow : EditorWindow
     //private EditorEventNode selectedNode;
     public EditorEventElement selectedElement;
     private Vector2 offset;
-    private Vector2 drag;
 
     private Rect panelRect;
     private GUIStyle panelStyle;
@@ -72,8 +71,8 @@ public class GameEventEditorWindow : EditorWindow
         DrawGrid(100, 0.4f, Color.gray);
 
         DrawNodes();
-        DrawPanel();
         DrawConnections();
+        DrawPanel();
         DrawToolbar();
 
         if (!isCreatingLine && tempConnectionLine != null)
@@ -309,7 +308,6 @@ public class GameEventEditorWindow : EditorWindow
         Handles.BeginGUI();
         Handles.color = new Color(gridColor.r, gridColor.g, gridColor.b, gridOpacity);
 
-        offset += drag * 0.5f;
         Vector3 newOffset = new Vector3(offset.x % gridSpacing, offset.y % gridSpacing, 0);
 
         for (int i = 0; i < widthDivs; i++)
@@ -329,7 +327,6 @@ public class GameEventEditorWindow : EditorWindow
 
     private void ProcessEvents(Event e)
     {
-        drag = Vector2.zero;
 
         switch (e.type)
         {
@@ -472,7 +469,6 @@ public class GameEventEditorWindow : EditorWindow
 
     private void OnDrag(Vector2 delta)
     {
-        drag = delta;
         offset += delta;
 
         if (nodes != null)
@@ -523,27 +519,39 @@ public class GameEventEditorWindow : EditorWindow
         Queue<(EditorEventNode, int)> nodeQueue = new Queue<(EditorEventNode, int)>();
         nodeQueue.Enqueue((nodes[0], 0));
 
+        CreatorChildNodes(nodeQueue);
+    }
+
+    private void CreatorChildNodes(Queue<(EditorEventNode, int)> nodeQueue)
+    {
         while (nodeQueue.Count > 0)
         {
             var node = nodeQueue.Dequeue();
-            CreatorChildNode(node, nodeQueue);
-        }
-    }
-
-    private void CreatorChildNode((EditorEventNode, int) node, Queue<(EditorEventNode, int)> nodeQueue)
-    {
-        for (int i = 0; i < node.Item1.NodeData.Choices.Count; i++)
-        {
-            var choice = node.Item1.EditorChoices[i];
-            for (int j = 0; j < choice.ChoiceData.NextNodes.Count; j++)
+            
+            for (int i = 0; i < node.Item1.NodeData.Choices.Count; i++)
             {
-                var nextNode = choice.ChoiceData.NextNodes[j];
-                var newNode = CreateNode(nextNode.NextNode.EditorPos, nextNode.NextNode);
-                nodeQueue.Enqueue((newNode, node.Item2 + 1));
-                // 创建连接线
-                CreatorConnectLine(choice.outPoint, newNode.inPoint, nextNode);
+                var choice = node.Item1.EditorChoices[i];
+                for (int j = 0; j < choice.ChoiceData.NextNodes.Count; j++)
+                {
+                    var nextNode = choice.ChoiceData.NextNodes[j];
+                    // 判断节点是否已经存在
+                    if (!nodes.Exists(x => x.NodeData == nextNode.NextNode))
+                    {
+                        var newNode = CreateNode(nextNode.NextNode.EditorPos, nextNode.NextNode);
+                        nodeQueue.Enqueue((newNode, node.Item2 + 1));
+                        // 创建连接线
+                        CreatorConnectLine(choice.outPoint, newNode.inPoint, nextNode);
+                    }
+                    else
+                    {
+                        // 创建连接线
+                        CreatorConnectLine(choice.outPoint, nodes.Find(x => x.NodeData == nextNode.NextNode).inPoint, nextNode);
+                    }
+
+                }
             }
         }
+
     }
 
     private void CreatorConnectLine(EditorConnectionPoint outPoint, EditorConnectionPoint inPoint, GameEventChoiceNextNode data)
