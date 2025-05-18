@@ -1,9 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameTopUI : MonoBehaviour
 {
+    [SerializeField]
+    private TMP_Text nameTxt;
+
+    [SerializeField]
+    private TMP_Text hpTxt;
+
+    [SerializeField]
+    private TMP_Text goldTxt;
+
     [SerializeField]
     private RemainsItemControl remainsItemManager;
     [SerializeField]
@@ -29,5 +39,20 @@ public class GameTopUI : MonoBehaviour
                 potionItemManager.AddPotion((PotionItemData)BattleManager.Instance.Player.RoleData.Items[i]);
             }
         }
+    }
+
+    public void SetNameTxt(string name)
+    {
+        nameTxt.text = name;
+    }
+
+    public void SetHpTxt(int hp, int maxHp)
+    {
+        hpTxt.text = hp + "/" + maxHp;
+    }
+
+    public void SetGoldTxt(int gold)
+    {
+        goldTxt.text = gold.ToString();
     }
 }

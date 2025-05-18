@@ -70,7 +70,6 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
         switch (attribute)
         {
             case ERoleAttribute.HP:
-                Debug.Log("受到 ：" + value + " 伤害");
                 ChangeHealth(value);
                 break;
             case ERoleAttribute.AP:
@@ -102,6 +101,8 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
                 return roleData.Aesist;
             case ERoleAttribute.Shield:
                 return roleData.Shield;
+            case ERoleAttribute.Gold:
+                return roleData.Gold;
             case ERoleAttribute.DrawCardCount:
                 return roleData.DrawCardCount;
             case ERoleAttribute.MaxCardCount:

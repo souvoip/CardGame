@@ -28,6 +28,7 @@ MonoBehaviour:
   FixedBattleBuffs: []
   MaxAP: 3
   AP: 3
+  Gold: 50
   DrawCardCount: 5
   MaxCardCount: 8
   FixedItemIDs: 010000006500000066000000

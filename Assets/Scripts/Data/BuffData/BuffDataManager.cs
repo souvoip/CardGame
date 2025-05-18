@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,8 +8,7 @@ public static class BuffDataManager
 
     public static void Init()
     {
-        var bs = Resources.LoadAll<BuffBase>("Data/Buff");
-        foreach (var b in bs) { buffs.Add(b); }
+        buffs.AddRange(Resources.LoadAll<BuffBase>("Data/Buff"));
     }
 
     public static BuffBase GetBuff(int id)

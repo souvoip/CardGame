@@ -11,4 +11,9 @@ public class MapItem_Event : MapItemBase
         Type = EMapItemType.Event;
         mapItemImage.sprite = Resources.Load<Sprite>("Image/MapImg/M_Event");
     }
+
+    protected override void EnterEvent()
+    {
+        UIManager.Instance.gameEventUI.Show(GameEventDataManager.GetRandomEvent());
+    }
 }

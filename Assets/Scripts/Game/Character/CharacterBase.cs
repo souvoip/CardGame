@@ -147,6 +147,7 @@ public enum ERoleAttribute
     Shield,
     DrawCardCount,
     MaxCardCount,
+    Gold,
 
     Age,
     Level,

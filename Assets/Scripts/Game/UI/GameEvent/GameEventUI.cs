@@ -10,6 +10,8 @@ public class GameEventUI : MonoBehaviour
 
     [SerializeField]
     private Transform root;
+    [SerializeField]
+    private GameObject mask;
 
     [SerializeField]
     private TMP_Text titleTxt;
@@ -18,7 +20,7 @@ public class GameEventUI : MonoBehaviour
     private TMPPartialShake contentTxt;
 
     [SerializeField]
-    private Image eventImg;
+    private RawImage eventImg;
 
     [SerializeField]
     private GameObject choiceItemPrefab;
@@ -26,17 +28,11 @@ public class GameEventUI : MonoBehaviour
     [SerializeField]
     private Transform choiceItemParent;
 
-    [SerializeField]
-    private GameEventData tempData;
-
     private GameEventData eventData;
 
-
-
-    private void Start()
+    private void Awake()
     {
-        // 测试
-        Show(tempData);
+        Hide();
     }
 
     public void Show(GameEventData eventData)
@@ -45,16 +41,18 @@ public class GameEventUI : MonoBehaviour
         titleTxt.text = eventData.EventName;
         NextStory(eventData.StartNode);
         root.gameObject.SetActive(true);
+        mask.SetActive(true);
     }
 
     public void Hide()
     {
         root.gameObject.SetActive(false);
+        mask.SetActive(false);
     }
 
     public void NextStory(GameEventNode story)
     {
-        if(story == null)
+        if (story == null)
         {
             // 事件结束，关闭页面
             Hide();
@@ -62,7 +60,8 @@ public class GameEventUI : MonoBehaviour
         }
 
         contentTxt.SetShakingText(story.StoryText);
-        eventImg.sprite = Resources.Load<Sprite>(ImgPath + story.ImgPath);
+        eventImg.texture = Resources.Load<Texture2D>(ImgPath + story.ImgPath);
+        eventImg.AutoAdjustImageSize();
         //清除所有选项
         for (int i = choiceItemParent.childCount - 1; i >= 0; i--)
         {

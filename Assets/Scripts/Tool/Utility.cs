@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public static class Utility
 {
@@ -49,5 +50,24 @@ public static class Utility
             default:
                 return "其它";
         }
+    }
+
+    /// <summary>
+    /// 通过 Scale 调整图片大小，确保不超出原始显示区域
+    /// </summary>
+    /// <param name="image">目标 RawImage</param>
+    public static void AutoAdjustImageSize(this RawImage image)
+    {
+        if (image.texture == null) return;
+        float scaleX = 1, scaleY = 1;
+        if(image.texture.width > image.texture.height)
+        {
+            scaleY = (float)image.texture.height / image.texture.width;
+        }
+        else
+        {
+            scaleX = (float)image.texture.width / image.texture.height;
+        }
+        image.rectTransform.localScale = new Vector3(scaleX, scaleY, 1);
     }
 }

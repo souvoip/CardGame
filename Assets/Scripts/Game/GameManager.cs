@@ -12,5 +12,6 @@ public class GameManager : MonoBehaviour
         CardDataManager.Init();
         CharacterDataManager.Init();
         ItemDataManager.Init();
+        GameEventDataManager.Init();
     }
 }
