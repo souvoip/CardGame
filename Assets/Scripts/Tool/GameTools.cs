@@ -98,3 +98,15 @@ public static class GameTools
         return angle;
     }
 }
+
+
+[System.Flags]
+public enum EGetWay
+{
+    None = 0,
+    Base = 1 << 0,      // 起始自带，一般无法在游戏中获得
+    Shop = 1 << 1,      // 商店购买
+    Event = 1 << 2,     // 事件获得
+    Reward = 1 << 3,    // 奖励获得
+    Boss = 1 << 4,      // Boss奖励获得
+}
