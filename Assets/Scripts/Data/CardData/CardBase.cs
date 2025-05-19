@@ -32,9 +32,15 @@ public abstract class CardBase : ScriptableObject
     /// </summary>
     public ECardRare Rare;
     /// <summary>
+    /// 卡片购买价格
+    /// </summary>
+    public int Price;
+    /// <summary>
     /// 卡片费用
     /// </summary>
     public int Fee;
+
+    public EGetWay GetWay;
 
     public List<BuffItem> Buffs;
 

@@ -19,7 +19,9 @@ MonoBehaviour:
   CardType: 0
   UseType: 1
   Rare: 1
+  Price: 45
   Fee: 1
+  GetWay: 14
   Buffs: []
   Extract: []
   Features: 0
