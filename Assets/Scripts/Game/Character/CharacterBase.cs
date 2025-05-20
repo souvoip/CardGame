@@ -7,8 +7,6 @@ using UnityEngine.Events;
 
 public class CharacterBase : MonoBehaviour
 {
-    protected static string BaseRolePath = "Image/Role/";
-
     #region Events
     /// <summary>
     /// 角色死亡事件

@@ -9,8 +9,6 @@ using UnityEngine.UI;
 
 public class CardItem : MonoBehaviour, IPointerExitHandler, IPointerDownHandler, IPointerEnterHandler
 {
-    public static string baseCardImgPath = "Image/Card/";
-
     private static Vector3 discardPos = new Vector3(9.78f, -5.86f, 0);
 
     #region component
@@ -143,7 +141,7 @@ public class CardItem : MonoBehaviour, IPointerExitHandler, IPointerDownHandler,
         {
             feeTxt.transform.parent.gameObject.SetActive(false);
         }
-        cardImg.sprite = Resources.Load<Sprite>(baseCardImgPath + cardData.ImagePath);
+        cardImg.sprite = Resources.Load<Sprite>(ResourcesPaths.CardImgPath + cardData.ImagePath);
         typeTxt.text = cardData.GetCardTypeeString();
         descTxt.text = cardData.GetDesc();
     }

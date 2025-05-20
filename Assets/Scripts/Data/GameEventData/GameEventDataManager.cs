@@ -4,13 +4,11 @@ using UnityEngine;
 
 public static class GameEventDataManager
 {
-    public static string BasePath = "Data/GameEvent";
-
     public static List<GameEventData> events = new List<GameEventData>();
 
     public static void Init()
     {
-        events.AddRange(Resources.LoadAll<GameEventData>(BasePath));
+        events.AddRange(Resources.LoadAll<GameEventData>(ResourcesPaths.GameEventDataPath));
     }
 
     public static GameEventData GetEvent(int id)

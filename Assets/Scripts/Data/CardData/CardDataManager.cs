@@ -4,8 +4,6 @@ using UnityEngine;
 
 public static class CardDataManager
 {
-    private static string cardDataPath = "Data/CardData";
-
     public static List<CardBase> Cards = new List<CardBase>();
 
     /// <summary>
@@ -19,7 +17,7 @@ public static class CardDataManager
 
     public static void Init()
     {
-        var cds = Resources.LoadAll<CardBase>(cardDataPath);
+        var cds = Resources.LoadAll<CardBase>(ResourcesPaths.CardDataPath);
         Cards = cds.ToList();
     }
 
@@ -69,5 +67,20 @@ public static class CardDataManager
             if (item.ID == id) { return GameObject.Instantiate(item); }
         }
         return null;
+    }
+
+    private static List<int> shopCardIDs;
+
+    public static CardBase GetRandomShopCard()
+    {
+        if (shopCardIDs == null)
+        {
+            shopCardIDs = new List<int>();
+            foreach (var item in Cards)
+            {
+                if ((item.GetWay & EGetWay.Shop) == EGetWay.Shop) { shopCardIDs.Add(item.ID); }
+            }
+        }
+        return GetCard(shopCardIDs[Random.Range(0, shopCardIDs.Count)]);
     }
 }

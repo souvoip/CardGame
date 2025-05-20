@@ -26,7 +26,7 @@ public class RemainsItemData : ItemDataBase
     /// </summary>
     public virtual void OnBattleStart() { }
 
-    public virtual DetailInfo GetDetailinfo()
+    public override DetailInfo GetDetailInfo()
     {
         DetailInfo info = new DetailInfo();
         info.Title = Name;

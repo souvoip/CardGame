@@ -118,24 +118,24 @@ public class HoldDetailUI : MonoBehaviour
         cg.alpha = 0;
     }
 
-    // Test =======
-#if UNITY_EDITOR
-    public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            List<DetailInfo> infos = new List<DetailInfo>();
-            Sprite testSprite = Resources.Load<Sprite>("Image/BuffIcon/002");
-            for (int i = 0; i < 10; i++)
-            {
-                DetailInfo info = new DetailInfo();
-                info.Title = "测试" + i;
-                info.Icon = testSprite;
-                info.Description = "这是测试" + i;
-                infos.Add(info);
-            }
-            ShowInfos(new Vector2(1600, 100), Vector2.zero, infos);
-        }
-    }
-#endif
+//    // Test =======
+//#if UNITY_EDITOR
+//    public void Update()
+//    {
+//        if (Input.GetKeyDown(KeyCode.Space))
+//        {
+//            List<DetailInfo> infos = new List<DetailInfo>();
+//            Sprite testSprite = Resources.Load<Sprite>("Image/BuffIcon/002");
+//            for (int i = 0; i < 10; i++)
+//            {
+//                DetailInfo info = new DetailInfo();
+//                info.Title = "测试" + i;
+//                info.Icon = testSprite;
+//                info.Description = "这是测试" + i;
+//                infos.Add(info);
+//            }
+//            ShowInfos(new Vector2(1600, 100), Vector2.zero, infos);
+//        }
+//    }
+//#endif
 }

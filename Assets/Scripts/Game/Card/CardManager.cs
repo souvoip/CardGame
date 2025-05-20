@@ -46,6 +46,7 @@ public class CardManager : MonoBehaviour
     /// 玩家本局游戏所拥有的卡牌
     /// </summary>
     private List<CardBase> playerAllCards;
+    public List<CardBase> PlayerAllCards { get => playerAllCards; }
     /// <summary>
     /// 战斗中抽卡区
     /// </summary>
@@ -541,6 +542,12 @@ public class CardManager : MonoBehaviour
     public void AddBattleCard(CardBase card)
     {
         playerAllCards.Add(card);
+    }
+
+    public void RemoveBattleCard(CardBase card)
+    {
+        Debug.Log("RemoveBattleCard");
+        Debug.Log(playerAllCards.Remove(card));
     }
 
     /// <summary>

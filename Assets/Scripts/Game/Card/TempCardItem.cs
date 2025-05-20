@@ -31,7 +31,7 @@ public class TempCardItem : MonoBehaviour
         {
             feeTxt.transform.parent.gameObject.SetActive(false);
         }
-        cardImg.sprite = Resources.Load<Sprite>(CardItem.baseCardImgPath + cardData.ImagePath);
+        cardImg.sprite = Resources.Load<Sprite>(ResourcesPaths.CardImgPath + cardData.ImagePath);
         typeTxt.text = cardData.GetCardTypeeString();
         descTxt.text = cardData.GetDesc();
     }

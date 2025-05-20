@@ -20,13 +20,14 @@ public class ItemDataBase : ScriptableObject
     /// 物品是否独一无二
     /// </summary>
     public bool IsUnique = true;
-
     /// <summary>
     /// 获取途径
     /// </summary>
     public EGetWay GetWay;
 
     public virtual EItemType ItemType { get; }
+
+    public virtual DetailInfo GetDetailInfo() { return null; }
 }
 
 

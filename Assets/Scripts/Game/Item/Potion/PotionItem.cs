@@ -4,8 +4,6 @@ using UnityEngine.UI;
 
 public class PotionItem : MonoBehaviour
 {
-    private static string IconBasePath = "Image/Item/Potion/";
-
     public PotionItemData potionItemData;
 
     private Action clearPotionAction;
@@ -14,7 +12,7 @@ public class PotionItem : MonoBehaviour
     {
         potionItemData = potion;
         this.clearPotionAction = clearPotionAction;
-        GetComponent<Image>().sprite = Resources.Load<Sprite>(IconBasePath + potionItemData.IconPath);
+        GetComponent<Image>().sprite = Resources.Load<Sprite>(ResourcesPaths.PotionImgPath + potionItemData.IconPath);
     }
 
     public void Use()

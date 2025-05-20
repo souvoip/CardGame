@@ -308,7 +308,7 @@ public class EditorEventNode : EditorEventElement
         Rect icon = new Rect(rect.x + TEXT_BORDER * 0.5f, rect.y + TITLE_HEIGHT + TITLE_GAP + NAME_HEIGHT, SPRITE_SZ, SPRITE_SZ);
         if (NodeData.ImgPath != null)
         {
-            GUI.DrawTexture(icon, Resources.Load<Texture>("Image/Event/" + NodeData.ImgPath), ScaleMode.ScaleToFit);
+            GUI.DrawTexture(icon, Resources.Load<Texture>(ResourcesPaths.EventImgPath + NodeData.ImgPath), ScaleMode.ScaleToFit);
         }
         //DrawInternalText("图片路径: " + NodeData.ImgPath, SPRITE_SZ + 5, NAME_HEIGHT + NAME_PADDING);
         DrawInternalText(NodeData.StoryText, SPRITE_SZ + 5, NAME_HEIGHT + NAME_PADDING);

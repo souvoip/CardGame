@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,8 +25,22 @@ public class CardViewUI : MonoBehaviour
     /// </summary>
     /// <param name="cards">卡牌库</param>
     /// <param name="isOrder">是否按照卡牌库顺序显示</param>
-    public void Show(List<CardBase> cards, bool isOrder = false)
+    public void Show(List<CardBase> cards, bool isOrder = false, ECardViewOpenMode mode = ECardViewOpenMode.Normal)
     {
+        Action<ViewCardItem> cardAct = null;
+
+        switch (mode)
+        {
+            case ECardViewOpenMode.Normal:
+                break;
+            case ECardViewOpenMode.Upgrade:
+                cardAct = UpgradeCardAct;
+                break;
+            case ECardViewOpenMode.Remove:
+                cardAct = RemoveCardAct;
+                break;
+        }
+
         gameObject.SetActive(true);
         for (int i = 0; i < cards.Count; i++)
         {
@@ -33,7 +48,7 @@ public class CardViewUI : MonoBehaviour
             {
                 GameObject go = Instantiate(viewCardPrefab, viewCardContent);
                 ViewCardItem item = go.GetComponent<ViewCardItem>();
-                item.InitData(cards[i]);
+                item.InitData(cards[i], cardAct);
                 items.Add(item);
             }
             else
@@ -62,4 +77,22 @@ public class CardViewUI : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    private void UpgradeCardAct(ViewCardItem item)
+    {
+    }
+
+    private void RemoveCardAct(ViewCardItem item)
+    {
+        BattleManager.Instance.CardManager.RemoveBattleCard(item.cardData);
+        // 关闭界面
+        Hide();
+    }
+
+}
+
+public enum ECardViewOpenMode
+{
+    Normal,     // 普通浏览
+    Upgrade,    // 升级卡牌
+    Remove,     // 移除卡牌
 }

@@ -34,7 +34,7 @@ public class ViewCardItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     private Action<ViewCardItem> onClick;
 
-    public void InitData(CardBase cardData, Action<ViewCardItem> onClick = null)
+    public virtual void InitData(CardBase cardData, Action<ViewCardItem> onClick = null)
     {
         this.cardData = cardData;
         nameTxt.text = cardData.Name;
@@ -47,7 +47,7 @@ public class ViewCardItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         {
             feeTxt.transform.parent.gameObject.SetActive(false);
         }
-        cardImg.sprite = Resources.Load<Sprite>(CardItem.baseCardImgPath + cardData.ImagePath);
+        cardImg.sprite = Resources.Load<Sprite>(ResourcesPaths.CardImgPath + cardData.ImagePath);
         typeTxt.text = cardData.GetCardTypeeString();
         descTxt.text = cardData.GetDesc();
         this.onClick = onClick;
@@ -66,7 +66,7 @@ public class ViewCardItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         transform.localScale = Vector3.one;
     }
 
-    private void OnClick()
+    protected virtual void OnClick()
     {
         onClick?.Invoke(this);
     }

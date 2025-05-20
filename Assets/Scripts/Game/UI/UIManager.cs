@@ -24,6 +24,8 @@ public class UIManager : MonoBehaviour
 
     public GameEventUI gameEventUI;
 
+    public ShopUI shopUI;
+
     private bool isDisableUIInteraction = false;
     private void Awake()
     {
@@ -31,7 +33,7 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 禁用UI交互
+    /// 绂佺敤UI浜や簰
     /// </summary>
     public void DisableUIInteraction()
     {
@@ -42,7 +44,7 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 启用UI交互
+    /// 鍚敤UI浜や簰
     /// </summary>
     public void EnableUIInteraction()
     {

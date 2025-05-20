@@ -8,7 +8,7 @@ public static class BuffDataManager
 
     public static void Init()
     {
-        buffs.AddRange(Resources.LoadAll<BuffBase>("Data/Buff"));
+        buffs.AddRange(Resources.LoadAll<BuffBase>(ResourcesPaths.BuffDataPath));
     }
 
     public static BuffBase GetBuff(int id)

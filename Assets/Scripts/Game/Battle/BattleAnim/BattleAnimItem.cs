@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class BattleAnimItem : MonoBehaviour
 {
-    private static string basePath = "Anim/";
-
     /// <summary>
     /// 播放动画
     /// </summary>
@@ -15,7 +13,7 @@ public class BattleAnimItem : MonoBehaviour
     {
         transform.position = pos;
         // 加载动画
-        GameObject animObj = Instantiate(Resources.Load<GameObject>(basePath + animData.path), transform);
+        GameObject animObj = Instantiate(Resources.Load<GameObject>(ResourcesPaths.AnimPath + animData.path), transform);
         animObj.transform.localPosition = Vector3.zero;
         TimerTools.Timer.Once(animData.time, () => Destroy(gameObject));
         return animData.time;

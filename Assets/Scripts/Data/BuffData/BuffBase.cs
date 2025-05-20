@@ -98,7 +98,7 @@ public abstract class BuffBase : ScriptableObject
     {
         var info = new DetailInfo();
         info.Title = displayName;
-        info.Icon = Resources.Load<Sprite>(BuffIcon.BasePath + iconPath);
+        info.Icon = Resources.Load<Sprite>(ResourcesPaths.BuffImgPath + iconPath);
         info.Description = description;
         return info;
     }

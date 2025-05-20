@@ -5,8 +5,6 @@ using UnityEngine;
 
 public static class CharacterDataManager
 {
-    private static string characterDataPath = "Data/Character";
-
     private static List<PlayerRoleData> playerRoleDatas = new List<PlayerRoleData>();
 
     private static List<EnemyRoleData> enemyRoleDatas = new List<EnemyRoleData>();
@@ -14,13 +12,13 @@ public static class CharacterDataManager
     public static void Init()
     {
         // 加载玩家角色数据
-        var pds = Resources.LoadAll<PlayerRoleData>(characterDataPath + "/Player");
+        var pds = Resources.LoadAll<PlayerRoleData>(ResourcesPaths.CharacterDataPath + "/Player");
         foreach (var item in pds)
         {
             playerRoleDatas.Add(item);
         }
         // 加载敌人角色数据
-        var eds = Resources.LoadAll<EnemyRoleData>(characterDataPath + "/Enemy");
+        var eds = Resources.LoadAll<EnemyRoleData>(ResourcesPaths.CharacterDataPath + "/Enemy");
         foreach (var item in eds)
         {
             enemyRoleDatas.Add(item);

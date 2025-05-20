@@ -19,7 +19,7 @@ MonoBehaviour:
   CardType: 2
   UseType: 1
   Rare: 2
-  Price: 0
+  Price: 60
   Fee: 1
   GetWay: 30
   Buffs:

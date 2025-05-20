@@ -34,7 +34,7 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
         hpBar.SetMaxHealth(roleData.MaxHP);
         AddEvents();
         playerImg.material = dissolveMat;
-        playerImg.sprite = Resources.Load<Sprite>(BaseRolePath + roleData.RoleImgPath);
+        playerImg.sprite = Resources.Load<Sprite>(ResourcesPaths.RoleImgPath + roleData.RoleImgPath);
 
         // 添加固定道具
         for (int i = 0; i < roleData.FixedItemIDs.Count; i++)

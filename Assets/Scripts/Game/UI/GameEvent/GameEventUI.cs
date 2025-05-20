@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class GameEventUI : MonoBehaviour
 {
-    private static string ImgPath = "Image/Event/";
-
     [SerializeField]
     private Transform root;
     [SerializeField]
@@ -60,7 +58,7 @@ public class GameEventUI : MonoBehaviour
         }
 
         contentTxt.SetShakingText(story.StoryText);
-        eventImg.texture = Resources.Load<Texture2D>(ImgPath + story.ImgPath);
+        eventImg.texture = Resources.Load<Texture2D>(ResourcesPaths.EventImgPath + story.ImgPath);
         eventImg.AutoAdjustImageSize();
         //清除所有选项
         for (int i = choiceItemParent.childCount - 1; i >= 0; i--)

@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class BuffIcon : MonoBehaviour
 {
-    public static string BasePath = "Image/BuffIcon/";
-
     [SerializeField]
     private Image iconImage;
 
@@ -21,7 +19,7 @@ public class BuffIcon : MonoBehaviour
     public void UpdateIcon(int bid, string path, int stacks)
     {
         buffId = bid;
-        iconImage.sprite = Resources.Load<Sprite>(BasePath + path);
+        iconImage.sprite = Resources.Load<Sprite>(ResourcesPaths.BuffImgPath + path);
         stacksTxt.text = stacks.ToString();
     }
 

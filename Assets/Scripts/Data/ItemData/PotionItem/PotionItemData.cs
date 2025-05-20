@@ -68,7 +68,7 @@ public class PotionItemData : ItemDataBase
     //    }
     //}
 
-    public virtual DetailInfo GetDetailInfo()
+    public override DetailInfo GetDetailInfo()
     {
         DetailInfo info = new DetailInfo();
         info.Title = Name;

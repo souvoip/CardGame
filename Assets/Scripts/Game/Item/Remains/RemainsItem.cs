@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class RemainsItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    private static string remainsIconPath = "Image/Item/Remains/";
-
     [SerializeField]
     private Image iconImg;
     [SerializeField]
@@ -27,7 +25,7 @@ public class RemainsItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         //    countTxt.gameObject.SetActive(true);
         //    countTxt.text = count.ToString();
         //}
-        iconImg.sprite = Resources.Load<Sprite>(remainsIconPath + item.IconPath);
+        iconImg.sprite = Resources.Load<Sprite>(ResourcesPaths.RemainsImgPath + item.IconPath);
     }
 
     public void UpdateCount(int count)
@@ -46,7 +44,7 @@ public class RemainsItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     private Vector2 tempInfoOffset;
     public void OnPointerEnter(PointerEventData eventData)
     {
-        UIManager.Instance.holdDetailUI.ShowInfos(transform.position, tempInfoOffset, itemData.GetDetailinfo());
+        UIManager.Instance.holdDetailUI.ShowInfos(transform.position, tempInfoOffset, itemData.GetDetailInfo());
     }
 
     public void OnPointerExit(PointerEventData eventData)
