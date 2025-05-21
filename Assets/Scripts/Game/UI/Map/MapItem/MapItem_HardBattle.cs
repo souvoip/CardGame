@@ -10,4 +10,9 @@ public class MapItem_HardBattle : MapItemBase
         Type = EMapItemType.HardBattle;
         mapItemImage.sprite = Resources.Load<Sprite>("Image/MapImg/M_HardBattle");
     }
+
+    protected override void EnterEvent()
+    {
+        BattleManager.Instance.StartBattle(BattleDataManager.GetRandomBattle(1, EBattleType.Hard));
+    }
 }

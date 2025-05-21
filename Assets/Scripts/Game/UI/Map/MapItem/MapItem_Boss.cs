@@ -10,4 +10,9 @@ public class MapItem_Boss : MapItemBase
         Type = EMapItemType.Boss;
         mapItemImage.sprite = Resources.Load<Sprite>("Image/MapImg/M_Boss");
     }
+
+    protected override void EnterEvent()
+    {
+        BattleManager.Instance.StartBattle(BattleDataManager.GetRandomBattle(1, EBattleType.Boss));
+    }
 }

@@ -10,7 +10,7 @@ public class BattleManager : MonoBehaviour
 
     public List<EnemyRole> EnemyRoles;
 
-    public Transform[] EnemySpawnPoint;
+    public Transform EnemySpawnParent;
 
     public CardManager CardManager;
 
@@ -28,7 +28,7 @@ public class BattleManager : MonoBehaviour
         if (Instance == null) { Instance = this; }
     }
 
-    public void StartBattle(int[] enemyIDs)
+    public void StartBattle(BattleData data)
     {
         foreach (var enemy in EnemyRoles)
         {
@@ -36,38 +36,12 @@ public class BattleManager : MonoBehaviour
         }
         EnemyRoles.Clear();
 
-        for (int i = 0; i < enemyIDs.Length; i++)
+        for (int i = 0; i < data.Enemies.Count; i++)
         {
-            var enemy = Instantiate(enemyPrefab, EnemySpawnPoint[i]).GetComponent<EnemyRole>();
+            var enemy = Instantiate(enemyPrefab, EnemySpawnParent).GetComponent<EnemyRole>();
             EnemyRoles.Add(enemy);
-            enemy.transform.localPosition = Vector3.zero;
-            enemy.SetEnemyData(enemyIDs[i]);
-        }
-
-        TimerTools.Timer.Once(0.5f, () =>
-        {
-            TurnManager.StartBattle();
-            TurnManager.PlayerTurnStart();
-            UIManager.Instance.mapUI.Hide();
-        });
-    }
-
-    public void StartBattleTest()
-    {
-        // 清理
-        foreach (var enemy in EnemyRoles)
-        {
-            Destroy(enemy.gameObject);
-        }
-        EnemyRoles.Clear();
-        
-        int enemyCount = Random.Range(1, 3);
-        for (int i = 0; i < enemyCount; i++)
-        {
-            var enemy = Instantiate(enemyPrefab, EnemySpawnPoint[i]).GetComponent<EnemyRole>();
-            EnemyRoles.Add(enemy);
-            enemy.transform.localPosition = Vector3.zero;
-            enemy.SetEnemyData(Random.Range(101, 104));
+            enemy.transform.position = data.Enemies[i].Position;
+            enemy.SetEnemyData(data.Enemies[i].EnemyID);
         }
         CardManager.InitBattleCardData();
 
@@ -77,6 +51,16 @@ public class BattleManager : MonoBehaviour
             TurnManager.PlayerTurnStart();
             UIManager.Instance.mapUI.Hide();
         });
+    }
+
+    public void StartBattle(int BattleID)
+    {
+        StartBattle(BattleDataManager.GetBattle(BattleID));
+    }
+
+    public void StartBattleTest()
+    {
+        StartBattle(BattleDataManager.GetRandomBattle());
     }
 
     public void EnemyDie(EnemyRole role)
@@ -106,7 +90,7 @@ public class BattleManager : MonoBehaviour
             {
                 UIManager.Instance.mapUI.Show();
                 // 判断是否是最后一场战斗，TODO：功能未完成（先直接退出）
-                if(UIManager.Instance.mapUI.CurrentMapItem.Type == EMapItemType.Boss)
+                if (UIManager.Instance.mapUI.CurrentMapItem.Type == EMapItemType.Boss)
                 {
                     Application.Quit();
                 }

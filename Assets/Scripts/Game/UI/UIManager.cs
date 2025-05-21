@@ -26,6 +26,8 @@ public class UIManager : MonoBehaviour
 
     public ShopUI shopUI;
 
+    public RestUI restUI;
+
     private bool isDisableUIInteraction = false;
     private void Awake()
     {

@@ -10,4 +10,9 @@ public class MapItem_Restore : MapItemBase
         Type = EMapItemType.Restore;
         mapItemImage.sprite = Resources.Load<Sprite>("Image/MapImg/M_Restore");
     }
+
+    protected override void EnterEvent()
+    {
+        UIManager.Instance.restUI.Show();
+    }
 }

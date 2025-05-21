@@ -19,8 +19,8 @@ public static class ResourcesPaths
     public static string BuffDataPath = "Data/Buff";
     public static string CharacterDataPath = "Data/Character";
     public static string GameEventDataPath = "Data/GameEvent";
+    public static string BattletDataPath = "Data/Battle";
 
     // Anim
     public static string AnimPath = "Anim/";
-
 }

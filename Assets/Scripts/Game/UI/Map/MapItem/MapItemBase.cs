@@ -196,12 +196,12 @@ public class MapItemBase : MonoBehaviour
 public enum EMapItemType
 {
     Boss = 0,        // 0
-    Event = 25,      // 0 - 25
-    Battle = 60,     // 25 - 60
-    HardBattle = 75, // 60 - 75
-    Shop = 80,       // 75 - 80
-    Treasures = 85,  // 80 - 85
-    Restore = 100,    // 85 - 100
+    Event = 25,      // 0 - 25      => 25%
+    Battle = 60,     // 25 - 60     => 35%
+    HardBattle = 75, // 60 - 75     => 15%
+    Shop = 80,       // 75 - 80     => 5%
+    Treasures = 85,  // 80 - 85     => 5%
+    Restore = 100,    // 85 - 100   => 15%
 
 
     EnumEnd

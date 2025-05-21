@@ -60,11 +60,6 @@ public class ShopUI : MonoBehaviour
         rectTransform.anchoredPosition = new Vector2(0, -GetOffscreenY());
         removeCardBtn.onClick.AddListener(RemoveCard);
         exitBtn.onClick.AddListener(Hide);
-        // Test
-        TimerTools.Timer.Once(1, () =>
-        {
-            Show();
-        });
     }
 
     public void Show()

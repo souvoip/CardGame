@@ -10,4 +10,9 @@ public class MapItem_Shop : MapItemBase
         Type = EMapItemType.Shop;
         mapItemImage.sprite = Resources.Load<Sprite>("Image/MapImg/M_Shop");
     }
+
+    protected override void EnterEvent()
+    {
+        UIManager.Instance.shopUI.Show();
+    }
 }

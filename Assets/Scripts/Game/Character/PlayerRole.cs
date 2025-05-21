@@ -40,17 +40,11 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
         for (int i = 0; i < roleData.FixedItemIDs.Count; i++)
         {
             AddItem(roleData.FixedItemIDs[i]);
-            //var item = ItemDataManager.GetItem(roleData.FixedItemIDs[i]);
-
-            //if (item == null) { continue; }
-            //roleData.Items.Add(item);
-            //if (item.ItemType == EItemType.Remains)
-            //{
-            //    ((RemainsItemData)item).OnAcquire();
-            //}
         }
         UIManager.Instance.gameTopUI.UpdatePlayerRemainsItemInfo();
         UIManager.Instance.gameTopUI.UpdatePlayerPotionItemInfo();
+        UIManager.Instance.gameTopUI.SetHpTxt(roleData.HP, roleData.MaxHP);
+        UIManager.Instance.gameTopUI.SetGoldTxt(roleData.Gold);
     }
 
     private void AddEvents()
@@ -71,12 +65,17 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
         {
             case ERoleAttribute.HP:
                 ChangeHealth(value);
+                UIManager.Instance.gameTopUI.SetHpTxt(roleData.HP, roleData.MaxHP);
                 break;
             case ERoleAttribute.AP:
                 ChangeAP(value);
                 break;
             case ERoleAttribute.Aesist:
                 ChangeAesist(value);
+                break;
+            case ERoleAttribute.Gold:
+                roleData.Gold += value;
+                UIManager.Instance.gameTopUI.SetGoldTxt(roleData.Gold);
                 break;
         }
     }
@@ -177,7 +176,7 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
             value = ChangeAesist(value);
         }
 
-        roleData.HP += value;
+        roleData.HP = Mathf.Min(roleData.MaxHP, roleData.HP + value);
         hpBar.SetHealth(roleData.HP);
         // 显示伤害数字
         BattleManager.Instance.ShowDamageNumber(value, transform.position);

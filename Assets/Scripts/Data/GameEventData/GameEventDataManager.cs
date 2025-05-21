@@ -15,7 +15,7 @@ public static class GameEventDataManager
     {
         foreach (GameEventData eventData in events)
         {
-            if (eventData.ID == id) { return GameObject.Instantiate(eventData); }
+            if (eventData.ID == id) { return eventData; }
         }
         return null;
     }

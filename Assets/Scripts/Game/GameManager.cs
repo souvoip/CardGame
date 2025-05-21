@@ -13,5 +13,6 @@ public class GameManager : MonoBehaviour
         CharacterDataManager.Init();
         ItemDataManager.Init();
         GameEventDataManager.Init();
+        BattleDataManager.Init();
     }
 }
