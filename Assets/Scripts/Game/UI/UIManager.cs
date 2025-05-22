@@ -28,6 +28,8 @@ public class UIManager : MonoBehaviour
 
     public RestUI restUI;
 
+    public PrizeUI prizeUI;
+
     private bool isDisableUIInteraction = false;
     private void Awake()
     {

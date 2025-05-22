@@ -86,15 +86,38 @@ public class BattleManager : MonoBehaviour
             Player.ClearBattleBuff();
             // 胜利
             TurnManager.BattleVictory();
-            UIManager.Instance.selectCardUI.Show(CardDataManager.GetRandomCardIds(3), () =>
+            // 判断是否是最后一场战斗，TODO：功能未完成（先直接退出）
+            if (UIManager.Instance.mapUI.CurrentMapItem.Type == EMapItemType.Boss)
             {
-                UIManager.Instance.mapUI.Show();
-                // 判断是否是最后一场战斗，TODO：功能未完成（先直接退出）
-                if (UIManager.Instance.mapUI.CurrentMapItem.Type == EMapItemType.Boss)
-                {
-                    Application.Quit();
-                }
-            });
+                Application.Quit();
+                return;
+            }
+            // 生成奖励
+            List<PrizeItemData> prizes = new List<PrizeItemData>();
+            if (UIManager.Instance.mapUI.CurrentMapItem.Type == EMapItemType.Battle)
+            {
+                // 普通战斗奖励
+                prizes.Add(new PrizeItemData(EPrizeType.Gold, Random.Range(20, 35)));
+                prizes.Add(new PrizeItemData(EPrizeType.Card, 3));
+            }
+            else if (UIManager.Instance.mapUI.CurrentMapItem.Type == EMapItemType.HardBattle)
+            {
+                // 困难战斗奖励
+                prizes.Add(new PrizeItemData(EPrizeType.Gold, Random.Range(30, 50)));
+                prizes.Add(new PrizeItemData(EPrizeType.Card, 3));
+                // 需要随机物品
+                prizes.Add(new PrizeItemData(EPrizeType.Item, 2));
+            }
+            else if (UIManager.Instance.mapUI.CurrentMapItem.Type == EMapItemType.Boss)
+            {
+                // BOSS战斗奖励
+                prizes.Add(new PrizeItemData(EPrizeType.Gold, Random.Range(50, 100)));
+                prizes.Add(new PrizeItemData(EPrizeType.Card, 3));
+                // 需要随机物品
+                prizes.Add(new PrizeItemData(EPrizeType.Item, 2));
+            }
+            UIManager.Instance.prizeUI.Show(prizes);
+            UIManager.Instance.mapUI.Show();
         }
         else
         {

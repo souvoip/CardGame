@@ -20,8 +20,15 @@ public static class ItemDataManager
 
     public static ItemDataBase GetItem(int id)
     {
-        foreach (var item in RemainsItems) { if (item.ID == id) { return item; } }
-        foreach (var item in PotionItems) { if (item.ID == id) { return item; } }
+        foreach (var item in RemainsItems) { if (item.ID == id) { return GameObject.Instantiate(item); } }
+        foreach (var item in PotionItems) { if (item.ID == id) { return GameObject.Instantiate(item); } }
+        return null;
+    }
+
+    public static string GetItemName(int id)
+    {
+        foreach (var item in RemainsItems) { if (item.ID == id) { return item.Name; } }
+        foreach (var item in PotionItems) { if (item.ID == id) { return item.Name; } }
         return null;
     }
 

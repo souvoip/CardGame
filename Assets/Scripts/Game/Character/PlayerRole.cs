@@ -41,8 +41,7 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
         {
             AddItem(roleData.FixedItemIDs[i]);
         }
-        UIManager.Instance.gameTopUI.UpdatePlayerRemainsItemInfo();
-        UIManager.Instance.gameTopUI.UpdatePlayerPotionItemInfo();
+
         UIManager.Instance.gameTopUI.SetHpTxt(roleData.HP, roleData.MaxHP);
         UIManager.Instance.gameTopUI.SetGoldTxt(roleData.Gold);
     }
@@ -63,6 +62,13 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
     {
         switch (attribute)
         {
+            case ERoleAttribute.MaxHP:
+                roleData.MaxHP += value;
+                roleData.HP += value;
+                hpBar.SetMaxHealth(roleData.MaxHP);
+                hpBar.SetHealth(roleData.HP);
+                UIManager.Instance.gameTopUI.SetHpTxt(roleData.HP, roleData.MaxHP);
+                break;
             case ERoleAttribute.HP:
                 ChangeHealth(value);
                 UIManager.Instance.gameTopUI.SetHpTxt(roleData.HP, roleData.MaxHP);
@@ -272,6 +278,8 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
             ((RemainsItemData)item).OnAcquire();
         }
         outItem = item;
+        UIManager.Instance.gameTopUI.UpdatePlayerRemainsItemInfo();
+        UIManager.Instance.gameTopUI.UpdatePlayerPotionItemInfo();
         return true;
     }
 

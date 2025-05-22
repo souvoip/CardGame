@@ -1791,6 +1791,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1360686412}
+  - {fileID: 1974330048}
   - {fileID: 2031519756}
   - {fileID: 2087096689}
   m_Father: {fileID: 1245083367}
@@ -6337,9 +6338,9 @@ RectTransform:
   - {fileID: 1063060255}
   - {fileID: 195287373}
   - {fileID: 1667139286}
+  - {fileID: 1245083367}
   - {fileID: 1718405270}
   - {fileID: 1431116198}
-  - {fileID: 1245083367}
   - {fileID: 145962319}
   - {fileID: 775155556}
   - {fileID: 1513590648}
@@ -6376,6 +6377,7 @@ MonoBehaviour:
   gameEventUI: {fileID: 1513590649}
   shopUI: {fileID: 195287374}
   restUI: {fileID: 1667139287}
+  prizeUI: {fileID: 1245083368}
 --- !u!225 &1163325666
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -6568,6 +6570,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1245083367}
+  - component: {fileID: 1245083368}
   m_Layer: 5
   m_Name: PrizeUI
   m_TagString: Untagged
@@ -6595,6 +6598,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 800, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1245083368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1245083366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e71462d743923049991c83a4b80269c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  root: {fileID: 358463910}
+  prizeItemPrefab: {fileID: 1974330047}
+  itemContent: {fileID: 2031519756}
+  closeBtn: {fileID: 2087096690}
 --- !u!1 &1254006171
 GameObject:
   m_ObjectHideFlags: 0
@@ -10602,13 +10621,14 @@ GameObject:
   - component: {fileID: 1974330051}
   - component: {fileID: 1974330050}
   - component: {fileID: 1974330049}
+  - component: {fileID: 1974330052}
   m_Layer: 5
   m_Name: PrizeItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1974330048
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10616,18 +10636,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1974330047}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 893623292}
   - {fileID: 1146523691}
-  m_Father: {fileID: 2031519756}
+  m_Father: {fileID: 358463910}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 400, y: -163}
   m_SizeDelta: {x: 640, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1974330049
@@ -10712,6 +10732,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1974330047}
   m_CullTransparentMesh: 1
+--- !u!114 &1974330052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974330047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de374a86f74a82940a35c76623cf2f78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prizeImg: {fileID: 893623293}
+  desText: {fileID: 1146523692}
 --- !u!1 &1980943063
 GameObject:
   m_ObjectHideFlags: 0
@@ -10852,8 +10886,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1974330048}
+  m_Children: []
   m_Father: {fileID: 358463910}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -10879,9 +10912,9 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 1
-  m_Spacing: 0
+  m_Spacing: 20
   m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
+  m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0

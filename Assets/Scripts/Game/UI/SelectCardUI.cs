@@ -13,14 +13,16 @@ public class SelectCardUI : MonoBehaviour
     [SerializeField]
     private Button jumpBtn;
 
-    private Action hideAction;
+    private Action<bool> hideAction;
+
+    private bool isSelectCard = false;
 
     private void Awake()
     {
         jumpBtn.onClick.AddListener(JumpCardSelect);
     }
 
-    public void Show(int[] cardIds, Action hideAction = null)
+    public void Show(int[] cardIds, Action<bool> hideAction = null)
     {
         gameObject.SetActive(true);
         // 清空
@@ -39,13 +41,14 @@ public class SelectCardUI : MonoBehaviour
 
     public void Hide()
     {
-        hideAction?.Invoke();
+        hideAction?.Invoke(isSelectCard);
         gameObject.SetActive(false);
         UIManager.Instance.holdDetailUI.Hide();
     }
 
     private void JumpCardSelect()
     {
+        isSelectCard = false;
         Hide();
     }
 
@@ -53,6 +56,7 @@ public class SelectCardUI : MonoBehaviour
     {
         // 获取卡牌
         Debug.Log("获取卡牌：" + vci.cardData.Name);
+        isSelectCard = true;
         BattleManager.Instance.CardManager.AddBattleCard(vci.cardData);
         Hide();
     }
