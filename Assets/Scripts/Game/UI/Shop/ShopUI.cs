@@ -52,6 +52,8 @@ public class ShopUI : MonoBehaviour
     private RectTransform rectTransform;
     private Vector2 originalPosition;       // 弹窗的原始位置（屏幕中心）
 
+    private List<IBuyItem> shopItems = new List<IBuyItem>();
+
     private void Start()
     {
         rectTransform = root.GetComponent<RectTransform>();
@@ -65,6 +67,7 @@ public class ShopUI : MonoBehaviour
     public void Show()
     {
         ShowAnim();
+        shopItems.Clear();
         // 重置移除卡牌数量
         removeCardCount = 1;
         // 随机商品
@@ -76,6 +79,7 @@ public class ShopUI : MonoBehaviour
             // 创建新物品
             GameObject item = Instantiate(shopCardPrefab, cardSlots[i]);
             item.GetComponent<ShopCardItem>().InitData(CardDataManager.GetRandomShopCard(), BuyItem, Random.Range(0f, 1f) < discountRate, Random.Range(priceOffset.x, priceOffset.y));
+            shopItems.Add(item.GetComponent<ShopCardItem>());
         }
 
         // 物品
@@ -86,6 +90,7 @@ public class ShopUI : MonoBehaviour
             // 创建新物品
             GameObject item = Instantiate(shopItemPrefab, remainsSlots[i]);
             item.GetComponent<ShopItem>().InitData(ItemDataManager.GetRandomShopRemainsItem(), BuyItem, Random.Range(0f, 1f) < discountRate, Random.Range(priceOffset.x, priceOffset.y));
+            shopItems.Add(item.GetComponent<ShopItem>());
         }
         // 药水
         for (int i = 0; i < potionSlots.Count; i++)
@@ -95,6 +100,7 @@ public class ShopUI : MonoBehaviour
             // 创建新物品
             GameObject item = Instantiate(shopItemPrefab, potionSlots[i]);
             item.GetComponent<ShopItem>().InitData(ItemDataManager.GetRandomShopPotionItem(), BuyItem, Random.Range(0f, 1f) < discountRate, Random.Range(priceOffset.x, priceOffset.y));
+            shopItems.Add(item.GetComponent<ShopItem>());
         }
     }
 
@@ -140,6 +146,11 @@ public class ShopUI : MonoBehaviour
         if (item.CanBuy())
         {
             item.Buy();
+            // 更新显示
+            for (int i = 0; i < shopItems.Count; i++)
+            {
+                shopItems[i].UpdatePrice();
+            }
         }
     }
 

@@ -28,6 +28,11 @@ public class ShopItem : MonoBehaviour, IBuyItem, IPointerEnterHandler, IPointerE
 
     private Action<IBuyItem> buyAction;
 
+    private void Awake()
+    {
+        GetComponent<Button>().onClick.AddListener(OnClick);
+    }
+
     public void InitData(ItemDataBase item, Action<IBuyItem> onClick = null, bool isDiscount = false, int priceOffset = 0)
     {
         itemData = item;
@@ -90,5 +95,10 @@ public class ShopItem : MonoBehaviour, IBuyItem, IPointerEnterHandler, IPointerE
             priceTxt.color = Color.white;
         }
         priceTxt.text = finalPrice.ToString();
+    }
+
+    private void OnClick()
+    {
+        buyAction?.Invoke(this);
     }
 }

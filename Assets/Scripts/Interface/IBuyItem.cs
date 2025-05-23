@@ -9,4 +9,6 @@ public interface IBuyItem
     /// 购买
     /// <summary>
     void Buy();
+
+    void UpdatePrice();
 }
