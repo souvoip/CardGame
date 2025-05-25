@@ -264,3 +264,61 @@ public enum ECardFeatures
     /// </summary>
     Hold = 1 << 3,
 }
+
+
+public abstract class CardAction
+{
+    public abstract ECardActionType ActionType { get; }
+
+    public virtual void Execute() { }
+
+    public virtual void Execute(CharacterBase target) { }
+}
+
+public class CardAction_Damage : CardAction
+{
+    public override ECardActionType ActionType => ECardActionType.Damage;
+
+    public Damage BaseDamage;
+
+    /// <summary>
+    /// 攻击次数
+    /// </summary>
+    public int HitCount;
+}
+
+public class CardAction_Defend : CardAction
+{
+    public override ECardActionType ActionType => ECardActionType.Defend;
+
+    /// <summary>
+    /// 给予的护盾值
+    /// </summary>
+    public Block BaseBlock;
+    /// <summary>
+    /// 次数
+    /// </summary>
+    public int SkillCount = 1;
+}
+
+public class CardAction_Buff : CardAction
+{
+    public override ECardActionType ActionType => ECardActionType.Buff;
+
+    public BuffItem Buff;
+}
+
+public class CardAction_CardExtract : CardAction
+{
+    public override ECardActionType ActionType => ECardActionType.CardExtract;
+
+    public List<CardExtract> Extract;
+}
+
+public enum ECardActionType
+{
+    Damage = 1,
+    Defend = 2,
+    Buff = 3,
+    CardExtract = 4,
+}
