@@ -5,5 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "StateCard", menuName = "Data/Card/StateCard")]
 public class StateCard : CardBase
 {
-    
+    public override ECardType CardType => ECardType.State;
+
 }

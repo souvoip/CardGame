@@ -9,7 +9,7 @@ public class BuffItem
     public int BuffID;
     public int Stacks;
     public ETargetRole Target;
-    public EAddBuffTime AddBuffTime;
+    public EBuffTriggerTime AddBuffTime;
 
     public DetailInfo GetDetailInfo()
     {
@@ -31,7 +31,7 @@ public enum ETargetRole
 /// <summary>
 /// 添加buff的时间
 /// </summary>
-public enum EAddBuffTime
+public enum EBuffTriggerTime
 {
     None,
     /// <summary>

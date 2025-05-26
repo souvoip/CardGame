@@ -6,72 +6,74 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SkillCard", menuName = "Data/Card/SkillCard")]
 public class SkillCard : CardBase
 {
-    /// <summary>
-    /// 给予的护盾值
-    /// </summary>
-    public Block BaseBlock;
-    /// <summary>
-    /// 次数
-    /// </summary>
-    public int SkillCount = 1;
+    public override ECardType CardType => ECardType.Skill;
 
-    public SkillCard()
-    {
-        CardType = ECardType.Skill;
-    }
+    ///// <summary>
+    ///// 给予的护盾值
+    ///// </summary>
+    //public Block BaseBlock;
+    ///// <summary>
+    ///// 次数
+    ///// </summary>
+    //public int SkillCount = 1;
 
-    public override void UseCard()
-    {
-        AddBuffs(EAddBuffTime.BeforeAttack);
+    //public SkillCard()
+    //{
+    //    CardType = ECardType.Skill;
+    //}
 
-        // 添加护盾
-        if(BaseBlock.Value != 0)
-        {
-            var tempBlock = new Block(BaseBlock);
-            BattleManager.Instance.Player.ChangeAttribute(ERoleAttribute.Aesist, BattleManager.Instance.Player.CalculateBlock(tempBlock).GetBlockValue());
-            BattleAnimManager.Instance.PlayAnim(BattleManager.Instance.Player.transform.position, cardAnimData);
-        }
-        AddBuffs(EAddBuffTime.AfterAttack);
+    //public override void UseCard()
+    //{
+    //    AddBuffs(EBuffTriggerTime.BeforeAttack);
 
-        base.UseCard();
-    }
+    //    // 添加护盾
+    //    if(BaseBlock.Value != 0)
+    //    {
+    //        var tempBlock = new Block(BaseBlock);
+    //        BattleManager.Instance.Player.ChangeAttribute(ERoleAttribute.Aesist, BattleManager.Instance.Player.CalculateBlock(tempBlock).GetBlockValue());
+    //        BattleAnimManager.Instance.PlayAnim(BattleManager.Instance.Player.transform.position, cardAnimData);
+    //    }
+    //    AddBuffs(EBuffTriggerTime.AfterAttack);
 
-    public override void UseCard(CharacterBase target)
-    {
-        AddBuffs(EAddBuffTime.BeforeAttack, target);
+    //    base.UseCard();
+    //}
 
-        // 添加护盾
-        if(BaseBlock.Value != 0)
-        {
-            var tempBlock = new Block(BaseBlock);
-            BattleManager.Instance.Player.ChangeAttribute(ERoleAttribute.Aesist, BattleManager.Instance.Player.CalculateBlock(tempBlock).GetBlockValue());
-            BattleAnimManager.Instance.PlayAnim(BattleManager.Instance.Player.transform.position, cardAnimData);
-        }
-        AddBuffs(EAddBuffTime.AfterAttack, target);
+    //public override void UseCard(CharacterBase target)
+    //{
+    //    AddBuffs(EBuffTriggerTime.BeforeAttack, target);
 
-        base.UseCard(target);
-    }
+    //    // 添加护盾
+    //    if(BaseBlock.Value != 0)
+    //    {
+    //        var tempBlock = new Block(BaseBlock);
+    //        BattleManager.Instance.Player.ChangeAttribute(ERoleAttribute.Aesist, BattleManager.Instance.Player.CalculateBlock(tempBlock).GetBlockValue());
+    //        BattleAnimManager.Instance.PlayAnim(BattleManager.Instance.Player.transform.position, cardAnimData);
+    //    }
+    //    AddBuffs(EBuffTriggerTime.AfterAttack, target);
 
-    public override string GetDesc()
-    {
-        string desc = GetFeaturesDesc();
-        // 计算实际防护值
-        var tempBlock = new Block(BaseBlock);
-        int baseBlockValue = BaseBlock.GetBlockValue();
-        int blockValue = BattleManager.Instance.Player.CalculateBlock(tempBlock).GetBlockValue();
-        string damageStr = baseBlockValue > blockValue ? $"</color=#FF0000>{blockValue}</color>" : baseBlockValue == blockValue ? $"{blockValue}" : $"<color=#00FF00>{blockValue}</color>";
-        if(baseBlockValue != 0)
-        {
-            if (SkillCount == 1)
-            {
-                desc += "获取" + damageStr + "抵抗\n";
-            }
-            else
-            {
-                desc += "获取" + damageStr + "抵抗" + SkillCount + "次\n";
-            }
-        }
-        desc += GetBuffsDesc() + Desc;
-        return desc;
-    }
+    //    base.UseCard(target);
+    //}
+
+    //public override string GetDesc()
+    //{
+    //    string desc = GetFeaturesDesc();
+    //    // 计算实际防护值
+    //    var tempBlock = new Block(BaseBlock);
+    //    int baseBlockValue = BaseBlock.GetBlockValue();
+    //    int blockValue = BattleManager.Instance.Player.CalculateBlock(tempBlock).GetBlockValue();
+    //    string damageStr = baseBlockValue > blockValue ? $"</color=#FF0000>{blockValue}</color>" : baseBlockValue == blockValue ? $"{blockValue}" : $"<color=#00FF00>{blockValue}</color>";
+    //    if(baseBlockValue != 0)
+    //    {
+    //        if (SkillCount == 1)
+    //        {
+    //            desc += "获取" + damageStr + "抵抗\n";
+    //        }
+    //        else
+    //        {
+    //            desc += "获取" + damageStr + "抵抗" + SkillCount + "次\n";
+    //        }
+    //    }
+    //    desc += GetActionsDesc() + Desc;
+    //    return desc;
+    //}
 }
