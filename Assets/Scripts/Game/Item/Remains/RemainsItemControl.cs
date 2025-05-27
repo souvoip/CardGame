@@ -24,4 +24,13 @@ public class RemainsItemControl : MonoBehaviour
         remainsItemIcon.SetData(itemData);
         remainsItemIcons.Add(remainsItemIcon);
     }
+
+    public void Clear()
+    {
+        for(int i = 0; i < remainsItemIcons.Count; i++)
+        {
+            Destroy(remainsItemIcons[i].gameObject);
+        }
+        remainsItemIcons.Clear();
+    }
 }

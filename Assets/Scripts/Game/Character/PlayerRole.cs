@@ -278,8 +278,7 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
             ((RemainsItemData)item).OnAcquire();
         }
         outItem = item;
-        UIManager.Instance.gameTopUI.UpdatePlayerRemainsItemInfo();
-        UIManager.Instance.gameTopUI.UpdatePlayerPotionItemInfo();
+        UIManager.Instance.gameTopUI.AddItemInfo(item);
         return true;
     }
 

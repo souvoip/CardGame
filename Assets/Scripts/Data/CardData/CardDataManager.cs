@@ -9,11 +9,11 @@ public static class CardDataManager
     /// <summary>
     /// 临时测试数据，可以在战斗中获取的卡牌ID TODO：完善
     /// </summary>
-    public readonly static int[] getCardIds = new int[] {
-        2, 3, 4, 
-        102, 103, 104,
-        201, 202, 203, 204,
-    };
+    //public readonly static int[] getCardIds = new int[] {
+    //    2, 3, 4, 
+    //    102, 103, 104,
+    //    201, 202, 203, 204,
+    //};
 
     public static void Init()
     {
@@ -26,15 +26,21 @@ public static class CardDataManager
     /// </summary>
     /// <param name="count"></param>
     /// <returns></returns>
-    public static int[] GetRandomCardIds(int count)
+    public static int[] GetRandomCardIds(int count, EGetWay getWay = EGetWay.Reward)
     {
-        if (count > getCardIds.Length)
+        List<int> getCardIds = new List<int>();
+        foreach (var item in Cards)
         {
-            return getCardIds;
+            if ((item.GetWay & getWay) == getWay) { getCardIds.Add(item.ID); }
+        }
+
+        if (count > getCardIds.Count)
+        {
+            return getCardIds.ToArray();
         }
 
         int[] ids = new int[count];
-        int n = getCardIds.Length;
+        int n = getCardIds.Count;
         int[] indices = new int[n];
 
         // 初始化索引数组

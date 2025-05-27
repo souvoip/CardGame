@@ -1,9 +1,11 @@
 using System;
 
 [Serializable]
-public abstract class CardAction
+public abstract class CardAction : ICloneable
 {
     public abstract ECardActionType ActionType { get; }
+
+    public abstract object Clone();
 
     public abstract void Execute(CharacterBase target, BattleAnimData anim = null);
 
@@ -22,6 +24,16 @@ public class CardDamageAction : CardAction
     public int HitCount;
 
     public override ECardActionType ActionType => ECardActionType.Damage;
+
+    public override object Clone()
+    {
+        CardDamageAction clone = new CardDamageAction();
+        clone.BaseDamage = new Damage(BaseDamage);
+        clone.TargetRole = TargetRole;
+        clone.HitCount = HitCount;
+        return clone;
+
+    }
 
     public override void Execute(CharacterBase target, BattleAnimData anim = null)
     {
@@ -99,6 +111,15 @@ public class CardDefendAction : CardAction
     /// </summary>
     public int SkillCount = 1;
     public override ECardActionType ActionType => ECardActionType.Defend;
+
+    public override object Clone()
+    {
+        CardDefendAction clone = new CardDefendAction();
+        clone.BaseBlock = new Block(BaseBlock);
+        clone.SkillCount = SkillCount;
+        return clone;
+    }
+
     public override void Execute(CharacterBase target, BattleAnimData anim = null)
     {
         Execute(anim);
@@ -199,6 +220,13 @@ public class CardBuffAction : CardAction
         }
         return str;
     }
+
+    public override object Clone()
+    {
+        CardBuffAction clone = new CardBuffAction();
+        clone.Buff = new BuffItem(){ BuffID = Buff.BuffID, AddBuffTime = Buff.AddBuffTime, Stacks = Buff.Stacks, Target = Buff.Target };
+        return clone;
+    }
 }
 
 [Serializable]
@@ -206,6 +234,14 @@ public class CardExtractAction : CardAction
 {
     public CardExtract Extract;
     public override ECardActionType ActionType => ECardActionType.CardExtract;
+
+    public override object Clone()
+    {
+        CardExtractAction clone = new CardExtractAction();
+        clone.Extract = new CardExtract(){ origin = Extract.origin, target = Extract.target, Count = Extract.Count, cardType = Extract.cardType, mode = Extract.mode };
+        return clone;
+    }
+
     public override void Execute(CharacterBase _, BattleAnimData __ = null)
     {
         EventCenter<CardExtract>.GetInstance().EventTrigger(EventNames.EXTRACT_CARD, Extract);

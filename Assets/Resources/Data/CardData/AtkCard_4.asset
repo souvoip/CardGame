@@ -16,25 +16,39 @@ MonoBehaviour:
   Name: "\u523A\u51FB"
   Desc: "\u62BD\u53D61\u5F20\u724C"
   ImagePath: 004
-  CardType: 0
   UseType: 0
   Rare: 1
   Price: 48
   Fee: 1
   GetWay: 14
-  Buffs: []
-  Extract:
-  - origin: 1
-    target: 2
-    Count: 1
-    cardType: -1
-    mode: 1
+  Level: 0
+  MaxLevel: 0
   Features: 0
-  cardAnimData:
-    path: NormalAtk
-    time: 1
-  BaseDamage:
-    DamageValue: 7
-    DamageRate: 1
-    isNext: 1
-  HitCount: 1
+  CardAnimData:
+    path: 
+    time: 0
+  CardActions:
+  - rid: 8894977000828829763
+  - rid: 8894977000828829764
+  LevelDatas: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 8894977000828829763
+      type: {class: CardDamageAction, ns: , asm: Assembly-CSharp}
+      data:
+        BaseDamage:
+          DamageValue: 8
+          DamageRate: 1
+          isNext: 1
+        TargetRole: 1
+        HitCount: 1
+    - rid: 8894977000828829764
+      type: {class: CardExtractAction, ns: , asm: Assembly-CSharp}
+      data:
+        Extract:
+          origin: 1
+          target: 2
+          Count: 1
+          cardType: -1
+          mode: 1

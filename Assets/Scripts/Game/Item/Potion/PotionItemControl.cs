@@ -35,4 +35,12 @@ public class PotionItemControl : MonoBehaviour
         }
         return false;
     }
+
+    public void Clear()
+    {
+        for (int i = 0; i < potionSlots.Count; i++)
+        {
+            potionSlots[i].RemovePotion();
+        }
+    }
 }

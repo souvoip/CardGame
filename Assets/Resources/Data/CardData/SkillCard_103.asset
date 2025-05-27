@@ -16,24 +16,37 @@ MonoBehaviour:
   Name: "\u5FEB\u901F\u62B5\u6321"
   Desc: "\u62BD\u53D61\u5F20\u724C"
   ImagePath: 103
-  CardType: 1
   UseType: 1
   Rare: 1
   Price: 46
   Fee: 1
   GetWay: 14
-  Buffs: []
-  Extract:
-  - origin: 1
-    target: 2
-    Count: 1
-    cardType: -1
-    mode: 1
+  Level: 0
+  MaxLevel: 0
   Features: 0
-  cardAnimData:
-    path: NormalSkill
-    time: 1
-  BaseBlock:
-    Value: 7
-    Rate: 1
-  SkillCount: 1
+  CardAnimData:
+    path: 
+    time: 0
+  CardActions:
+  - rid: 8894977000828829772
+  - rid: 8894977000828829773
+  LevelDatas: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 8894977000828829772
+      type: {class: CardDefendAction, ns: , asm: Assembly-CSharp}
+      data:
+        BaseBlock:
+          Value: 6
+          Rate: 1
+        SkillCount: 1
+    - rid: 8894977000828829773
+      type: {class: CardExtractAction, ns: , asm: Assembly-CSharp}
+      data:
+        Extract:
+          origin: 1
+          target: 2
+          Count: 1
+          cardType: -1
+          mode: 1

@@ -21,6 +21,7 @@ public class GameTopUI : MonoBehaviour
 
     public void UpdatePlayerRemainsItemInfo()
     {
+        remainsItemManager.Clear();
         for(int i = 0; i < BattleManager.Instance.Player.RoleData.Items.Count; i++)
         {
             if(BattleManager.Instance.Player.RoleData.Items[i].ItemType == EItemType.Remains)
@@ -32,12 +33,25 @@ public class GameTopUI : MonoBehaviour
 
     public void UpdatePlayerPotionItemInfo()
     {
+        potionItemManager.Clear();
         for (int i = 0; i < BattleManager.Instance.Player.RoleData.Items.Count; i++)
         {
             if (BattleManager.Instance.Player.RoleData.Items[i].ItemType == EItemType.Potion)
             {
                 potionItemManager.AddPotion((PotionItemData)BattleManager.Instance.Player.RoleData.Items[i]);
             }
+        }
+    }
+
+    public void AddItemInfo(ItemDataBase item)
+    {
+        if(item.ItemType == EItemType.Remains)
+        {
+            remainsItemManager.AddRemainsItemIcon((RemainsItemData)item);
+        }
+        else if(item.ItemType == EItemType.Potion)
+        {
+            potionItemManager.AddPotion((PotionItemData)item);
         }
     }
 

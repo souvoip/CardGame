@@ -79,6 +79,8 @@ public class CardViewUI : MonoBehaviour
 
     private void UpgradeCardAct(ViewCardItem item)
     {
+        item.cardData.UpgradeCard();
+        Hide();
     }
 
     private void RemoveCardAct(ViewCardItem item)

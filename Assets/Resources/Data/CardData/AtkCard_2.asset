@@ -16,24 +16,38 @@ MonoBehaviour:
   Name: "\u91CD\u51FB"
   Desc: 
   ImagePath: 002
-  CardType: 0
   UseType: 0
   Rare: 1
   Price: 20
   Fee: 2
   GetWay: 1
-  Buffs:
-  - BuffID: 1
-    Stacks: 2
-    Target: 1
-    AddBuffTime: 2
-  Extract: []
+  Level: 0
+  MaxLevel: 0
   Features: 0
-  cardAnimData:
-    path: NormalAtk
-    time: 1
-  BaseDamage:
-    DamageValue: 8
-    DamageRate: 1
-    isNext: 1
-  HitCount: 1
+  CardAnimData:
+    path: 
+    time: 0
+  CardActions:
+  - rid: 8894977000828829759
+  - rid: 8894977000828829761
+  LevelDatas: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 8894977000828829759
+      type: {class: CardDamageAction, ns: , asm: Assembly-CSharp}
+      data:
+        BaseDamage:
+          DamageValue: 8
+          DamageRate: 1
+          isNext: 1
+        TargetRole: 1
+        HitCount: 1
+    - rid: 8894977000828829761
+      type: {class: CardBuffAction, ns: , asm: Assembly-CSharp}
+      data:
+        Buff:
+          BuffID: 1
+          Stacks: 2
+          Target: 1
+          AddBuffTime: 2

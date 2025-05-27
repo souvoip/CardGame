@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MapItemBase : MonoBehaviour
+public class MapItemBase : MonoBehaviour, ISaveLoad
 {
     protected Image mapItemImage;
 
@@ -191,6 +191,23 @@ public class MapItemBase : MonoBehaviour
         }
     }
 
+    public JSONObject Save()
+    {
+        JSONObject data = JSONObject.Create();
+        data.AddField("Type", (int)Type);
+        data.AddField("State", (int)State);
+        data.AddField("Layer", Layer);
+        data.AddField("localPosition", transform.localPosition.V3ToString());
+        return data;
+    }
+
+    public void Load(JSONObject data)
+    {
+        Type = (EMapItemType)data.GetField("Type").i;
+        State = (EMapState)data.GetField("State").i;
+        Layer = (int)data.GetField("Layer").i;
+        transform.localPosition = data.GetField("localPosition").str.V3FromString();
+    }
 }
 
 public enum EMapItemType

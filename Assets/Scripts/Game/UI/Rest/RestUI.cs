@@ -41,10 +41,21 @@ public class RestUI : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// 卡牌升级
     /// </summary>
     private void OnClickUpgrade()
     {
+        List<CardBase> temp = new List<CardBase>();
+
+        for (int i = 0; i < BattleManager.Instance.CardManager.PlayerAllCards.Count; i++)
+        {
+            if (BattleManager.Instance.CardManager.PlayerAllCards[i].IsUpgrade())
+            {
+                temp.Add(BattleManager.Instance.CardManager.PlayerAllCards[i]);
+            }
+        }
+
+        UIManager.Instance.cardView.Show(temp, true, ECardViewOpenMode.Upgrade);
         Hide();
     }
 }

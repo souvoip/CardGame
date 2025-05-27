@@ -16,19 +16,28 @@ MonoBehaviour:
   Name: "\u865A\u5316"
   Desc: 
   ImagePath: 203
-  CardType: 2
   UseType: 1
   Rare: 3
   Price: 120
   Fee: 2
   GetWay: 30
-  Buffs:
-  - BuffID: 7
-    Stacks: 1
-    Target: 0
-    AddBuffTime: 0
-  Extract: []
+  Level: 0
+  MaxLevel: 0
   Features: 0
-  cardAnimData:
-    path: NormalAbility
-    time: 1.2
+  CardAnimData:
+    path: 
+    time: 0
+  CardActions:
+  - rid: 8894977000828829768
+  LevelDatas: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 8894977000828829768
+      type: {class: CardBuffAction, ns: , asm: Assembly-CSharp}
+      data:
+        Buff:
+          BuffID: 7
+          Stacks: 1
+          Target: 0
+          AddBuffTime: 1

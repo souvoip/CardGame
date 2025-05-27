@@ -16,23 +16,28 @@ MonoBehaviour:
   Name: "\u6050\u5413"
   Desc: 
   ImagePath: 104
-  CardType: 1
   UseType: 0
   Rare: 2
   Price: 38
   Fee: 1
   GetWay: 0
-  Buffs:
-  - BuffID: 4
-    Stacks: 2
-    Target: 1
-    AddBuffTime: 1
-  Extract: []
+  Level: 0
+  MaxLevel: 0
   Features: 0
-  cardAnimData:
+  CardAnimData:
     path: 
     time: 0
-  BaseBlock:
-    Value: 0
-    Rate: 0
-  SkillCount: 0
+  CardActions:
+  - rid: 8894977000828829774
+  LevelDatas: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 8894977000828829774
+      type: {class: CardBuffAction, ns: , asm: Assembly-CSharp}
+      data:
+        Buff:
+          BuffID: 4
+          Stacks: 2
+          Target: 1
+          AddBuffTime: 1

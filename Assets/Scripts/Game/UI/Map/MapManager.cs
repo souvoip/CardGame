@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapManager : MonoBehaviour
+public class MapManager : MonoBehaviour, ISaveLoad
 {
     public static MapManager Instance;
     public int CurrentLayer = 0;
@@ -9,7 +9,7 @@ public class MapManager : MonoBehaviour
     [SerializeField]
     private int MaxLayer = 15;
 
-    [SerializeField]
+    //[SerializeField]
     private int startNodeNumber = 3;
 
     private Transform mapItemPrefab;
@@ -152,14 +152,36 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    //#region Test
-    //private void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.R))
-    //    {
+    public JSONObject Save()
+    {
+        JSONObject data = JSONObject.Create();
+        data.AddField("CurrentLayer", CurrentLayer);
+        JSONObject layerDicDatas = JSONObject.Create(JSONObject.Type.ARRAY);
+        foreach (var item in layerDic)
+        {
+            JSONObject layerDicData = JSONObject.Create();
+            layerDicData.AddField("Key", item.Key);
+            layerDicData.AddField("Value", item.Value.Save());
+            layerDicDatas.Add(layerDicData);
+        }
+        data.AddField("LayerDic", layerDicDatas);
+        return data;
+        //throw new System.NotImplementedException();
+    }
 
-    //        CreatorMap();
-    //    }
-    //}
-    //#endregion
+    public void Load(JSONObject data)
+    {
+        CurrentLayer = (int)data.GetField("CurrentLayer").i;
+        JSONObject layerDicDatas = data.GetField("LayerDic");
+        for (int i = 0; i < layerDicDatas.Count; i++)
+        {
+            JSONObject layerDicData = layerDicDatas[i];
+            MapLayerItem mapLayerItem = new MapLayerItem();
+            mapLayerItem.Load(layerDicData);
+            layerDic.Add(mapLayerItem.Layer, mapLayerItem);
+            layerList.Add(mapLayerItem);
+        }
+
+        //throw new System.NotImplementedException();
+    }
 }

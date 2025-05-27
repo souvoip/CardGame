@@ -15,4 +15,16 @@ public class GameManager : MonoBehaviour
         GameEventDataManager.Init();
         BattleDataManager.Init();
     }
+
+
+
+    // Test ==== 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            string str = MapManager.Instance.Save().ToString();
+            Debug.Log("Save: " + str);
+        }
+    }
 }
