@@ -70,4 +70,15 @@ public static class Utility
         }
         image.rectTransform.localScale = new Vector3(scaleX, scaleY, 1);
     }
+
+    public static string V3ToString(this Vector3 v3)
+    {
+        return v3.x + "," + v3.y + "," + v3.z;
+    }
+
+    public static Vector3 V3FromString(this string str)
+    {
+        string[] strs = str.Split(',');
+        return new Vector3(float.Parse(strs[0]), float.Parse(strs[1]), float.Parse(strs[2]));
+    }
 }

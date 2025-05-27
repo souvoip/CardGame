@@ -44,15 +44,16 @@ public abstract class CardBase : ScriptableObject
 
     public EGetWay GetWay;
 
-    public int Level;
-
-    public int MaxLevel;
+    private int Level = 1;
+    [DisplayOnly]
+    public int MaxLevel = 1;
 
     public ECardFeatures Features;
-    public BattleAnimData cardAnimData;
+    public BattleAnimData CardAnimData;
     [SerializeReference]
     public List<CardAction> CardActions;
 
+    public List<CardLevelData> LevelDatas;
 
     /// <summary>
     /// 非指向性
@@ -60,7 +61,6 @@ public abstract class CardBase : ScriptableObject
     public virtual void UseCard()
     {
         UseCard(null);
-        UseOver();
     }
     /// <summary>
     /// 指向性
@@ -206,7 +206,7 @@ public abstract class CardBase : ScriptableObject
                 {
                     if (CardActions[i].ActionType == ECardActionType.Damage)
                     {
-                        CardActions[i].Execute(characterTarget, cardAnimData);
+                        CardActions[i].Execute(characterTarget, CardAnimData);
                     }
                 }
                 break;
@@ -215,7 +215,7 @@ public abstract class CardBase : ScriptableObject
                 {
                     if (CardActions[i].ActionType == ECardActionType.Defend)
                     {
-                        CardActions[i].Execute(characterTarget, cardAnimData);
+                        CardActions[i].Execute(characterTarget, CardAnimData);
                     }
                 }
                 break;
@@ -224,7 +224,16 @@ public abstract class CardBase : ScriptableObject
                 {
                     if ((CardActions[i].ActionType == ECardActionType.Buff) && (CardActions[i] as CardBuffAction).Buff.AddBuffTime == triggerTime)
                     {
-                        CardActions[i].Execute(characterTarget, cardAnimData);
+                        CardActions[i].Execute(characterTarget, CardAnimData);
+                    }
+                }
+                break;
+            case ECardActionType.CardExtract:
+                for (int i = 0; i < CardActions.Count; i++)
+                {
+                    if (CardActions[i].ActionType == ECardActionType.CardExtract)
+                    {
+                        CardActions[i].Execute(characterTarget, CardAnimData);
                     }
                 }
                 break;
@@ -233,7 +242,33 @@ public abstract class CardBase : ScriptableObject
 
     public void UpgradeCard()
     {
+        if(!IsUpgrade()) { return; }
+        Level++;
+        SetLevelData(Level);
+    }
 
+    public void SetLevelData(int level)
+    {
+        if (level > MaxLevel) { return; }
+        Level = level;
+        var cld = LevelDatas[level - 1];
+        Name = cld.UName;
+        Desc = cld.UDesc;
+        ImagePath = cld.UImagePath;
+        Price = cld.UPrice;
+        Fee = cld.UFee;
+        Features |= cld.UAddFeatures;
+        Features &= ~cld.URemoveFeatures;
+        CardAnimData = cld.UCardAnimData;
+        CardActions = cld.UCardActions;
+    }
+    /// <summary>
+    /// 是否可以升级
+    /// </summary>
+    /// <returns></returns>
+    public bool IsUpgrade()
+    {
+        return Level < MaxLevel;
     }
 }
 
@@ -300,59 +335,18 @@ public enum ECardFeatures
 }
 
 
-public abstract class CardAction
+[Serializable]
+public class CardLevelData
 {
-    public abstract ECardActionType ActionType { get; }
+    public string UName;
+    public string UDesc;
+    public string UImagePath;
+    public int UPrice;
+    public int UFee;
 
-    public virtual void Execute() { }
-
-    public virtual void Execute(CharacterBase target) { }
-}
-
-public class CardAction_Damage : CardAction
-{
-    public override ECardActionType ActionType => ECardActionType.Damage;
-
-    public Damage BaseDamage;
-
-    /// <summary>
-    /// 攻击次数
-    /// </summary>
-    public int HitCount;
-}
-
-public class CardAction_Defend : CardAction
-{
-    public override ECardActionType ActionType => ECardActionType.Defend;
-
-    /// <summary>
-    /// 给予的护盾值
-    /// </summary>
-    public Block BaseBlock;
-    /// <summary>
-    /// 次数
-    /// </summary>
-    public int SkillCount = 1;
-}
-
-public class CardAction_Buff : CardAction
-{
-    public override ECardActionType ActionType => ECardActionType.Buff;
-
-    public BuffItem Buff;
-}
-
-public class CardAction_CardExtract : CardAction
-{
-    public override ECardActionType ActionType => ECardActionType.CardExtract;
-
-    public List<CardExtract> Extract;
-}
-
-public enum ECardActionType
-{
-    Damage = 1,
-    Defend = 2,
-    Buff = 3,
-    CardExtract = 4,
+    public ECardFeatures UAddFeatures;
+    public ECardFeatures URemoveFeatures;
+    public BattleAnimData UCardAnimData;
+    [SerializeReference]
+    public List<CardAction> UCardActions;
 }

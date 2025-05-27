@@ -16,20 +16,29 @@ MonoBehaviour:
   Name: "\u65CB\u98CE\u65A9"
   Desc: 
   ImagePath: 003
-  CardType: 0
   UseType: 1
   Rare: 1
   Price: 45
   Fee: 1
   GetWay: 14
-  Buffs: []
-  Extract: []
+  Level: 0
+  MaxLevel: 0
   Features: 0
-  cardAnimData:
-    path: NormalAtk
-    time: 1
-  BaseDamage:
-    DamageValue: 6
-    DamageRate: 1
-    isNext: 1
-  HitCount: 1
+  CardAnimData:
+    path: 
+    time: 0
+  CardActions:
+  - rid: 8894977000828829762
+  LevelDatas: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 8894977000828829762
+      type: {class: CardDamageAction, ns: , asm: Assembly-CSharp}
+      data:
+        BaseDamage:
+          DamageValue: 6
+          DamageRate: 1
+          isNext: 1
+        TargetRole: 2
+        HitCount: 1

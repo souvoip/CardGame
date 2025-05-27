@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.U2D.Aseprite;
 using UnityEngine;
 
-public class MapLayerItem
+public class MapLayerItem : ISaveLoad
 {
     private static int xRandom = 50;
     private static int yRandom = 45;
@@ -175,6 +176,29 @@ public class MapLayerItem
         }
     }
 
+    public JSONObject Save()
+    {
+        JSONObject data = JSONObject.Create();
+        data.AddField("Layer", Layer);
+        JSONObject mapItemDicDatas = JSONObject.Create(JSONObject.Type.ARRAY);
+        foreach (var item in MapItemDic)
+        {
+            JSONObject mapItemData = JSONObject.Create();
+            mapItemData.AddField("Key", item.Key);
+            mapItemData.AddField("Value", item.Value.Save());
+            mapItemDicDatas.Add(mapItemData);
+        }
+        data.AddField("MapItemDic", mapItemDicDatas);
+        data.AddField("LayerType", (int)LayerType);
+        return data;
+    }
+
+    public void Load(JSONObject data)
+    {
+        Layer = (int)data.GetField("Layer").i;
+        LayerType = (ELayerType)data.GetField("LayerType").i;
+        JSONObject mapItemDicDatas = data.GetField("MapItemDic");
+    }
 }
 
 public enum ELayerType

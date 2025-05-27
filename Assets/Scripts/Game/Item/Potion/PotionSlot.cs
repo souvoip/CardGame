@@ -39,6 +39,14 @@ public class PotionSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         isEmpty = false;
     }
 
+    public void RemovePotion()
+    {
+        if (isEmpty) { return; }
+        Destroy(potionItem.gameObject);
+        isEmpty = true;
+        potionItem = null;
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         // 显示药水信息，如果为空显示默认信息
