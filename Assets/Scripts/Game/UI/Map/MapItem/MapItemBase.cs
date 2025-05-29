@@ -203,9 +203,12 @@ public class MapItemBase : MonoBehaviour, ISaveLoad
 
     public void Load(JSONObject data)
     {
-        Type = (EMapItemType)data.GetField("Type").i;
-        State = (EMapState)data.GetField("State").i;
-        Layer = (int)data.GetField("Layer").i;
+        Init((EMapItemType)data.GetField("Type").i, (EMapState)data.GetField("State").i, (int)data.GetField("Layer").i);
+        //mapItemImage = transform.GetComponent<Image>();
+        //Type = (EMapItemType)data.GetField("Type").i;
+        //State = (EMapState)data.GetField("State").i;
+        //Layer = (int)data.GetField("Layer").i;
+        //transform.GetComponent<Button>().onClick.AddListener(OnClick);
         transform.localPosition = data.GetField("localPosition").str.V3FromString();
     }
 }

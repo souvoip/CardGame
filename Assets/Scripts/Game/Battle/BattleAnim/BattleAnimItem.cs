@@ -22,8 +22,22 @@ public class BattleAnimItem : MonoBehaviour
 }
 
 [Serializable]
-public class BattleAnimData
+public class BattleAnimData : ISaveLoad
 {
     public string path;
     public float time;
+
+    public void Load(JSONObject data)
+    {
+        path = data.GetField("path").str;
+        time = data.GetField("time").f;
+    }
+
+    public JSONObject Save()
+    {
+        JSONObject data = JSONObject.Create();
+        data.AddField("path", path);
+        data.AddField("time", time);
+        return data;
+    }
 }

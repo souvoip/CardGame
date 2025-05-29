@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class CardExtract
+public class CardExtract : ISaveLoad
 {
     /// <summary>
     /// 原目标
@@ -26,6 +26,26 @@ public class CardExtract
     /// 抽取模式
     /// </summary>
     public EExtractMode mode;
+
+    public void Load(JSONObject data)
+    {
+        origin = (ECardRegion)data.GetField("origin").i;
+        target = (ECardRegion)data.GetField("target").i;
+        Count = (int)data.GetField("count").i;
+        cardType = (EExtractCardType)data.GetField("cardType").i;
+        mode = (EExtractMode)data.GetField("mode").i;
+    }
+
+    public JSONObject Save()
+    {
+        JSONObject data = JSONObject.Create();
+        data.AddField("origin", (int)origin);
+        data.AddField("target", (int)target);
+        data.AddField("count", Count);
+        data.AddField("cardType", (int)cardType);
+        data.AddField("mode", (int)mode);
+        return data;
+    }
 }
 
 [System.Flags]

@@ -40,6 +40,7 @@ public class MapLayerItem : ISaveLoad
 
         InitLayerDic(creatorCount, mapItemPrefab);
     }
+
     public void InitLayerDic(int Count, Transform rootObj)
     {
         if (MapItemDic == null)
@@ -67,7 +68,56 @@ public class MapLayerItem : ISaveLoad
             nowItem.RefreshUI(Layer + "_" + i, Layer);
             MapItemDic.Add(i, nowItem);
         }
+    }
 
+    public void LoadData(JSONObject data, Transform mapItemPrefab)
+    {
+        Load(data);
+        JSONObject mapItemDicDatas = data.GetField("MapItemDic");
+        LoadLayerDic(mapItemDicDatas, mapItemPrefab);
+    }
+
+    private void LoadLayerDic(JSONObject data, Transform rootObj)
+    {
+        MapItemDic = new Dictionary<int, MapItemBase>();
+        for (int i = 0; i < data.Count; i++)
+        {
+            int key = (int)data[i].GetField("Key").i;
+            JSONObject itemData = data[i].GetField("Value");
+            Transform obj = GameObject.Instantiate(rootObj, rootObj.parent);
+
+            MapItemBase nowItem = null;
+            EMapItemType type = (EMapItemType)itemData.GetField("Type").i;
+            switch (type)
+            {
+                case EMapItemType.Battle:
+                    nowItem = obj.AddComponent<MapItem_Battle>();
+                    break;
+                case EMapItemType.Event:
+                    nowItem = obj.AddComponent<MapItem_Event>();
+                    break;
+                case EMapItemType.HardBattle:
+                    nowItem = obj.AddComponent<MapItem_HardBattle>();
+                    break;
+                case EMapItemType.Treasures:
+                    nowItem = obj.AddComponent<MapItem_Treasures>();
+                    break;
+                case EMapItemType.Shop:
+                    nowItem = obj.AddComponent<MapItem_Shop>();
+                    break;
+                case EMapItemType.Restore:
+                    nowItem = obj.AddComponent<MapItem_Restore>();
+                    break;
+                case EMapItemType.Boss:
+                    nowItem = obj.AddComponent<MapItem_Boss>();
+                    break;
+            }
+            nowItem.Load(itemData);
+            nowItem.gameObject.SetActive(true);
+            nowItem.RefreshUI(Layer + "_" + key, Layer);
+
+            MapItemDic.Add(key, nowItem);
+        }
     }
 
     private MapItemBase CreatorMap(Transform rootObj)
@@ -197,7 +247,6 @@ public class MapLayerItem : ISaveLoad
     {
         Layer = (int)data.GetField("Layer").i;
         LayerType = (ELayerType)data.GetField("LayerType").i;
-        JSONObject mapItemDicDatas = data.GetField("MapItemDic");
     }
 }
 

@@ -19,6 +19,7 @@ public class PotionItem : MonoBehaviour
     {
         potionItemData.UseItem();
         clearPotionAction?.Invoke();
+        BattleManager.Instance.Player.RemoveItem(potionItemData);
         Destroy(gameObject);
     }
 
@@ -26,6 +27,7 @@ public class PotionItem : MonoBehaviour
     {
         potionItemData.UseItem(target);
         clearPotionAction?.Invoke();
+        BattleManager.Instance.Player.RemoveItem(potionItemData);
         Destroy(gameObject);
     }
 

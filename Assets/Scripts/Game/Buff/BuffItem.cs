@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class BuffItem
+public class BuffItem : ISaveLoad
 {
     public int BuffID;
     public int Stacks;
@@ -14,6 +14,24 @@ public class BuffItem
     public DetailInfo GetDetailInfo()
     {
         return BuffDataManager.GetBuff(BuffID).GetDetailInfo();
+    }
+
+    public void Load(JSONObject data)
+    {
+        BuffID = (int)data.GetField("BuffID").i;
+        Stacks = (int)data.GetField("Stacks").i;
+        Target = (ETargetRole)data.GetField("Target").i;
+        AddBuffTime = (EBuffTriggerTime)data.GetField("AddBuffTime").i;
+    }
+
+    public JSONObject Save()
+    {
+        JSONObject data = JSONObject.Create();
+        data.AddField("BuffID", BuffID);
+        data.AddField("Stacks", Stacks);
+        data.AddField("Target", (int)Target);
+        data.AddField("AddBuffTime", (int)AddBuffTime);
+        return data;
     }
 }
 

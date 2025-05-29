@@ -16,7 +16,9 @@ MonoBehaviour:
   Name: "\u706B\u7130\u4E4B\u5FC3"
   Description: "\u6218\u6597\u7ED3\u675F\u540E\u56DE\u590D6\u751F\u547D"
   IconPath: 001
+  Price: 0
   IsUnique: 1
+  GetWay: 1
   TriggerTime: 6
   Attribute: 0
   Target: 0

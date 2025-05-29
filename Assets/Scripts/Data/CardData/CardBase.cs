@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
-public abstract class CardBase : ScriptableObject
+public abstract class CardBase : ScriptableObject, ISaveLoad
 {
     /// <summary>
     /// 卡片类型
@@ -270,6 +270,68 @@ public abstract class CardBase : ScriptableObject
     {
         return Level < MaxLevel;
     }
+
+    public virtual JSONObject Save()
+    {
+        JSONObject data = JSONObject.Create();
+        data.AddField("CardType", (int)CardType);
+        data.AddField("ID", ID);
+        data.AddField("Name", Name);
+        data.AddField("Desc", Desc);
+        data.AddField("ImagePath", ImagePath);
+        data.AddField("UseType", (int)UseType);
+        data.AddField("Rare", (int)Rare);
+        data.AddField("Price", Price);
+        data.AddField("Fee", Fee);
+        data.AddField("GetWay", (int)GetWay);
+        data.AddField("Level", Level);
+        data.AddField("MaxLevel", MaxLevel);
+        data.AddField("Features", (int)Features);
+        data.AddField("CardAnimData", CardAnimData.Save());
+        JSONObject actionsData = JSONObject.Create(JSONObject.Type.ARRAY);
+        for (int i = 0; i < CardActions.Count; i++)
+        {
+            actionsData.Add(CardActions[i].Save());
+        }
+        data.AddField("CardActions", actionsData);
+        JSONObject levelDatas = JSONObject.Create(JSONObject.Type.ARRAY);
+        for (int i = 0; i < LevelDatas.Count; i++)
+        {
+            levelDatas.Add(LevelDatas[i].Save());
+        }
+        data.AddField("LevelDatas", levelDatas);
+        return data;
+    }
+
+    public virtual void Load(JSONObject data)
+    {
+        ID = (int)data.GetField("ID").i;
+        Name = data.GetField("Name").str;
+        Desc = data.GetField("Desc").str;
+        ImagePath = data.GetField("ImagePath").str;
+        UseType = (EUseType)data.GetField("UseType").i;
+        Rare = (ECardRare)data.GetField("Rare").i;
+        Price = (int)data.GetField("Price").i;
+        Fee = (int)data.GetField("Fee").i;
+        GetWay = (EGetWay)data.GetField("GetWay").i;
+        Level = (int)data.GetField("Level").i;
+        MaxLevel = (int)data.GetField("MaxLevel").i;
+        Features = (ECardFeatures)data.GetField("Features").i;
+        CardAnimData = new BattleAnimData();
+        CardAnimData.Load(data.GetField("CardAnimData"));
+        CardActions = new List<CardAction>();
+        for (int i = 0; i < data.GetField("CardActions").Count; i++)
+        {
+            CardActions.Add(CardAction.Create(data.GetField("CardActions")[i]));
+        }
+        LevelDatas = new List<CardLevelData>();
+        for (int i = 0; i < data.GetField("LevelDatas").Count; i++)
+        {
+            var levelData = new CardLevelData();
+            levelData.Load(data.GetField("LevelDatas")[i]);
+            LevelDatas.Add(levelData);
+        }
+    }
 }
 
 public enum ECardRare
@@ -336,7 +398,7 @@ public enum ECardFeatures
 
 
 [Serializable]
-public class CardLevelData
+public class CardLevelData : ISaveLoad
 {
     public string UName;
     public string UDesc;
@@ -349,4 +411,42 @@ public class CardLevelData
     public BattleAnimData UCardAnimData;
     [SerializeReference]
     public List<CardAction> UCardActions;
+
+    public void Load(JSONObject data)
+    {
+        UName = data.GetField("UName").str;
+        UDesc = data.GetField("UDesc").str;
+        UImagePath = data.GetField("UImagePath").str;
+        UPrice = (int)data.GetField("UPrice").i;
+        UFee = (int)data.GetField("UFee").i;
+        UAddFeatures = (ECardFeatures)data.GetField("UAddFeatures").i;
+        URemoveFeatures = (ECardFeatures)data.GetField("URemoveFeatures").i;
+        UCardAnimData = new BattleAnimData();
+        UCardAnimData.Load(data.GetField("UCardAnimData"));
+        UCardActions = new List<CardAction>();
+        for (int i = 0; i < data.GetField("UCardActions").Count; i++)
+        {
+            UCardActions.Add(CardAction.Create(data.GetField("UCardActions")[i]));
+        }
+    }
+
+    public JSONObject Save()
+    {
+        JSONObject data = JSONObject.Create();
+        data.AddField("UName", UName);
+        data.AddField("UDesc", UDesc);
+        data.AddField("UImagePath", UImagePath);
+        data.AddField("UPrice", UPrice);
+        data.AddField("UFee", UFee);
+        data.AddField("UAddFeatures", (int)UAddFeatures);
+        data.AddField("URemoveFeatures", (int)URemoveFeatures);
+        data.AddField("UCardAnimData", UCardAnimData.Save());
+        JSONObject actionsData = JSONObject.Create(JSONObject.Type.ARRAY);
+        for (int i = 0; i < UCardActions.Count; i++)
+        {
+            actionsData.Add(UCardActions[i].Save());
+        }
+        data.AddField("UCardActions", actionsData);
+        return data;
+    }
 }

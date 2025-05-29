@@ -1,7 +1,7 @@
 using System;
 
 [Serializable]
-public abstract class CardAction : ICloneable
+public abstract class CardAction : ICloneable, ISaveLoad
 {
     public abstract ECardActionType ActionType { get; }
 
@@ -10,6 +10,43 @@ public abstract class CardAction : ICloneable
     public abstract void Execute(CharacterBase target, BattleAnimData anim = null);
 
     public abstract string GetDesc();
+
+    public virtual void Load(JSONObject data)
+    {
+    }
+
+    public virtual JSONObject Save()
+    {
+        JSONObject data = JSONObject.Create();
+        data.AddField("ActionType", (int)ActionType);
+        return data;
+    }
+
+    public static CardAction Create(JSONObject data)
+    {
+        ECardActionType type = (ECardActionType)data.GetField("ActionType").i;
+        switch (type)
+        {
+            case ECardActionType.Damage:
+                CardDamageAction act = new CardDamageAction();
+                act.Load(data);
+                return act;
+            case ECardActionType.Defend:
+                CardDefendAction act2 = new CardDefendAction();
+                act2.Load(data);
+                return act2;
+            case ECardActionType.Buff:
+                CardBuffAction act3 = new CardBuffAction();
+                act3.Load(data);
+                return act3;
+            case ECardActionType.CardExtract:
+                CardExtractAction act4 = new CardExtractAction();
+                act4.Load(data);
+                return act4;
+            default:
+                return null;
+        }
+    }
 }
 
 [Serializable]
@@ -32,7 +69,6 @@ public class CardDamageAction : CardAction
         clone.TargetRole = TargetRole;
         clone.HitCount = HitCount;
         return clone;
-
     }
 
     public override void Execute(CharacterBase target, BattleAnimData anim = null)
@@ -97,6 +133,23 @@ public class CardDamageAction : CardAction
 
         return desc;
     }
+
+    public override JSONObject Save()
+    {
+        JSONObject data = base.Save();
+        data.AddField("BaseDamage", BaseDamage.Save());
+        data.AddField("TargetRole", (int)TargetRole);
+        data.AddField("HitCount", HitCount);
+        return data;
+    }
+
+    public override void Load(JSONObject data)
+    {
+        base.Load(data);
+        BaseDamage = new Damage(data.GetField("BaseDamage"));
+        TargetRole = (ETargetRole)data.GetField("TargetRole").i;
+        HitCount = (int)data.GetField("HitCount").i;
+    }
 }
 
 [Serializable]
@@ -155,6 +208,21 @@ public class CardDefendAction : CardAction
             }
         }
         return desc;
+    }
+
+    public override JSONObject Save()
+    {
+        JSONObject data = base.Save();
+        data.AddField("BaseBlock", BaseBlock.Save());
+        data.AddField("SkillCount", SkillCount);
+        return data;
+    }
+
+    public override void Load(JSONObject data)
+    {
+        base.Load(data);
+        BaseBlock = new Block(data.GetField("BaseBlock"));
+        SkillCount = (int)data.GetField("SkillCount").i;
     }
 }
 
@@ -227,6 +295,20 @@ public class CardBuffAction : CardAction
         clone.Buff = new BuffItem(){ BuffID = Buff.BuffID, AddBuffTime = Buff.AddBuffTime, Stacks = Buff.Stacks, Target = Buff.Target };
         return clone;
     }
+
+    public override JSONObject Save()
+    {
+        JSONObject data = base.Save();
+        data.AddField("Buff", Buff.Save());
+        return data;
+    }
+
+    public override void Load(JSONObject data)
+    {
+        base.Load(data);
+        Buff = new BuffItem();
+        Buff.Load(data.GetField("Buff"));
+    }
 }
 
 [Serializable]
@@ -248,6 +330,20 @@ public class CardExtractAction : CardAction
     }
 
     public override string GetDesc() { return ""; }
+
+    public override JSONObject Save()
+    {
+        JSONObject data = base.Save();
+        data.AddField("Extract", Extract.Save());
+        return data;
+    }
+
+    public override void Load(JSONObject data)
+    {
+        base.Load(data);
+        Extract = new CardExtract();
+        Extract.Load(data.GetField("Extract"));
+    }
 }
 
 public enum ECardActionType

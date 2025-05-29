@@ -21,7 +21,6 @@ MonoBehaviour:
   Price: 75
   Fee: 1
   GetWay: 30
-  Level: 0
   MaxLevel: 2
   Features: 0
   CardAnimData:
@@ -35,23 +34,25 @@ MonoBehaviour:
     UImagePath: 202
     UPrice: 75
     UFee: 1
-    UFeatures: 0
+    UAddFeatures: 0
+    URemoveFeatures: 0
     UCardAnimData:
       path: NormalAbility
       time: 1.2
     UCardActions:
-    - rid: 8894977000828829767
-  - UName: "\u654F\u6377\u589E\u5F3A"
+    - rid: 8894977115521810491
+  - UName: "\u654F\u6377\u589E\u5F3A+"
     UDesc: 
     UImagePath: 202
-    UPrice: 75
+    UPrice: 120
     UFee: 1
-    UFeatures: 0
+    UAddFeatures: 0
+    URemoveFeatures: 0
     UCardAnimData:
       path: NormalAbility
       time: 1.2
     UCardActions:
-    - rid: 8894977000828829767
+    - rid: 8894977115521810492
   references:
     version: 2
     RefIds:
@@ -61,5 +62,21 @@ MonoBehaviour:
         Buff:
           BuffID: 3
           Stacks: 2
+          Target: 0
+          AddBuffTime: 1
+    - rid: 8894977115521810491
+      type: {class: CardBuffAction, ns: , asm: Assembly-CSharp}
+      data:
+        Buff:
+          BuffID: 3
+          Stacks: 2
+          Target: 0
+          AddBuffTime: 1
+    - rid: 8894977115521810492
+      type: {class: CardBuffAction, ns: , asm: Assembly-CSharp}
+      data:
+        Buff:
+          BuffID: 3
+          Stacks: 4
           Target: 0
           AddBuffTime: 1

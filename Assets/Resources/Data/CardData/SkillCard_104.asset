@@ -21,15 +21,38 @@ MonoBehaviour:
   Price: 38
   Fee: 1
   GetWay: 0
-  Level: 0
-  MaxLevel: 0
+  MaxLevel: 2
   Features: 0
   CardAnimData:
-    path: 
-    time: 0
+    path: NormalSkill
+    time: 1.2
   CardActions:
   - rid: 8894977000828829774
-  LevelDatas: []
+  LevelDatas:
+  - UName: "\u6050\u5413"
+    UDesc: 
+    UImagePath: 104
+    UPrice: 38
+    UFee: 1
+    UAddFeatures: 0
+    URemoveFeatures: 0
+    UCardAnimData:
+      path: NormalSkill
+      time: 1.2
+    UCardActions:
+    - rid: 8894977115521810518
+  - UName: "\u6050\u5413+"
+    UDesc: 
+    UImagePath: 104
+    UPrice: 50
+    UFee: 1
+    UAddFeatures: 0
+    URemoveFeatures: 0
+    UCardAnimData:
+      path: NormalSkill
+      time: 1.2
+    UCardActions:
+    - rid: 8894977115521810519
   references:
     version: 2
     RefIds:
@@ -39,5 +62,21 @@ MonoBehaviour:
         Buff:
           BuffID: 4
           Stacks: 2
+          Target: 1
+          AddBuffTime: 1
+    - rid: 8894977115521810518
+      type: {class: CardBuffAction, ns: , asm: Assembly-CSharp}
+      data:
+        Buff:
+          BuffID: 4
+          Stacks: 2
+          Target: 1
+          AddBuffTime: 1
+    - rid: 8894977115521810519
+      type: {class: CardBuffAction, ns: , asm: Assembly-CSharp}
+      data:
+        Buff:
+          BuffID: 4
+          Stacks: 3
           Target: 1
           AddBuffTime: 1
