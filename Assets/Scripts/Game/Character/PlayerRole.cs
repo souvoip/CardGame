@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using static UnityEditor.Timeline.Actions.MenuPriority;
 
-public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandler
+public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandler, ISaveLoad
 {
     [SerializeField]
     private StateBar hpBar;
@@ -289,5 +289,31 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
         {
             AddItem(itemIDs[UnityEngine.Random.Range(0, itemIDs.Count)]);
         }
+    }
+
+    public JSONObject Save()
+    {
+        return roleData.Save();
+    }
+
+    public void Load(JSONObject data)
+    {
+        roleData.Load(data);
+        // 刷新UI
+        hpBar.SetHealth(roleData.HP);
+        hpBar.SetMaxHealth(roleData.MaxHP);
+
+        Debug.Log(roleData.Items.Count);
+
+        UIManager.Instance.gameTopUI.UpdatePlayerPotionItemInfo();
+        UIManager.Instance.gameTopUI.UpdatePlayerRemainsItemInfo();
+
+        UIManager.Instance.gameTopUI.SetHpTxt(roleData.HP, roleData.MaxHP);
+        UIManager.Instance.gameTopUI.SetGoldTxt(roleData.Gold);
+    }
+
+    public void RemoveItem(PotionItemData potionItemData)
+    {
+        roleData.Items.Remove(potionItemData);
     }
 }

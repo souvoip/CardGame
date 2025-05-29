@@ -21,19 +21,39 @@ MonoBehaviour:
   Price: 0
   Fee: 0
   GetWay: 0
-  Level: 0
-  MaxLevel: 0
+  MaxLevel: 1
   Features: 11
   CardAnimData:
-    path: 
-    time: 0
+    path: NormalAtk
+    time: 1.2
   CardActions:
   - rid: 8894977000828829765
-  LevelDatas: []
+  LevelDatas:
+  - UName: "\u6D4B\u8BD5\u5361\u724C"
+    UDesc: "\u6D4B\u8BD5\u5361\u724C"
+    UImagePath: 001
+    UPrice: 0
+    UFee: 0
+    UAddFeatures: 11
+    URemoveFeatures: 0
+    UCardAnimData:
+      path: NormalAtk
+      time: 1.2
+    UCardActions:
+    - rid: 8894977115521810509
   references:
     version: 2
     RefIds:
     - rid: 8894977000828829765
+      type: {class: CardDamageAction, ns: , asm: Assembly-CSharp}
+      data:
+        BaseDamage:
+          DamageValue: 100
+          DamageRate: 1
+          isNext: 1
+        TargetRole: 2
+        HitCount: 1
+    - rid: 8894977115521810509
       type: {class: CardDamageAction, ns: , asm: Assembly-CSharp}
       data:
         BaseDamage:

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class ItemDataBase : ScriptableObject
+public class ItemDataBase : ScriptableObject, ISaveLoad
 {
     public int ID;
 
@@ -28,6 +28,17 @@ public class ItemDataBase : ScriptableObject
     public virtual EItemType ItemType { get; }
 
     public virtual DetailInfo GetDetailInfo() { return null; }
+
+    public virtual void Load(JSONObject data)
+    {
+    }
+
+    public virtual JSONObject Save()
+    {
+        JSONObject data = JSONObject.Create();
+        data.AddField("ID", ID);
+        return data;
+    }
 }
 
 

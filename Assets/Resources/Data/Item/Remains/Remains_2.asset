@@ -18,7 +18,7 @@ MonoBehaviour:
   IconPath: 002
   Price: 110
   IsUnique: 0
-  GetWay: 14
+  GetWay: 46
   TriggerTime: 0
   Attribute: 1
   Target: 0

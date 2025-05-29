@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
-public class Damage
+public class Damage: ISaveLoad
 {
     public int DamageValue;
     public float DamageRate;
@@ -27,8 +27,29 @@ public class Damage
         isNext = damage.isNext;
     }
 
+    public Damage(JSONObject data)
+    {
+        Load(data);
+    }
+
     public int GetDamageValue()
     {
         return Mathf.CeilToInt(DamageValue * DamageRate);
+    }
+
+    public JSONObject Save()
+    {
+        JSONObject data = JSONObject.Create();
+        data.AddField("DamageValue", DamageValue);
+        data.AddField("DamageRate", DamageRate);
+        data.AddField("isNext", isNext);
+        return data;
+    }
+
+    public void Load(JSONObject data)
+    {
+        DamageValue = (int)data.GetField("DamageValue").i;
+        DamageRate = data.GetField("DamageRate").f;
+        isNext = data.GetField("isNext").b;
     }
 }

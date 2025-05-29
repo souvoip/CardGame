@@ -18,7 +18,7 @@ MonoBehaviour:
   IconPath: 102
   Price: 52
   IsUnique: 0
-  GetWay: 14
+  GetWay: 62
   useAnimData:
     path: 
     time: 0

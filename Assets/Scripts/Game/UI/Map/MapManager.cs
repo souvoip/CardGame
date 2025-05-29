@@ -61,6 +61,15 @@ public class MapManager : MonoBehaviour, ISaveLoad
         UpdateMapStateInfo();
     }
 
+    private void LoadMap()
+    {
+        nodeRegion.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 300 * (MaxLayer + 1));
+        dlm.ClearLine(lineNode);
+        dlm.RefreshLineData(layerList);
+        dlm.DrawLine(layerList, linePrefab, lineNode);
+        UpdateMapStateInfo();
+    }
+
     public void InitData()
     {
         if (layerDic == null)
@@ -171,17 +180,35 @@ public class MapManager : MonoBehaviour, ISaveLoad
 
     public void Load(JSONObject data)
     {
+        if (layerDic == null)
+        {
+            layerDic = new Dictionary<int, MapLayerItem>();
+            layerList = new List<MapLayerItem>();
+        }
+        else
+        {
+            for (int i = 0; i < layerList.Count; i++)
+            {
+                layerList[i].Clear();
+            }
+            layerDic.Clear();
+            layerList.Clear();
+        }
+
         CurrentLayer = (int)data.GetField("CurrentLayer").i;
         JSONObject layerDicDatas = data.GetField("LayerDic");
         for (int i = 0; i < layerDicDatas.Count; i++)
         {
             JSONObject layerDicData = layerDicDatas[i];
             MapLayerItem mapLayerItem = new MapLayerItem();
-            mapLayerItem.Load(layerDicData);
+            mapLayerItem.LoadData(layerDicData.GetField("Value"), mapItemPrefab);
             layerDic.Add(mapLayerItem.Layer, mapLayerItem);
             layerList.Add(mapLayerItem);
         }
 
+        LoadMap();
+
+        ResetMapShowRegion();
         //throw new System.NotImplementedException();
     }
 }

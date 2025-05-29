@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class CardManager : MonoBehaviour
+public class CardManager : MonoBehaviour, ISaveLoad
 {
     /// <summary>
     /// 卡牌起始位置
@@ -717,6 +717,28 @@ public class CardManager : MonoBehaviour
             nowTaskItem = null;
             //nowSelectEnemy = null;
             nowCardState = ECardState.None;
+        }
+    }
+
+    public JSONObject Save()
+    {
+        JSONObject data = JSONObject.Create(JSONObject.Type.ARRAY);
+        foreach (var item in playerAllCards)
+        {
+            data.Add(item.Save());
+        }
+        return data;
+    }
+
+    public void Load(JSONObject data)
+    {
+        playerAllCards.Clear();
+        for (int i = 0; i < data.Count; i++)
+        {
+            JSONObject cd = data[i];
+            CardBase card = CardDataManager.GetCard((int)cd.GetField("ID").i);
+            card.Load(cd);
+            playerAllCards.Add(card);
         }
     }
 

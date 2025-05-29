@@ -21,16 +21,41 @@ MonoBehaviour:
   Price: 20
   Fee: 2
   GetWay: 1
-  Level: 0
-  MaxLevel: 0
+  MaxLevel: 2
   Features: 0
   CardAnimData:
-    path: 
-    time: 0
+    path: NormalAtk
+    time: 1.2
   CardActions:
   - rid: 8894977000828829759
   - rid: 8894977000828829761
-  LevelDatas: []
+  LevelDatas:
+  - UName: "\u91CD\u51FB"
+    UDesc: 
+    UImagePath: 002
+    UPrice: 20
+    UFee: 2
+    UAddFeatures: 0
+    URemoveFeatures: 0
+    UCardAnimData:
+      path: NormalAtk
+      time: 1.2
+    UCardActions:
+    - rid: 8894977115521810499
+    - rid: 8894977115521810500
+  - UName: "\u91CD\u51FB+"
+    UDesc: 
+    UImagePath: 002
+    UPrice: 20
+    UFee: 2
+    UAddFeatures: 0
+    URemoveFeatures: 0
+    UCardAnimData:
+      path: NormalAtk
+      time: 1.2
+    UCardActions:
+    - rid: 8894977115521810501
+    - rid: 8894977115521810502
   references:
     version: 2
     RefIds:
@@ -49,5 +74,39 @@ MonoBehaviour:
         Buff:
           BuffID: 1
           Stacks: 2
+          Target: 1
+          AddBuffTime: 2
+    - rid: 8894977115521810499
+      type: {class: CardDamageAction, ns: , asm: Assembly-CSharp}
+      data:
+        BaseDamage:
+          DamageValue: 8
+          DamageRate: 1
+          isNext: 1
+        TargetRole: 1
+        HitCount: 1
+    - rid: 8894977115521810500
+      type: {class: CardBuffAction, ns: , asm: Assembly-CSharp}
+      data:
+        Buff:
+          BuffID: 1
+          Stacks: 2
+          Target: 1
+          AddBuffTime: 2
+    - rid: 8894977115521810501
+      type: {class: CardDamageAction, ns: , asm: Assembly-CSharp}
+      data:
+        BaseDamage:
+          DamageValue: 12
+          DamageRate: 1
+          isNext: 1
+        TargetRole: 1
+        HitCount: 1
+    - rid: 8894977115521810502
+      type: {class: CardBuffAction, ns: , asm: Assembly-CSharp}
+      data:
+        Buff:
+          BuffID: 1
+          Stacks: 3
           Target: 1
           AddBuffTime: 2
