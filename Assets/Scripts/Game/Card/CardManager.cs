@@ -117,6 +117,20 @@ public class CardManager : MonoBehaviour, ISaveLoad
         InitCard();
 
         AddEvents();
+    }
+
+    private void OnDestroy()
+    {
+        RemoveEvents();
+    }
+
+    public void InitGameCardData(JSONObject data = null)
+    {
+        if (data != null)
+        {
+            Load(data);
+            return;
+        }
 
         #region Test
         playerAllCards = new List<CardBase>();
@@ -139,10 +153,6 @@ public class CardManager : MonoBehaviour, ISaveLoad
         #endregion
     }
 
-    private void OnDestroy()
-    {
-        RemoveEvents();
-    }
 
     /// <summary>
     /// 数据初始化
@@ -603,7 +613,7 @@ public class CardManager : MonoBehaviour, ISaveLoad
         // 判断当前卡牌能否使用，不能使用则取消选中
         if (worldPosition.y > -2.4f)
         {
-            if (!nowTaskItem.CardData.IsCanUse())
+            if (!nowTaskItem.CardData.IsCanUse() || TurnManager.TurnType != ETurnType.Player)
             {
                 CancelSelect();
                 return;
@@ -732,7 +742,14 @@ public class CardManager : MonoBehaviour, ISaveLoad
 
     public void Load(JSONObject data)
     {
-        playerAllCards.Clear();
+        if (playerAllCards == null)
+        {
+            playerAllCards = new List<CardBase>();
+        }
+        else
+        {
+            playerAllCards.Clear();
+        }
         for (int i = 0; i < data.Count; i++)
         {
             JSONObject cd = data[i];

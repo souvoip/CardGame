@@ -179,9 +179,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 1353125418}
   EnemyRoles: []
-  EnemySpawnPoint:
-  - {fileID: 1829780774}
-  - {fileID: 1244966185}
+  EnemySpawnParent: {fileID: 0}
   CardManager: {fileID: 1145219183}
   TurnManager: {fileID: 1049012090}
   nowSelectEnemy: {fileID: 0}
@@ -1973,6 +1971,10 @@ MonoBehaviour:
   gameTopUI: {fileID: 1487857780}
   potionOptionUI: {fileID: 568452893}
   gameEventUI: {fileID: 0}
+  shopUI: {fileID: 0}
+  restUI: {fileID: 0}
+  prizeUI: {fileID: 0}
+  sceneTransitionUI: {fileID: 0}
 --- !u!114 &564310811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2943,7 +2945,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24d8af6e824e4354784fba789bc42a60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tempData: {fileID: 11400000, guid: 3130d4e9ee5db9846a0c15d3c55f4cb4, type: 2}
+  tempData: {fileID: 11400000, guid: 5bacca86b433ef640b4085e9ebcd80f4, type: 2}
   gameEventUI: {fileID: 1170188575}
 --- !u!1 &901734784
 GameObject:
@@ -5164,6 +5166,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e46db9e88a7be6b458baf4cee9061df0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nameTxt: {fileID: 0}
+  hpTxt: {fileID: 0}
+  goldTxt: {fileID: 0}
   remainsItemManager: {fileID: 1529769771}
   potionItemManager: {fileID: 1060924262}
 --- !u!224 &1487857781

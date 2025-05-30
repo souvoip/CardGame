@@ -39,12 +39,12 @@ public class CharacterBase : MonoBehaviour
 
     public virtual bool IsPlayer { get; }
 
-    protected virtual void Init() { }
+    public virtual void Init() { }
 
     private void Start()
     {
         buffControl = GetComponent<BuffControl>();
-        Init();
+        //Init();
     }
 
     public void AddBuff(BuffBase buff, int stracks)

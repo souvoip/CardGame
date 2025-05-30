@@ -84,14 +84,12 @@ public class PlayerRoleData : RoleData, ISaveLoad
         {
             Items.Clear();
         }
-        Debug.Log(Items.Count);
         for (int i = 0; i < itemsData.Count; i++)
         {
             ItemDataBase item = ItemDataManager.GetItem((int)itemsData[i].GetField("ID").i);
             item.Load(itemsData[i]);
             Items.Add(item);
         }
-        Debug.Log(Items.Count);
     }
 
     public JSONObject Save()
