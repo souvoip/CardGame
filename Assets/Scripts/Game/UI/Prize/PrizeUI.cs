@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,11 +9,15 @@ public class PrizeUI : MonoBehaviour
     [SerializeField]
     private Transform root;
     [SerializeField]
+    private Transform mask;
+    [SerializeField]
     private GameObject prizeItemPrefab;
     [SerializeField]
     private Transform itemContent;
     [SerializeField]
     private Button closeBtn;
+
+    private Action callback;
 
     private void Awake()
     {
@@ -20,8 +25,10 @@ public class PrizeUI : MonoBehaviour
         Hide();
     }
 
-    public void Show(List<PrizeItemData> prizeItems)
+    public void Show(List<PrizeItemData> prizeItems, Action callback = null)
     {
+        this.callback = callback;
+        mask.gameObject.SetActive(true);
         // 清理奖品
         for (int i = 0; i < itemContent.childCount; i++)
         {
@@ -39,6 +46,8 @@ public class PrizeUI : MonoBehaviour
 
     public void Hide()
     {
+        callback?.Invoke();
+        mask.gameObject.SetActive(false);
         root.gameObject.SetActive(false);
     }
 

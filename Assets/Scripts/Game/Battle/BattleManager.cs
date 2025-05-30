@@ -30,27 +30,31 @@ public class BattleManager : MonoBehaviour
 
     public void StartBattle(BattleData data)
     {
-        foreach (var enemy in EnemyRoles)
+        UIManager.Instance.sceneTransitionUI.FadeIn(() =>
         {
-            Destroy(enemy.gameObject);
-        }
-        EnemyRoles.Clear();
+            foreach (var enemy in EnemyRoles)
+            {
+                Destroy(enemy.gameObject);
+            }
+            EnemyRoles.Clear();
 
-        for (int i = 0; i < data.Enemies.Count; i++)
-        {
-            var enemy = Instantiate(enemyPrefab, EnemySpawnParent).GetComponent<EnemyRole>();
-            enemy.Init();
-            EnemyRoles.Add(enemy);
-            enemy.transform.position = data.Enemies[i].Position;
-            enemy.SetEnemyData(data.Enemies[i].EnemyID);
-        }
-        CardManager.InitBattleCardData();
+            for (int i = 0; i < data.Enemies.Count; i++)
+            {
+                var enemy = Instantiate(enemyPrefab, EnemySpawnParent).GetComponent<EnemyRole>();
+                enemy.Init();
+                EnemyRoles.Add(enemy);
+                enemy.transform.position = data.Enemies[i].Position;
+                enemy.SetEnemyData(data.Enemies[i].EnemyID);
+            }
+            CardManager.InitBattleCardData();
 
-        TimerTools.Timer.Once(0.5f, () =>
-        {
-            TurnManager.StartBattle();
-            TurnManager.PlayerTurnStart();
-            UIManager.Instance.mapUI.Hide();
+            TimerTools.Timer.Once(0.3f, () =>
+            {
+                TurnManager.StartBattle();
+                TurnManager.PlayerTurnStart();
+                UIManager.Instance.mapUI.Hide();
+                UIManager.Instance.sceneTransitionUI.FadeOut();
+            });
         });
     }
 
@@ -117,8 +121,14 @@ public class BattleManager : MonoBehaviour
                 // 需要随机物品
                 prizes.Add(new PrizeItemData(EPrizeType.Item, 2));
             }
-            UIManager.Instance.prizeUI.Show(prizes);
-            UIManager.Instance.mapUI.Show();
+            UIManager.Instance.prizeUI.Show(prizes, () =>
+            {
+                UIManager.Instance.sceneTransitionUI.FadeIn(() =>
+                {
+                    UIManager.Instance.mapUI.Show();
+                    UIManager.Instance.sceneTransitionUI.FadeOut();
+                });
+            });
         }
         else
         {

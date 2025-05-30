@@ -613,7 +613,7 @@ public class CardManager : MonoBehaviour, ISaveLoad
         // 判断当前卡牌能否使用，不能使用则取消选中
         if (worldPosition.y > -2.4f)
         {
-            if (!nowTaskItem.CardData.IsCanUse())
+            if (!nowTaskItem.CardData.IsCanUse() || TurnManager.TurnType != ETurnType.Player)
             {
                 CancelSelect();
                 return;
