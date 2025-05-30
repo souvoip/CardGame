@@ -39,6 +39,7 @@ public class BattleManager : MonoBehaviour
         for (int i = 0; i < data.Enemies.Count; i++)
         {
             var enemy = Instantiate(enemyPrefab, EnemySpawnParent).GetComponent<EnemyRole>();
+            enemy.Init();
             EnemyRoles.Add(enemy);
             enemy.transform.position = data.Enemies[i].Position;
             enemy.SetEnemyData(data.Enemies[i].EnemyID);

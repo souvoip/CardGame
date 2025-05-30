@@ -1,11 +1,10 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using static UnityEditor.Timeline.Actions.MenuPriority;
+using static UnityEditor.Progress;
 
 public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandler, ISaveLoad
 {
@@ -26,7 +25,7 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
 
     public override bool IsPlayer => true;
 
-    protected override void Init()
+    public override void Init()
     {
         // 获取玩家数据
         roleData = CharacterDataManager.GetPlayerRoleData(1);
@@ -298,12 +297,19 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
 
     public void Load(JSONObject data)
     {
+        roleData = CharacterDataManager.GetPlayerRoleData((int)data.GetField("ID").i);
         roleData.Load(data);
+
+        for(int i = 0; i < roleData.Items.Count; i++)
+        {
+            if (roleData.Items[i].ItemType == EItemType.Remains)
+            {
+                ((RemainsItemData)roleData.Items[i]).OnAcquire();
+            }
+        }
         // 刷新UI
         hpBar.SetHealth(roleData.HP);
         hpBar.SetMaxHealth(roleData.MaxHP);
-
-        Debug.Log(roleData.Items.Count);
 
         UIManager.Instance.gameTopUI.UpdatePlayerPotionItemInfo();
         UIManager.Instance.gameTopUI.UpdatePlayerRemainsItemInfo();

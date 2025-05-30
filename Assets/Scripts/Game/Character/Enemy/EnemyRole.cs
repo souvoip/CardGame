@@ -32,7 +32,7 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
 
     private EnemyDoAction currentRoundAction;
 
-    protected override void Init()
+    public override void Init()
     {
         AddEvents();
         enemyImg.material = Instantiate(dissolveMat);

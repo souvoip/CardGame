@@ -21,7 +21,7 @@ MonoBehaviour:
   Price: 45
   Fee: 1
   GetWay: 14
-  MaxLevel: 2
+  MaxLevel: 3
   Features: 0
   CardAnimData:
     path: NormalAtk
@@ -53,6 +53,18 @@ MonoBehaviour:
       time: 1.2
     UCardActions:
     - rid: 8894977115521810504
+  - UName: "\u65CB\u98CE\u65A9++"
+    UDesc: 
+    UImagePath: 003
+    UPrice: 45
+    UFee: 1
+    UAddFeatures: 0
+    URemoveFeatures: 0
+    UCardAnimData:
+      path: NormalAtk
+      time: 1.2
+    UCardActions:
+    - rid: 8894977115521810990
   references:
     version: 2
     RefIds:
@@ -79,6 +91,15 @@ MonoBehaviour:
       data:
         BaseDamage:
           DamageValue: 9
+          DamageRate: 1
+          isNext: 1
+        TargetRole: 2
+        HitCount: 1
+    - rid: 8894977115521810990
+      type: {class: CardDamageAction, ns: , asm: Assembly-CSharp}
+      data:
+        BaseDamage:
+          DamageValue: 6
           DamageRate: 1
           isNext: 1
         TargetRole: 2

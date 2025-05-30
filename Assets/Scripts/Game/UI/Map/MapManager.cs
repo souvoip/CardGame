@@ -35,7 +35,7 @@ public class MapManager : MonoBehaviour, ISaveLoad
 
     private void Start()
     {
-        CreatorMap();
+        //CreatorMap();
     }
 
     public void Show()

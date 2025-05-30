@@ -30,10 +30,18 @@ public class UIManager : MonoBehaviour
 
     public PrizeUI prizeUI;
 
+    public SceneTransition sceneTransitionUI;
+    
     private bool isDisableUIInteraction = false;
+
     private void Awake()
     {
         if (Instance == null) { Instance = this; }
+        TimerTools.Timer.Once(0.3f, () =>
+        {
+            GameManager.Instance.StartGame();
+            sceneTransitionUI.FadeOut();
+        });
     }
 
     /// <summary>

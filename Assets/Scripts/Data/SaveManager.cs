@@ -21,4 +21,9 @@ public class SaveManager
         }
         return null;
     }
+
+    public static bool SaveFileExists()
+    {
+        return System.IO.File.Exists(SavePath);
+    }
 }

@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public static bool isLoadGame = false;
+
+    public static GameManager Instance;
+
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
+        Instance = this;
         // 加载数据
         BuffDataManager.Init();
         CardDataManager.Init();
@@ -16,19 +21,45 @@ public class GameManager : MonoBehaviour
         BattleDataManager.Init();
     }
 
-
-
     // Test ==== 
-    private void Update()
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.S))
+    //    {
+    //        SaveData();
+    //    }
+    //    if (Input.GetKeyDown(KeyCode.L))
+    //    {
+    //        LoadData();
+    //    }
+    //}
+
+    public void StartGame()
     {
-        if (Input.GetKeyDown(KeyCode.S))
+        if (isLoadGame)
         {
-            SaveData();
+            LoadGame();
         }
-        if (Input.GetKeyDown(KeyCode.L))
+        else
         {
-            LoadData();
+            NewGame();
         }
+    }
+
+    private void NewGame()
+    {
+        BattleManager.Instance.CardManager.InitGameCardData();
+        BattleManager.Instance.Player.Init();
+        MapManager.Instance.CreatorMap();
+    }
+
+    private void LoadGame()
+    {
+        var data = LoadData();
+        BattleManager.Instance.CardManager.InitGameCardData(data.GetField("CardData"));
+        BattleManager.Instance.Player.Load(data.GetField("PlayerData"));
+        MapManager.Instance.Load(data.GetField("MapData"));
+
     }
 
     private void SaveData()
@@ -41,11 +72,14 @@ public class GameManager : MonoBehaviour
         Debug.Log("Save Data: " + data.Print(false));
     }
 
-    private void LoadData()
+    private JSONObject LoadData()
     {
-        JSONObject data = SaveManager.LoadData();
-        MapManager.Instance.Load(data.GetField("MapData"));
-        BattleManager.Instance.CardManager.Load(data.GetField("CardData"));
-        BattleManager.Instance.Player.Load(data.GetField("PlayerData"));
+        return SaveManager.LoadData();
+    }
+
+    private void OnApplicationQuit()
+    {
+        if(BattleManager.Instance == null) { return; }
+        SaveData();
     }
 }
