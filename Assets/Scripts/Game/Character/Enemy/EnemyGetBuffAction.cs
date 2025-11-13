@@ -14,6 +14,7 @@ public class EnemyGetBuffAction : EnemyDoAction
 
     public override void DoAction()
     {
+        base.DoAction();
         for (int i = 0; i < buffs.Count; i++)
         {
             self.AddBuff(BuffDataManager.GetBuff(buffs[i].BuffID), buffs[i].Stacks);

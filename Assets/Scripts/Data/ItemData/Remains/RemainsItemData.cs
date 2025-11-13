@@ -10,14 +10,9 @@ public class RemainsItemData : ItemDataBase
     public override EItemType ItemType => EItemType.Remains;
 
     /// <summary>
-    /// 是否是第一次获取，而不是通过读取游戏存档获得
-    /// </summary>
-    protected bool IsFirstAcquire = true;
-
-    /// <summary>
     /// 获得该道具时调用
     /// </summary>
-    public virtual void OnAcquire()
+    public virtual void OnAcquire(bool isFirstGet = true)
     {
 
     }

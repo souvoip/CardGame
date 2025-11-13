@@ -20,6 +20,7 @@ MonoBehaviour:
   Rare: 1
   Price: 45
   Fee: 1
+  useAudioEffect: card
   GetWay: 14
   MaxLevel: 3
   Features: 0

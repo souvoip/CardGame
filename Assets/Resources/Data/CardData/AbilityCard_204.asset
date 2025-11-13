@@ -20,6 +20,7 @@ MonoBehaviour:
   Rare: 2
   Price: 60
   Fee: 1
+  useAudioEffect: magic_02
   GetWay: 30
   MaxLevel: 2
   Features: 0

@@ -27,6 +27,8 @@ public class PlayerRoleData : RoleData, ISaveLoad
     [NonSerialized]
     public List<ItemDataBase> Items = new List<ItemDataBase>();
 
+    public List<int> initCards = new List<int>();
+
     public void Load(JSONObject data)
     {
         ID = (int)data.GetField("ID").i;

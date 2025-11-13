@@ -160,7 +160,7 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
 
     private void OnPlayerTurnStart()
     {
-        currentRoundAction = roleData.GetRandomAction();
+        currentRoundAction = roleData.GetEnemyAction();
         intention.ShowIntention(currentRoundAction.GetActionInfo());
     }
 

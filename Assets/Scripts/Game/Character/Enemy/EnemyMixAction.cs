@@ -10,5 +10,6 @@ public class EnemyMixAction : EnemyDoAction
 
     public override void DoAction()
     {
+        base.DoAction();
     }
 }

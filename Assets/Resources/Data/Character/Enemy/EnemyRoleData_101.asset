@@ -34,6 +34,7 @@ MonoBehaviour:
   - rid: 5035967028884406340
   - rid: 5035967051556978754
   - rid: 5035967051556978756
+  ActionIsRandom: 0
   EditAction:
     rid: 5035967323595604042
   references:
@@ -45,6 +46,7 @@ MonoBehaviour:
         actionAnim:
           path: NormalAtk
           time: 1
+        actionAudio: card
         actionName: "\u653B\u51FB"
         BaseDamage:
           DamageValue: 8
@@ -57,6 +59,8 @@ MonoBehaviour:
         actionAnim:
           path: NormalSkill
           time: 1
+        actionAudio: 39_Block_03
+        actionName: "\u83B7\u53D6\u62B5\u6297"
         baseBlock:
           Value: 10
           Rate: 1
@@ -66,6 +70,8 @@ MonoBehaviour:
         actionAnim:
           path: NormalSkill
           time: 1
+        actionAudio: electronic_02
+        actionName: "\u83B7\u53D6Buff"
         buffs:
         - BuffID: 2
           Stacks: 1
@@ -77,4 +83,6 @@ MonoBehaviour:
         actionAnim:
           path: 
           time: 0
+        actionAudio: 
+        actionName: "\u7ED9\u4E88\u73A9\u5BB6buff"
         buffs: []

@@ -12,6 +12,7 @@ public class EnemyGiveBuffAction : EnemyDoAction
     private ActionInfo actionInfo;
     public override void DoAction()
     {
+        base.DoAction();
         for (int i = 0; i < buffs.Count; i++)
         {
             BattleManager.Instance.Player.AddBuff(BuffDataManager.GetBuff(buffs[i].BuffID), buffs[i].Stacks);

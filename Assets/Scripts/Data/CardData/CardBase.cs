@@ -41,6 +41,10 @@ public abstract class CardBase : ScriptableObject, ISaveLoad
     /// 卡片费用
     /// </summary>
     public int Fee;
+    /// <summary>
+    /// 卡片使用音效
+    /// </summary>
+    public string useAudioEffect;
 
     public EGetWay GetWay;
 

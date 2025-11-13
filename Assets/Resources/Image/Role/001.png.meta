@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 34cd3a8bd906b3941bd43b3b33bb4a4c
+guid: 1602bf2082a072445b079c3fce402428
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 838345918361102726
-    second: 01644-1097665732-_lora_shu_arknights_1_,1girl,_0
+      213: -5218043935531426874
+    second: 02910-1635573073-1girl,petite,upper_body,wallpaper,white_background,serafuku,_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 01644-1097665732-_lora_shu_arknights_1_,1girl,_0
+      name: 02910-1635573073-1girl,petite,upper_body,wallpaper,white_background,serafuku,_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1024
-        height: 1456
+        width: 600
+        height: 944
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -114,8 +114,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 689efc6cb2762ab00800000000000000
-      internalID: 838345918361102726
+      spriteID: 6cb9440efa8c597b0800000000000000
+      internalID: -5218043935531426874
       vertices: []
       indices: 
       edges: []
@@ -123,7 +123,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -131,7 +131,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      01644-1097665732-_lora_shu_arknights_1_,1girl,_0: 838345918361102726
+      02910-1635573073-1girl,petite,upper_body,wallpaper,white_background,serafuku,_0: -5218043935531426874
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

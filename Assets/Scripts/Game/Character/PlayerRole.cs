@@ -4,7 +4,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandler, ISaveLoad
 {
@@ -28,7 +27,7 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
     public override void Init()
     {
         // 获取玩家数据
-        roleData = CharacterDataManager.GetPlayerRoleData(1);
+        roleData = CharacterDataManager.GetPlayerRoleData(GameManager.selectRole);
 
         hpBar.SetMaxHealth(roleData.MaxHP);
         AddEvents();
@@ -74,6 +73,9 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
                 break;
             case ERoleAttribute.AP:
                 ChangeAP(value);
+                break;
+            case ERoleAttribute.MaxAP:
+                roleData.MaxAP += value;
                 break;
             case ERoleAttribute.Aesist:
                 ChangeAesist(value);
@@ -159,6 +161,10 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
         BattleManager.Instance.PlayerDie();
     }
 
+    /// <summary>
+    /// 可以超过最大值
+    /// </summary>
+    /// <param name="value"></param>
     private void ChangeAP(int value)
     {
         roleData.AP += value;
@@ -207,10 +213,10 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
     /// </summary>
     private void OnPlayerTurnStart()
     {
-        // 恢复行动力 TODO: 需要实现 Buff 对行动力的影响
+        // 需要实现 Buff 对行动力的影响
         SetAP(roleData.MaxAP);
 
-        // 清空抵抗 TODO: 需要实现 Buff 对抵抗的影响
+        // 需要实现 Buff 对抵抗的影响
         ChangeAesist(int.MinValue);
     }
 
@@ -304,7 +310,7 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
         {
             if (roleData.Items[i].ItemType == EItemType.Remains)
             {
-                ((RemainsItemData)roleData.Items[i]).OnAcquire();
+                ((RemainsItemData)roleData.Items[i]).OnAcquire(false);
             }
         }
         // 刷新UI
@@ -316,10 +322,22 @@ public class PlayerRole : CharacterBase, IPointerEnterHandler, IPointerExitHandl
 
         UIManager.Instance.gameTopUI.SetHpTxt(roleData.HP, roleData.MaxHP);
         UIManager.Instance.gameTopUI.SetGoldTxt(roleData.Gold);
+
+        AddEvents();
+
+        hpBar.SetMaxHealth(roleData.MaxHP);
+
+        playerImg.material = dissolveMat;
+        playerImg.sprite = Resources.Load<Sprite>(ResourcesPaths.RoleImgPath + roleData.RoleImgPath);
     }
 
     public void RemoveItem(PotionItemData potionItemData)
     {
         roleData.Items.Remove(potionItemData);
+    }
+
+    private void OnDestroy()
+    {
+        RemoveEvents();
     }
 }

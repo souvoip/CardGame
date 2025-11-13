@@ -10,6 +10,15 @@ public class EnemyRoleData : RoleData
     [SerializeReference]
     public List<EnemyDoAction> Actions = new List<EnemyDoAction>();
 
+    /// <summary>
+    /// 行动是否随机，如果是，则随机选择一个行动
+    /// </summary>
+    [SerializeField]
+    [Header("行动是否随机")]
+    private bool ActionIsRandom;
+
+    private int currentActionIndex = 0;
+
     [SerializeReference]
     public EnemyDoAction EditAction;
 
@@ -21,9 +30,16 @@ public class EnemyRoleData : RoleData
         }
     }
 
-    public EnemyDoAction GetRandomAction()
+    public EnemyDoAction GetEnemyAction()
     {
-        return Actions[UnityEngine.Random.Range(0, Actions.Count)];
+        if (ActionIsRandom)
+        {
+            return Actions[UnityEngine.Random.Range(0, Actions.Count)];
+        }
+        else
+        {
+            return Actions[currentActionIndex++ % Actions.Count];
+        }
     }
 }
 

@@ -20,6 +20,7 @@ MonoBehaviour:
   Rare: 1
   Price: 46
   Fee: 1
+  useAudioEffect: 39_Block_03
   GetWay: 14
   MaxLevel: 2
   Features: 0

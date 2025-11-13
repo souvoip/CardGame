@@ -1,0 +1,128 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7f528d809a29534c9adbff45faaea13, type: 3}
+  m_Name: GameEvent_3
+  m_EditorClassIdentifier: 
+  ID: 3
+  EventName: "\u5C71\u6D1E\u63A2\u9669"
+  StartNode:
+    NodeIndex: 0
+    StoryText: "\u4F60\u770B\u5230\u524D\u65B9\u6709\u4E2A\u5C71\u6D1E"
+    ImgPath: 003
+    EnterEffects: []
+    Choices:
+    - ChoiceText: "\u8FDB\u5165"
+      TriggerEffects: []
+      NextNodes:
+      - RandomRatio: 1
+        NextNodeIndex: 1
+    - ChoiceText: "\u79BB\u5F00"
+      TriggerEffects: []
+      NextNodes: []
+    EditorPos: {x: 123, y: 179}
+  AllNodes:
+  - NodeIndex: 0
+    StoryText: 
+    ImgPath: 
+    EnterEffects: []
+    Choices: []
+    EditorPos: {x: 0, y: 0}
+  - NodeIndex: 1
+    StoryText: "\u4F60\u5C0F\u5FC3\u7FFC\u7FFC\u5730\u8E0F\u5165\u5C71\u6D1E\uFF0C\u6F6E\u6E7F\u7684\u7A7A\u6C14\u4E2D\u5F25\u6F2B\u7740\u6CE5\u571F\u4E0E\u9752\u82D4\u7684\u6C14\u606F\u3002\u706B\u628A\u7684\u5149\u6655\u5728\u5CA9\u58C1\u4E0A\u8DF3\u52A8\uFF0C\u6620\u51FA\u4E09\u9053\u622A\u7136\u4E0D\u540C\u7684\u901A\u9053\uFF0C\u4F60\u9009\u62E9"
+    ImgPath: 003_1
+    EnterEffects: []
+    Choices:
+    - ChoiceText: "\u5DE6\u8FB9"
+      TriggerEffects: []
+      NextNodes:
+      - RandomRatio: 1
+        NextNodeIndex: 4
+    - ChoiceText: "\u4E2D\u95F4"
+      TriggerEffects: []
+      NextNodes:
+      - RandomRatio: 1
+        NextNodeIndex: 3
+    - ChoiceText: "\u53F3\u8FB9"
+      TriggerEffects: []
+      NextNodes:
+      - RandomRatio: 1
+        NextNodeIndex: 2
+    - ChoiceText: "\u79BB\u5F00"
+      TriggerEffects: []
+      NextNodes: []
+    EditorPos: {x: 352, y: 183}
+  - NodeIndex: 2
+    StoryText: "\u8FD9\u6761\u9053\u8DEF\u5F88\u957F"
+    ImgPath: 003
+    EnterEffects: []
+    Choices:
+    - ChoiceText: "\u7EE7\u7EED\u524D\u8FDB"
+      TriggerEffects: []
+      NextNodes:
+      - RandomRatio: 95
+        NextNodeIndex: 5
+      - RandomRatio: 5
+        NextNodeIndex: 3
+    - ChoiceText: "\u56DE\u5934"
+      TriggerEffects: []
+      NextNodes:
+      - RandomRatio: 1
+        NextNodeIndex: 1
+    EditorPos: {x: 355, y: 431}
+  - NodeIndex: 3
+    StoryText: "\u8FD9\u91CC\u4EC0\u4E48\u90FD\u6CA1\u6709"
+    ImgPath: 003
+    EnterEffects: []
+    Choices:
+    - ChoiceText: "\u56DE\u5934"
+      TriggerEffects: []
+      NextNodes:
+      - RandomRatio: 1
+        NextNodeIndex: 1
+    EditorPos: {x: 649, y: 236}
+  - NodeIndex: 4
+    StoryText: "\u4F60\u627E\u5230\u4E86\u4E00\u4EF6\u7279\u6B8A\u7269\u54C1 <color=red><shake>\u83B7\u5F97\u751F\u547D\u5B9D\u77F3</shake></color>"
+    ImgPath: 003
+    EnterEffects:
+    - rid: 8978204319976259646
+    Choices:
+    - ChoiceText: "\u79BB\u5F00"
+      TriggerEffects: []
+      NextNodes: []
+    EditorPos: {x: 647, y: 58}
+  - NodeIndex: 5
+    StoryText: "\u8FD9\u6761\u9053\u8DEF\u5F88\u957F"
+    ImgPath: 003
+    EnterEffects: []
+    Choices:
+    - ChoiceText: "\u7EE7\u7EED\u524D\u8FDB"
+      TriggerEffects: []
+      NextNodes:
+      - RandomRatio: 95
+        NextNodeIndex: 2
+      - RandomRatio: 5
+        NextNodeIndex: 3
+    - ChoiceText: "\u56DE\u5934"
+      TriggerEffects: []
+      NextNodes:
+      - RandomRatio: 1
+        NextNodeIndex: 1
+    EditorPos: {x: 650, y: 433}
+  references:
+    version: 2
+    RefIds:
+    - rid: 8978204319976259646
+      type: {class: GameEventTriggerEffectGetItem, ns: , asm: Assembly-CSharp}
+      data:
+        itemID: 2
+        randomItemIDs: 01000000
+        randomCount: 1

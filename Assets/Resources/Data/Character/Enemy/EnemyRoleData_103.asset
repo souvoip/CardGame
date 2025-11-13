@@ -33,6 +33,7 @@ MonoBehaviour:
   Actions:
   - rid: 5035967028884406340
   - rid: 5035967051556978761
+  ActionIsRandom: 0
   EditAction:
     rid: 8579191933927161917
   references:
@@ -44,6 +45,7 @@ MonoBehaviour:
         actionAnim:
           path: NormalAtk
           time: 1
+        actionAudio: card
         actionName: "\u653B\u51FB"
         BaseDamage:
           DamageValue: 8
@@ -56,6 +58,7 @@ MonoBehaviour:
         actionAnim:
           path: NormalAtk
           time: 0
+        actionAudio: card
         actionName: "\u653B\u51FB"
         BaseDamage:
           DamageValue: 12
@@ -68,6 +71,7 @@ MonoBehaviour:
         actionAnim:
           path: 
           time: 0
+        actionAudio: 
         actionName: "\u653B\u51FB"
         BaseDamage:
           DamageValue: 0

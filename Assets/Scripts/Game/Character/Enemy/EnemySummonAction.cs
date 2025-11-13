@@ -10,5 +10,6 @@ public class EnemySummonAction : EnemyDoAction
     //public List<EnemyRoleData> enemies;
     public override void DoAction()
     {
+        base.DoAction();
     }
 }

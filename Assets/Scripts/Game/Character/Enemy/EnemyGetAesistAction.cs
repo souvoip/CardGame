@@ -14,6 +14,7 @@ public class EnemyGetAesistAction : EnemyDoAction
 
     public override void DoAction()
     {
+        base.DoAction();
         // 获取抵抗 TODO: 需要计算相关Buff
         self.ChangeAttribute(ERoleAttribute.Aesist, baseBlock.GetBlockValue());
         BattleAnimManager.Instance.PlayAnim(self.transform.position, actionAnim);

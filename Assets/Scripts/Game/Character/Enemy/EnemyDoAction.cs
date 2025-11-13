@@ -14,7 +14,12 @@ public abstract class EnemyDoAction
 
     public BattleAnimData actionAnim;
 
-    public abstract void DoAction();
+    public string actionAudio;
+
+    public virtual void DoAction()
+    {
+        MusicMgr.GetInstance().PlaySFX(actionAudio);
+    }
 
     /// <summary>
     /// TODO: 获取图标

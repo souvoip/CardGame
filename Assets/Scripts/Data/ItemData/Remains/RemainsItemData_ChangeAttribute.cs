@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 [CreateAssetMenu(fileName = "Remains_ChangeAttribute", menuName = "Data/Item/Remains/ChangeAttributeRemains")]
 public class RemainsItemData_ChangeAttribute : RemainsItemData
 {
@@ -13,16 +14,13 @@ public class RemainsItemData_ChangeAttribute : RemainsItemData
 
     public int ChangeValue;
 
-    public override void OnAcquire()
+    public override void OnAcquire(bool isFirstGet = true)
     {
         switch (TriggerTime)
         {
             case ETriggerTime.GetThis:
-                if (IsFirstAcquire)
-                {
+                if (isFirstGet)
                     OnChange();
-                    IsFirstAcquire = false;
-                }
                 break;
             case ETriggerTime.StartBattle:
                 TurnManager.OnStartBattle += OnChange;

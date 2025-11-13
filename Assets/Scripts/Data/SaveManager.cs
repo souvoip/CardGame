@@ -26,4 +26,12 @@ public class SaveManager
     {
         return System.IO.File.Exists(SavePath);
     }
+
+    public static void DeleteSaveFile()
+    {
+        if (System.IO.File.Exists(SavePath))
+        {
+            System.IO.File.Delete(SavePath);
+        }
+    }
 }

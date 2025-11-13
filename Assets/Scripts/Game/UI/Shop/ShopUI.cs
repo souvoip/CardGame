@@ -83,13 +83,42 @@ public class ShopUI : MonoBehaviour
         }
 
         // 物品
+        List<ShopItem> tempData = new List<ShopItem>();
         for (int i = 0; i < remainsSlots.Count; i++)
         {
             // 清理物品
             if (remainsSlots[i].childCount > 0) { Destroy(remainsSlots[i].GetChild(0).gameObject); }
+
+
             // 创建新物品
             GameObject item = Instantiate(shopItemPrefab, remainsSlots[i]);
-            item.GetComponent<ShopItem>().InitData(ItemDataManager.GetRandomShopRemainsItem(), BuyItem, Random.Range(0f, 1f) < discountRate, Random.Range(priceOffset.x, priceOffset.y));
+            RemainsItemData ri;
+            while (true)
+            {
+                ri = ItemDataManager.GetRandomShopRemainsItem();
+                if (!ri.IsUnique) { break; }
+                bool isExist = false;
+                // 商店中是否已经存在该物品
+                for(int j = 0; j < tempData.Count; j++)
+                {
+                    if (tempData[j].itemData.ID == ri.ID)
+                    {
+                        isExist = true;
+                    }
+                }
+                // 玩家道具是否已经存在该物品
+                for (int j = 0; j < BattleManager.Instance.Player.RoleData.Items.Count; j++)
+                {
+                    if (BattleManager.Instance.Player.RoleData.Items[j].ID == ri.ID)
+                    {
+                        isExist = true;
+                    }
+                }
+
+                if(!isExist) { break; }
+            }
+            item.GetComponent<ShopItem>().InitData(ri, BuyItem, Random.Range(0f, 1f) < discountRate, Random.Range(priceOffset.x, priceOffset.y));
+            tempData.Add(item.GetComponent<ShopItem>());
             shopItems.Add(item.GetComponent<ShopItem>());
         }
         // 药水

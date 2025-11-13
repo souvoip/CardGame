@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameTopUI : MonoBehaviour
 {
@@ -14,10 +16,19 @@ public class GameTopUI : MonoBehaviour
     [SerializeField]
     private TMP_Text goldTxt;
 
+    [SerializeField] private Button backMainMenuBtn;
+    [SerializeField] private Button cardViewBtn;
+
     [SerializeField]
     private RemainsItemControl remainsItemManager;
     [SerializeField]
     private PotionItemControl potionItemManager;
+
+    private void Awake()
+    {
+        backMainMenuBtn.onClick.AddListener(() => { GameManager.Instance.ReturnMainMenu(); });
+        cardViewBtn.onClick.AddListener(() => { UIManager.Instance.cardView.Show(BattleManager.Instance.CardManager.PlayerAllCards, true, ECardViewOpenMode.Normal); });
+    }
 
     public void UpdatePlayerRemainsItemInfo()
     {

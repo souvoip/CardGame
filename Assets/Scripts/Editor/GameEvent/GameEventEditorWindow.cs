@@ -205,7 +205,7 @@ public class GameEventEditorWindow : EditorWindow
 
             // 添加新选择效果按钮
             GUILayout.Space(10);
-            if (GUILayout.Button("添加新选择", GUILayout.MaxWidth(160)))
+            if (GUILayout.Button("添加新效果", GUILayout.MaxWidth(160)))
             {
                 eventNode.NodeData.EnterEffects.Add(new GameEventTriggerEffectChangeAttribute());
             }

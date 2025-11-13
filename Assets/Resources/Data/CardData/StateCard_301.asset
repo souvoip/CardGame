@@ -16,15 +16,19 @@ MonoBehaviour:
   Name: "\u4F24\u53E3"
   Desc: "\u65E0\u6CD5\u6253\u51FA"
   ImagePath: 301
-  CardType: 3
   UseType: 2
   Rare: 1
   Price: 0
   Fee: -1
+  useAudioEffect: card
   GetWay: 4
-  Buffs: []
-  Extract: []
+  MaxLevel: 1
   Features: 0
-  cardAnimData:
+  CardAnimData:
     path: 
     time: 0
+  CardActions: []
+  LevelDatas: []
+  references:
+    version: 2
+    RefIds: []

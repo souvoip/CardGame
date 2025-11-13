@@ -121,30 +121,30 @@ public class EditorEventNode : EditorEventElement
         }
 
         // 调节自己的尺寸
-        if (EditorChoices.Count > 3)
-        {
-            rect.height = Height + (EditorChoices.Count - 3) * 20;
-            if (isSelected)
-            {
-                currentBoxStyle.normal.background = EventEditorUtility.MakeTextureForNode(Width, Height + (EditorChoices.Count - 3) * 20, SelectedColor);
-            }
-            else
-            {
-                currentBoxStyle.normal.background = EventEditorUtility.MakeTextureForNode(Width, Height + (EditorChoices.Count - 3) * 20, DefaultColor);
-            }
-        }
-        else
-        {
-            rect.height = Height;
-            if (isSelected)
-            {
-                currentBoxStyle = selectedNodeStyle;
-            }
-            else
-            {
-                currentBoxStyle = defaultNodeStyle;
-            }
-        }
+        //if (EditorChoices.Count > 3)
+        //{
+        //    rect.height = Height + (EditorChoices.Count - 3) * 20;
+        //    if (isSelected)
+        //    {
+        //        currentBoxStyle.normal.background = EventEditorUtility.MakeTextureForNode(Width, Height + (EditorChoices.Count - 3) * 20, SelectedColor);
+        //    }
+        //    else
+        //    {
+        //        currentBoxStyle.normal.background = EventEditorUtility.MakeTextureForNode(Width, Height + (EditorChoices.Count - 3) * 20, DefaultColor);
+        //    }
+        //}
+        //else
+        //{
+        //    rect.height = Height;
+        //    if (isSelected)
+        //    {
+        //        currentBoxStyle = selectedNodeStyle;
+        //    }
+        //    else
+        //    {
+        //        currentBoxStyle = defaultNodeStyle;
+        //    }
+        //}
     }
 
     private void OnClickRemoveChoice(EditorChoiceItem item)
@@ -208,30 +208,30 @@ public class EditorEventNode : EditorEventElement
             EditorChoices[i].Draw();
         }
         // 调节自己的尺寸
-        if (EditorChoices.Count > 3)
-        {
-            rect.height = Height + (EditorChoices.Count - 3) * 20;
-            if (isSelected)
-            {
-                currentBoxStyle.normal.background = EventEditorUtility.MakeTextureForNode(Width, Height + (EditorChoices.Count - 3) * 20, SelectedColor);
-            }
-            else
-            {
-                currentBoxStyle.normal.background = EventEditorUtility.MakeTextureForNode(Width, Height + (EditorChoices.Count - 3) * 20, DefaultColor);
-            }
-        }
-        else
-        {
-            rect.height = Height;
-            if (isSelected)
-            {
-                currentBoxStyle = selectedNodeStyle;
-            }
-            else
-            {
-                currentBoxStyle = defaultNodeStyle;
-            }
-        }
+        //if (EditorChoices.Count > 3)
+        //{
+        //    rect.height = Height + (EditorChoices.Count - 3) * 20;
+        //    if (isSelected)
+        //    {
+        //        currentBoxStyle.normal.background = EventEditorUtility.MakeTextureForNode(Width, Height + (EditorChoices.Count - 3) * 20, SelectedColor);
+        //    }
+        //    else
+        //    {
+        //        currentBoxStyle.normal.background = EventEditorUtility.MakeTextureForNode(Width, Height + (EditorChoices.Count - 3) * 20, DefaultColor);
+        //    }
+        //}
+        //else
+        //{
+        //    rect.height = Height;
+        //    if (isSelected)
+        //    {
+        //        currentBoxStyle = selectedNodeStyle;
+        //    }
+        //    else
+        //    {
+        //        currentBoxStyle = defaultNodeStyle;
+        //    }
+        //}
     }
 
     public bool ProcessEvents(Event e)

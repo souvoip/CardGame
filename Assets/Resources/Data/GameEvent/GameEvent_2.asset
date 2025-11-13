@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7f528d809a29534c9adbff45faaea13, type: 3}
+  m_Name: GameEvent_2
+  m_EditorClassIdentifier: 
+  ID: 2
+  EventName: "\u610F\u5916\u4E4B\u8D22"
+  StartNode:
+    NodeIndex: 0
+    StoryText: "\u4F60\u53D1\u73B0\u524D\u65B9\u6C34\u4E2D\u6709\u53D1\u5149\u7269\u4F53"
+    ImgPath: 002
+    EnterEffects: []
+    Choices:
+    - ChoiceText: "\u4E0B\u53BB\u5BFB\u627E"
+      TriggerEffects: []
+      NextNodes:
+      - RandomRatio: 50
+        NextNodeIndex: 1
+      - RandomRatio: 50
+        NextNodeIndex: 2
+    - ChoiceText: "\u79BB\u5F00"
+      TriggerEffects: []
+      NextNodes: []
+    EditorPos: {x: 423, y: 323}
+  AllNodes:
+  - NodeIndex: 0
+    StoryText: 
+    ImgPath: 
+    EnterEffects: []
+    Choices: []
+    EditorPos: {x: 0, y: 0}
+  - NodeIndex: 1
+    StoryText: "\u4F60\u627E\u5230\u4E86 <color=yellow><shake>100</shake></color>
+      \u679A\u91D1\u5E01"
+    ImgPath: 002
+    EnterEffects:
+    - rid: 8978204297907404862
+    Choices:
+    - ChoiceText: "\u79BB\u5F00"
+      TriggerEffects: []
+      NextNodes: []
+    EditorPos: {x: 713, y: 123}
+  - NodeIndex: 2
+    StoryText: "\u4F60\u4EC0\u4E48\u4E5F\u6CA1\u6709\u627E\u5230"
+    ImgPath: 002
+    EnterEffects: []
+    Choices:
+    - ChoiceText: "\u79BB\u5F00"
+      TriggerEffects: []
+      NextNodes: []
+    EditorPos: {x: 712, y: 285}
+  references:
+    version: 2
+    RefIds:
+    - rid: 8978204297907404862
+      type: {class: GameEventTriggerEffectChangeAttribute, ns: , asm: Assembly-CSharp}
+      data:
+        ChangeAttribute: 10
+        ChangeValue: 100
+        CalculateAttribute: 0
+        Rate: 0

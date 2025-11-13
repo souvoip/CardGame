@@ -17,6 +17,7 @@ public class EnemyAttackAction : EnemyDoAction
 
     public override void DoAction()
     {
+        base.DoAction();
         // 攻击玩家
         int damageValue = GameTools.CalculateDamage(self, BattleManager.Instance.Player, BaseDamage);
         for (int i = 0; i < AtkCount; i++)

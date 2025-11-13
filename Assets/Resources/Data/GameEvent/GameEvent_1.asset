@@ -32,7 +32,7 @@ MonoBehaviour:
       NextNodes:
       - RandomRatio: 1
         NextNodeIndex: 2
-    EditorPos: {x: 148.9602, y: 317.0808}
+    EditorPos: {x: 325.9602, y: 150.08081}
   AllNodes:
   - NodeIndex: 0
     StoryText: "\u6D4B\u8BD5\u4E8B\u4EF61"
@@ -56,7 +56,7 @@ MonoBehaviour:
     - ChoiceText: "\u79BB\u5F00"
       TriggerEffects: []
       NextNodes: []
-    EditorPos: {x: 366.96027, y: 230.08081}
+    EditorPos: {x: 552.96027, y: 95.08081}
   - NodeIndex: 2
     StoryText: "\u4F60\u9009\u62E9\u4E862"
     ImgPath: 001
@@ -67,7 +67,7 @@ MonoBehaviour:
       NextNodes:
       - RandomRatio: 1
         NextNodeIndex: 5
-    EditorPos: {x: 148.9602, y: 493.08105}
+    EditorPos: {x: 332.9602, y: 351.08105}
   - NodeIndex: 4
     StoryText: "\u4F60\u9009\u62E9\u4E861\uFF0C\u4F46\u662F\u89E6\u53D1\u4E86<color=red><shake>\u7B2C\u4E8C\u79CD\u60C5\u51B5</shake></color>"
     ImgPath: 001
@@ -77,7 +77,7 @@ MonoBehaviour:
       TriggerEffects:
       - rid: 8894976865612595263
       NextNodes: []
-    EditorPos: {x: 367.96027, y: 385.0808}
+    EditorPos: {x: 553.96027, y: 250.08081}
   - NodeIndex: 5
     StoryText: "\u5FAA\u73AF\u8282\u70B91"
     ImgPath: 001
@@ -91,7 +91,7 @@ MonoBehaviour:
     - ChoiceText: "\u7ED3\u675F\u5FAA\u73AF"
       TriggerEffects: []
       NextNodes: []
-    EditorPos: {x: 369.96027, y: 551.0812}
+    EditorPos: {x: 555.96027, y: 416.08118}
   - NodeIndex: 6
     StoryText: "\u5FAA\u73AF\u8282\u70B92"
     ImgPath: 001
@@ -105,7 +105,7 @@ MonoBehaviour:
     - ChoiceText: "\u7ED3\u675F\u5FAA\u73AF"
       TriggerEffects: []
       NextNodes: []
-    EditorPos: {x: 587.7492, y: 460.55786}
+    EditorPos: {x: 788.7492, y: 332.55786}
   references:
     version: 2
     RefIds:

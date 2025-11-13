@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,9 +10,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Remains_AddBuff", menuName = "Data/Item/Remains/AddBuffRemains")]
 public class RemainsItemData_AddBuff : RemainsItemData
 {
+
     public List<RemainsBuffItem> Buffs;
 
-    public override void OnAcquire()
+    public override void OnAcquire(bool isFirstGet = true)
     {
         foreach (var buff in Buffs)
         {
@@ -70,13 +72,14 @@ public class RemainsItemData_AddBuff : RemainsItemData
         switch (buffItem.Target)
         {
             case ETargetRole.Self:
-                AddBuff(buffItem);
+                BattleManager.Instance.Player.AddBuff(BuffDataManager.GetBuff(buffItem.BuffID), buffItem.Stacks);
                 break;
             case ETargetRole.AllEnemy:
                 BattleManager.Instance.EnemyRoles.ForEach(enemy => enemy.AddBuff(BuffDataManager.GetBuff(buffItem.BuffID), buffItem.Stacks));
                 break;
             case ETargetRole.All:
-                AddBuff(buffItem);
+                BattleManager.Instance.Player.AddBuff(BuffDataManager.GetBuff(buffItem.BuffID), buffItem.Stacks);
+                BattleManager.Instance.EnemyRoles.ForEach(enemy => enemy.AddBuff(BuffDataManager.GetBuff(buffItem.BuffID), buffItem.Stacks));
                 break;
         }
     }
@@ -101,7 +104,7 @@ public class RemainsItemData_AddBuff : RemainsItemData
     }
 }
 
-
+[Serializable]
 public class RemainsBuffItem : BuffItem
 {
     public ETriggerTime TriggerTime;

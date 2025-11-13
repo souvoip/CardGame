@@ -30,6 +30,8 @@ public class UIManager : MonoBehaviour
 
     public PrizeUI prizeUI;
 
+    public GameWinUI winUI;
+
     public SceneTransition sceneTransitionUI;
     
     private bool isDisableUIInteraction = false;

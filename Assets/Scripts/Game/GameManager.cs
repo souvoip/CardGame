@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static bool isLoadGame = false;
+    public static int selectRole = 1;
 
     public static GameManager Instance;
 
@@ -44,12 +46,14 @@ public class GameManager : MonoBehaviour
         {
             NewGame();
         }
+        // 播放游戏Bgm
+        MusicMgr.GetInstance().PlayBGMusic("Music3");
     }
 
     private void NewGame()
     {
-        BattleManager.Instance.CardManager.InitGameCardData();
         BattleManager.Instance.Player.Init();
+        BattleManager.Instance.CardManager.InitGameCardData();
         MapManager.Instance.CreatorMap();
     }
 
@@ -79,7 +83,14 @@ public class GameManager : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        if(BattleManager.Instance == null) { return; }
+        if (BattleManager.Instance == null) { return; }
+        SaveData();
+    }
+
+    public void ReturnMainMenu()
+    {
+        if (BattleManager.Instance == null) { return; }
+        SceneManager.LoadScene("MainMenu");
         SaveData();
     }
 }

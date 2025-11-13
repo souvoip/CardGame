@@ -25,7 +25,10 @@ public class BattleManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null) { Instance = this; }
+        if (Instance == null)
+        {
+            Instance = this;
+        }
     }
 
     public void StartBattle(BattleData data)
@@ -55,6 +58,8 @@ public class BattleManager : MonoBehaviour
                 UIManager.Instance.mapUI.Hide();
                 UIManager.Instance.sceneTransitionUI.FadeOut();
             });
+            // 播放战斗Bgm
+            MusicMgr.GetInstance().PlayBGMusic("Music2");
         });
     }
 
@@ -85,16 +90,18 @@ public class BattleManager : MonoBehaviour
 
     public void BattleOver(bool isWin)
     {
+        // 播放游戏Bgm
+        MusicMgr.GetInstance().PlayBGMusic("Music3");
         if (isWin)
         {
             // 清理玩家在战斗中获取的buff
             Player.ClearBattleBuff();
             // 胜利
             TurnManager.BattleVictory();
-            // 判断是否是最后一场战斗，TODO：功能未完成（先直接退出）
+            // 判断是否是最后一场战斗
             if (UIManager.Instance.mapUI.CurrentMapItem.Type == EMapItemType.Boss)
             {
-                Application.Quit();
+                UIManager.Instance.winUI.gameObject.SetActive(true);
                 return;
             }
             // 生成奖励
@@ -132,8 +139,13 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
+# if UNITY_EDITOR
+            // 编辑器下直接退出游戏
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
             // 先直接退出游戏 TODO：功能未完成
             Application.Quit();
+#endif
         }
     }
 

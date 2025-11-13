@@ -75,6 +75,7 @@ public class CardViewUI : MonoBehaviour
     public void Hide()
     {
         gameObject.SetActive(false);
+        UIManager.Instance.holdDetailUI.Hide();
     }
 
     private void UpgradeCardAct(ViewCardItem item)

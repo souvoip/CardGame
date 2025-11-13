@@ -33,6 +33,10 @@ public class TurnManager : MonoBehaviour
         {
             Instance = this;
         }
+    }
+
+    private void Start()
+    {
         TurnType = ETurnType.NonBattle;
     }
 

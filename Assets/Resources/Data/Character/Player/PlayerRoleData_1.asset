@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerRoleData_1
   m_EditorClassIdentifier: 
   ID: 1
-  Name: "\u6D4B\u8BD5"
+  Name: "\u6218\u58EB"
   Sex: 0
   Age: 20
   Level: 1
@@ -31,4 +31,5 @@ MonoBehaviour:
   Gold: 50
   DrawCardCount: 5
   MaxCardCount: 8
-  FixedItemIDs: 010000006500000066000000
+  FixedItemIDs: 01000000
+  initCards: 0100000001000000010000000100000001000000650000006500000065000000650000006500000002000000c9000000

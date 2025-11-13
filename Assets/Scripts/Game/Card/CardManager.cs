@@ -27,7 +27,7 @@ public class CardManager : MonoBehaviour, ISaveLoad
     /// <summary>
     /// 手牌列表
     /// </summary>
-    private List<CardItem> cardList;
+    private List<CardItem> cardList = new List<CardItem>();
     /// <summary>
     /// 偶数手牌位置列表
     /// </summary>
@@ -111,7 +111,6 @@ public class CardManager : MonoBehaviour, ISaveLoad
 
     private Vector3 temporaryCardStartPos;
 
-
     void Start()
     {
         InitCard();
@@ -134,16 +133,18 @@ public class CardManager : MonoBehaviour, ISaveLoad
 
         #region Test
         playerAllCards = new List<CardBase>();
-        for (int i = 0; i < 5; i++)
+        
+        for (int i = 0; i < BattleManager.Instance.Player.RoleData.initCards.Count; i++)
         {
-            playerAllCards.Add(CardDataManager.GetCard(1));
-            playerAllCards.Add(CardDataManager.GetCard(101));
+            playerAllCards.Add(CardDataManager.GetCard(BattleManager.Instance.Player.RoleData.initCards[i]));
+            //playerAllCards.Add(CardDataManager.GetCard(1));
+            //playerAllCards.Add(CardDataManager.GetCard(101));
         }
-        playerAllCards.Add(CardDataManager.GetCard(-1));
-        playerAllCards.Add(CardDataManager.GetCard(2));
-        playerAllCards.Add(CardDataManager.GetCard(102));
-        playerAllCards.Add(CardDataManager.GetCard(201));
-        playerAllCards.Add(CardDataManager.GetCard(301));
+        //playerAllCards.Add(CardDataManager.GetCard(-1));
+        //playerAllCards.Add(CardDataManager.GetCard(2));
+        //playerAllCards.Add(CardDataManager.GetCard(102));
+        //playerAllCards.Add(CardDataManager.GetCard(201));
+        //playerAllCards.Add(CardDataManager.GetCard(301));
         //InitBattleCardData();
 
         //TimerTools.Timer.Once(0.1f, () =>
@@ -238,7 +239,7 @@ public class CardManager : MonoBehaviour, ISaveLoad
     {
         EventCenter<CardExtract>.GetInstance().RemoveEventListener(EventNames.EXTRACT_CARD, OnExtractCard);
         TurnManager.OnPlayerTurnEnd -= PlayerTurnEnd;
-        TurnManager.OnPlayerTurnEnd -= TurnStart;
+        TurnManager.OnPlayerTurnStart -= TurnStart;
     }
 
     private void TurnStart()
@@ -699,6 +700,10 @@ public class CardManager : MonoBehaviour, ISaveLoad
     private void UseCardOver(CardItem cardItem)
     {
         handRegionCards.Remove(cardItem.CardData);
+
+        // 播放音效
+        MusicMgr.GetInstance().PlaySFX(cardItem.CardData.useAudioEffect);
+
         if (cardItem.CardData.CardType == ECardType.Ability)
         {
             removeRegionCards.Add(cardItem.CardData);
