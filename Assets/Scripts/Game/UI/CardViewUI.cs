@@ -27,6 +27,15 @@ public class CardViewUI : MonoBehaviour
     /// <param name="isOrder">是否按照卡牌库顺序显示</param>
     public void Show(List<CardBase> cards, bool isOrder = false, ECardViewOpenMode mode = ECardViewOpenMode.Normal)
     {
+        if(items != null)
+        {
+            for (int i = 0; i < items.Count; i++)
+            {
+                Destroy(items[i].gameObject);
+            }
+            items.Clear();
+        }
+
         Action<ViewCardItem> cardAct = null;
 
         switch (mode)

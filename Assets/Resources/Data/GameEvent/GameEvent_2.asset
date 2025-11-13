@@ -30,7 +30,7 @@ MonoBehaviour:
     - ChoiceText: "\u79BB\u5F00"
       TriggerEffects: []
       NextNodes: []
-    EditorPos: {x: 423, y: 323}
+    EditorPos: {x: 283, y: 311}
   AllNodes:
   - NodeIndex: 0
     StoryText: 
@@ -48,7 +48,7 @@ MonoBehaviour:
     - ChoiceText: "\u79BB\u5F00"
       TriggerEffects: []
       NextNodes: []
-    EditorPos: {x: 713, y: 123}
+    EditorPos: {x: 582, y: 171}
   - NodeIndex: 2
     StoryText: "\u4F60\u4EC0\u4E48\u4E5F\u6CA1\u6709\u627E\u5230"
     ImgPath: 002
@@ -57,7 +57,7 @@ MonoBehaviour:
     - ChoiceText: "\u79BB\u5F00"
       TriggerEffects: []
       NextNodes: []
-    EditorPos: {x: 712, y: 285}
+    EditorPos: {x: 588, y: 393}
   references:
     version: 2
     RefIds:

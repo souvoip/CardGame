@@ -90,6 +90,7 @@ public class GameManager : MonoBehaviour
     public void ReturnMainMenu()
     {
         if (BattleManager.Instance == null) { return; }
+        TurnManager.ClearEvents();
         SceneManager.LoadScene("MainMenu");
         SaveData();
     }

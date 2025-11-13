@@ -67,6 +67,7 @@ public class ShopItem : MonoBehaviour, IBuyItem, IPointerEnterHandler, IPointerE
         BattleManager.Instance.Player.ChangeAttribute(ERoleAttribute.Gold, -finalPrice);
         BattleManager.Instance.Player.AddItem(itemData.ID);
         // 移除商品
+        UIManager.Instance.holdDetailUI.Hide();
         Destroy(gameObject);
     }
 

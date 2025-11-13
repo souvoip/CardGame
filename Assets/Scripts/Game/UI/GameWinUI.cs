@@ -13,6 +13,7 @@ public class GameWinUI : MonoBehaviour
         backMainMenuButton.onClick.AddListener(() =>
         {
             SaveManager.DeleteSaveFile();
+            TurnManager.ClearEvents();
             SceneManager.LoadScene("MainMenu");
         });
     }

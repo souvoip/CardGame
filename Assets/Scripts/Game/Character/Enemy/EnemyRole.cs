@@ -146,7 +146,7 @@ public class EnemyRole : CharacterBase, IPointerEnterHandler, IPointerExitHandle
     private int ChangeAesist(int value)
     {
         roleData.Aesist += value;
-        if (roleData.Aesist < 0)
+        if (roleData.Aesist <= 0)
         {
             int temp = roleData.Aesist;
             roleData.Aesist = 0;

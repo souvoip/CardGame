@@ -27,6 +27,16 @@ public class TurnManager : MonoBehaviour
         }
     }
 
+    public static void ClearEvents()
+    {
+        OnStartBattle = null;
+        OnPlayerTurnStart = null;
+        OnPlayerTurnEnd = null;
+        OnEnemyTurnStart = null;
+        OnEnemyTurnEnd = null;
+        OnBattleVictory = null;
+    }
+
     private void Awake()
     {
         if (Instance == null)
